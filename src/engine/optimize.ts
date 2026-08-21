@@ -28,7 +28,10 @@ export function generateAlternatives(base: PartSpec, data: SeedData): Alternativ
   return alts.map((a) => {
     const spec: PartSpec = { ...base, ...a.patch }
     const result = evaluate(spec, data)
-    return { label: a.label, note: a.note, spec, result }
+    const curProc = data.processes.find((p) => p.id === base.processId)
+    const altProc = data.processes.find((p) => p.id === spec.processId)
+    const toolingDeltaThb = (altProc?.toolingCostThb ?? 0) - (curProc?.toolingCostThb ?? 0)
+    return { label: a.label, note: a.note, spec, result, toolingDeltaThb }
   })
 }
 

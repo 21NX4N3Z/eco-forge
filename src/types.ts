@@ -29,6 +29,7 @@ export interface Process {
   scrapRate: number // 0..1
   procEmission: number // kgCO2 per kg processed (direct/Scope1)
   extraCostPerKg: number // THB per kg processed (machining/tooling)
+  toolingCostThb?: number // one-time switch cost (die/mould/fixture) for payback calc
 }
 
 export interface CbamRate {
@@ -113,4 +114,5 @@ export interface Alternative {
   note: string
   spec: PartSpec
   result: CalcResult
+  toolingDeltaThb?: number // one-time switch cost vs current process (for payback)
 }

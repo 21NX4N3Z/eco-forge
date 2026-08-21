@@ -348,7 +348,7 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         <div className="card text-xs text-ink-mute space-y-1">
           <div className="label">Business View</div>
           <div>ต้นทุน/ปี: {money(cur.annualCost)} · ประหยัดหากปรับปรุง: {money(cur.annualCost - bestRes.annualCost)}/yr</div>
-          <div>Payback (Option {best?.label}): {paybackLabel(paybackMonths(cur.annualCost, bestRes.annualCost, cur.annualCo2 - bestRes.annualCo2))} · CBAM เสียหายหากไม่ปรับปรุง: €{cbam2028}/yr</div>
+          <div>Payback (Option {best?.label}): {paybackLabel(paybackMonths(cur.annualCost, bestRes.annualCost, cur.annualCo2 - bestRes.annualCo2, best?.toolingDeltaThb))} · CBAM เสียหายหากไม่ปรับปรุง: €{cbam2028}/yr</div>
         </div>
       )}
     </div>

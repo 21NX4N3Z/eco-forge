@@ -13,10 +13,10 @@
       "tensileStrength": 415, "yieldStrength": 355, "hardness": 150, "elongation": 4, "corrosion": 3, "thermalCond": 210, "electricalCond": 50, "recycleGrade": "D", "porosityClass": "ASTM E155 Class 2 (MMC interface)", "rohs": true, "source": "Rule-of-Mixtures est.: 0.95×Al6061(8.24) + 0.05×Graphene(~120)" }
   ],
   "processes": [
-    { "id": 1, "name": "CNC from Billet", "energyIntensity": 2.1, "scrapRate": 0.70, "procEmission": 0.40, "extraCostPerKg": 1000 },
-    { "id": 2, "name": "Gravity Die Casting", "energyIntensity": 1.3, "scrapRate": 0.12, "procEmission": 0.90, "extraCostPerKg": 2386 },
-    { "id": 3, "name": "Extrusion + CNC", "energyIntensity": 1.1, "scrapRate": 0.08, "procEmission": 0.60, "extraCostPerKg": 1500 },
-    { "id": 4, "name": "Additive Mfg", "energyIntensity": 8.5, "scrapRate": 0.05, "procEmission": 0.20, "extraCostPerKg": 4200 }
+    { "id": 1, "name": "CNC from Billet", "energyIntensity": 2.1, "scrapRate": 0.70, "procEmission": 0.40, "extraCostPerKg": 1000, "toolingCostThb": 0 },
+    { "id": 2, "name": "Gravity Die Casting", "energyIntensity": 1.3, "scrapRate": 0.12, "procEmission": 0.90, "extraCostPerKg": 2386, "toolingCostThb": 96000 },
+    { "id": 3, "name": "Extrusion + CNC", "energyIntensity": 1.1, "scrapRate": 0.08, "procEmission": 0.60, "extraCostPerKg": 1500, "toolingCostThb": 145000 },
+    { "id": 4, "name": "Additive Mfg", "energyIntensity": 8.5, "scrapRate": 0.05, "procEmission": 0.20, "extraCostPerKg": 4200, "toolingCostThb": 35000 }
   ],
   "cbamRates": [
     { "year": 2026, "obligationPercent": 0.00, "etsPriceEur": 180, "benchmarkCo2": 2.5 },

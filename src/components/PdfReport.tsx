@@ -29,7 +29,7 @@ export default function PdfReport({ spec, data }: { spec: PartSpec; data: SeedDa
   const best = alts.length
     ? alts.reduce((a, b) => (b.result.annualCo2 < a.result.annualCo2 ? b : a))
     : null
-  const bestPb = best ? paybackMonths(cur.annualCost, best.result.annualCost, cur.annualCo2 - best.result.annualCo2) : null
+  const bestPb = best ? paybackMonths(cur.annualCost, best.result.annualCost, cur.annualCo2 - best.result.annualCo2, best.toolingDeltaThb) : null
 
   const TPL_TITLE: Record<TemplateId, string> = {
     cbam: 'EU CBAM Carbon Report',
@@ -152,7 +152,7 @@ export default function PdfReport({ spec, data }: { spec: PartSpec; data: SeedDa
                 <tbody>
                   <tr><td>ปัจจุบัน</td><td>฿{(cur.annualCost / 1000).toFixed(0)}K</td><td>—</td><td>—</td><td>—</td></tr>
                   {alts.map((a) => {
-                    const pb = paybackMonths(cur.annualCost, a.result.annualCost, cur.annualCo2 - a.result.annualCo2)
+                    const pb = paybackMonths(cur.annualCost, a.result.annualCost, cur.annualCo2 - a.result.annualCo2, a.toolingDeltaThb)
                     return (
                       <tr key={a.label}>
                         <td>{a.label}</td>

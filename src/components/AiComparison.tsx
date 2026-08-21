@@ -104,7 +104,7 @@ export default function AiComparison({
                   €{row.r.cbam.find((c) => c.year === 2028)?.taxEur ?? 0}
                 </td>
                 <td className="text-center tabular-nums">
-                  {row.base ? '—' : paybackLabel(paybackMonths(cur.annualCost, row.r.annualCost, cur.annualCo2 - row.r.annualCo2))}
+                  {row.base ? '—' : paybackLabel(paybackMonths(cur.annualCost, row.r.annualCost, cur.annualCo2 - row.r.annualCo2, row.toolingDeltaThb))}
                 </td>
               </tr>
             ))}
@@ -138,7 +138,7 @@ export default function AiComparison({
         </div>
         <div className="space-y-2">
           {alts.map((a) => {
-            const pb = paybackMonths(cur.annualCost, a.result.annualCost, cur.annualCo2 - a.result.annualCo2)
+            const pb = paybackMonths(cur.annualCost, a.result.annualCost, cur.annualCo2 - a.result.annualCo2, a.toolingDeltaThb)
             const best = a.result.annualCo2 === minAltCo2
             return (
               <div key={a.label} className={`card-inset ${best ? 'border-ok' : ''}`}>
