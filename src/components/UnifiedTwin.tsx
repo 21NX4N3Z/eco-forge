@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { PartSpec, SeedData } from '../types'
 import { evaluate } from '../engine/cbam'
 import { generateAlternatives } from '../engine/optimize'
-import { PieChart, Pie, Cell, BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, Radar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { PieChart, Pie, Cell, BarChart, Bar, LineChart, Line, RadarChart, PolarGrid, PolarAngleAxis, Radar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import WhyButton from './WhyButton'
 import SdgBadges from './SdgBadges'
 import { IconCheck, IconAlert } from './icons'
@@ -17,6 +17,10 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
     donut: true, trend: true, mrv: true, radar: true, strength: true,
   })
   const toggle = (k: ChartKey) => setCharts((c) => ({ ...c, [k]: !c[k] }))
+  const [types, setTypes] = useState<{ breakdown: 'pie' | 'bar' | 'line'; trend: 'bar' | 'line'; mrv: 'h' | 'v' }>({
+    breakdown: 'pie', trend: 'bar', mrv: 'h',
+  })
+  const setType = (k: keyof typeof types, v: any) => setTypes((t) => ({ ...t, [k]: v }))
 
   const cur = evaluate(spec, data)
   const best = generateAlternatives(spec, data)[0]
@@ -104,29 +108,87 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
         </div>
       </div>
 
-      {/* Chart toggles */}
-      <div className="flex flex-wrap gap-2">
-        <Toggle k="donut" label="Donut Before/After" />
-        <Toggle k="trend" label="CBAM Trend" />
-        <Toggle k="mrv" label="MRV Scopes" />
-        <Toggle k="radar" label="Material Radar" />
-        <Toggle k="strength" label="Strength Compare" />
+      {/* Chart controls: toggle on/off + choose type */}
+      <div className="card flex flex-wrap items-center gap-3">
+        <span className="label">กราฟ:</span>
+        <label className="flex items-center gap-1.5 text-sm">Carbon
+          <select className="card-inset py-1" value={types.breakdown} onChange={(e) => setType('breakdown', e.target.value)}>
+            <option value="pie">โดนัด</option><option value="bar">แท่ง</option><option value="line">เส้น</option>
+          </select>
+        </label>
+        <label className="flex items-center gap-1.5 text-sm">Trend
+          <select className="card-inset py-1" value={types.trend} onChange={(e) => setType('trend', e.target.value)}>
+            <option value="bar">แท่ง</option><option value="line">เส้น</option>
+          </select>
+        </label>
+        <label className="flex items-center gap-1.5 text-sm">MRV
+          <select className="card-inset py-1" value={types.mrv} onChange={(e) => setType('mrv', e.target.value)}>
+            <option value="h">แท่งแนวนอน</option><option value="v">แท่งแนวตั้ง</option>
+          </select>
+        </label>
+        <label className="flex items-center gap-1.5 text-sm">Radar
+          <input type="checkbox" checked={charts.radar} onChange={() => toggle('radar')} className="accent-accent" /> แสดง
+        </label>
+        <label className="flex items-center gap-1.5 text-sm">Strength
+          <input type="checkbox" checked={charts.strength} onChange={() => toggle('strength')} className="accent-accent" /> แสดง
+        </label>
         <span className="ml-auto"><SdgBadges /></span>
       </div>
 
-      {/* Charts grid (only selected) */}
+      {/* Charts grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {charts.donut && (
-          <>
-            <div className="card"><div className="label mb-2">Before — {spec.partType}</div><ResponsiveContainer width="100%" height={220}><PieChart><Pie data={beforeData} dataKey="value" nameKey="name" outerRadius={75} label>{beforeData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}</Pie><Tooltip /></PieChart></ResponsiveContainer></div>
-            <div className="card"><div className="label mb-2">After — AI Option {best?.label}</div><ResponsiveContainer width="100%" height={220}><PieChart><Pie data={afterData} dataKey="value" nameKey="name" outerRadius={75} label>{afterData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}</Pie><Tooltip /></PieChart></ResponsiveContainer></div>
-          </>
+          <div className="card md:col-span-2">
+            <div className="label mb-2">Carbon Breakdown — Before vs After ({types.breakdown === 'pie' ? 'โดนัด' : types.breakdown === 'bar' ? 'แท่ง' : 'เส้น'})</div>
+            <ResponsiveContainer width="100%" height={240}>
+              {types.breakdown === 'pie' ? (
+                <PieChart>
+                  <Pie data={beforeData} dataKey="value" nameKey="name" outerRadius={85} label>{beforeData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}</Pie>
+                  <Pie data={afterData} dataKey="value" nameKey="name" innerRadius={95} outerRadius={120} label>{afterData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}</Pie>
+                  <Tooltip /><Legend />
+                </PieChart>
+              ) : types.breakdown === 'bar' ? (
+                <BarChart data={[...beforeData.map((d) => ({ ...d, grp: 'Before' })), ...afterData.map((d) => ({ ...d, grp: 'After' }))]}>
+                  <XAxis dataKey="name" tick={{ fontSize: 12 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend />
+                  <Bar dataKey="value" name="Before" fill="#0075de" radius={[4,4,0,0]} /><Bar dataKey="value" name="After" fill="#1aae39" radius={[4,4,0,0]} />
+                </BarChart>
+              ) : (
+                <LineChart data={[...beforeData.map((d, i) => ({ name: d.name, Before: d.value, After: afterData[i]?.value }))].reduce((acc: any[], d) => acc, [
+                  { name: 'Material', Before: beforeData[0].value, After: afterData[0].value },
+                  { name: 'Process', Before: beforeData[1].value, After: afterData[1].value },
+                  { name: 'Transport', Before: beforeData[2].value, After: afterData[2].value },
+                ])}>
+                  <XAxis dataKey="name" tick={{ fontSize: 12 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend />
+                  <Line dataKey="Before" stroke="#0075de" strokeWidth={2} dot={{ r: 3 }} />
+                  <Line dataKey="After" stroke="#1aae39" strokeWidth={2} dot={{ r: 3 }} />
+                </LineChart>
+              )}
+            </ResponsiveContainer>
+          </div>
         )}
         {charts.trend && (
-          <div className="card"><div className="label mb-2">CBAM Obligation Trend</div><ResponsiveContainer width="100%" height={220}><BarChart data={trend}><XAxis dataKey="year" tick={{ fontSize: 13 }} /><YAxis tick={{ fontSize: 13 }} /><Tooltip /><Bar dataKey="tax" fill="#0075de" radius={[4,4,0,0]} /><Legend /></BarChart></ResponsiveContainer></div>
+          <div className="card">
+            <div className="label mb-2">CBAM Obligation Trend ({types.trend === 'bar' ? 'แท่ง' : 'เส้น'})</div>
+            <ResponsiveContainer width="100%" height={220}>
+              {types.trend === 'bar' ? (
+                <BarChart data={trend}><XAxis dataKey="year" tick={{ fontSize: 13 }} /><YAxis tick={{ fontSize: 13 }} /><Tooltip /><Bar dataKey="tax" fill="#0075de" radius={[4,4,0,0]} /><Legend /></BarChart>
+              ) : (
+                <LineChart data={trend}><XAxis dataKey="year" tick={{ fontSize: 13 }} /><YAxis tick={{ fontSize: 13 }} /><Tooltip /><Line dataKey="tax" stroke="#0075de" strokeWidth={2} dot={{ r: 3 }} /><Legend /></LineChart>
+              )}
+            </ResponsiveContainer>
+          </div>
         )}
         {charts.mrv && (
-          <div className="card"><div className="label mb-2">MRV (EU CBAM scopes)</div><ResponsiveContainer width="100%" height={220}><BarChart data={mrv} layout="vertical"><XAxis type="number" tick={{ fontSize: 13 }} /><YAxis type="category" dataKey="scope" width={120} tick={{ fontSize: 12 }} /><Tooltip /><Bar dataKey="co2" fill="#1aae39" radius={[0,4,4,0]} /></BarChart></ResponsiveContainer></div>
+          <div className="card">
+            <div className="label mb-2">MRV (EU CBAM scopes) — {types.mrv === 'h' ? 'แนวนอน' : 'แนวตั้ง'}</div>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={mrv} layout={types.mrv === 'h' ? 'vertical' : 'horizontal'}>
+                <XAxis type={types.mrv === 'h' ? 'number' : 'category'} dataKey={types.mrv === 'h' ? undefined : 'scope'} tick={{ fontSize: 12 }} />
+                <YAxis type={types.mrv === 'h' ? 'category' : 'number'} dataKey={types.mrv === 'h' ? 'scope' : undefined} width={types.mrv === 'h' ? 110 : 40} tick={{ fontSize: 12 }} />
+                <Tooltip /><Bar dataKey="co2" fill="#1aae39" radius={[0,4,4,0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         )}
         {charts.radar && (
           <div className="card"><div className="label mb-2">Mechanical Profile (Radar)</div><ResponsiveContainer width="100%" height={220}><RadarChart data={radarData}><PolarGrid /><PolarAngleAxis dataKey="metric" tick={{ fontSize: 11 }} /><Radar name="Current" dataKey="cur" stroke="#0075de" fill="#0075de" fillOpacity={0.35} /><Radar name="Recycled Alt" dataKey="alt" stroke="#1aae39" fill="#1aae39" fillOpacity={0.25} /><Legend /></RadarChart></ResponsiveContainer></div>
