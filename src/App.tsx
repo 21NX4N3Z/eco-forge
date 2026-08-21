@@ -1,16 +1,14 @@
 import { useState } from 'react'
 import { PartSpec, SeedData } from './types'
 import { useSeed } from './dataLayer'
-import ProcessBuilder from './components/ProcessBuilder'
-import Dashboard from './components/Dashboard'
-import WhatIf from './components/WhatIf'
+import UnifiedTwin from './components/UnifiedTwin'
 import PdfReport from './components/PdfReport'
 import OfflineToggle from './components/OfflineToggle'
 import { LoadingSkeleton, ErrorCard } from './components/StatusCards'
 import SdgBadges from './components/SdgBadges'
 import ActivityFeed from './components/ActivityFeed'
 import Milestones from './components/Milestones'
-import { IconLayers, IconTwin, IconSliders, IconDownload, IconSpark } from './components/icons'
+import { IconTwin, IconDownload, IconSpark } from './components/icons'
 
 const DEFAULT_SPEC: PartSpec = {
   inputSource: 'standard',
@@ -23,12 +21,10 @@ const DEFAULT_SPEC: PartSpec = {
   transportDist: 120,
 }
 
-type Tab = 'builder' | 'dashboard' | 'whatif' | 'export'
+type Tab = 'twin' | 'export'
 
-const TABS: { id: Tab; label: string; icon: typeof IconLayers }[] = [
-  { id: 'builder', label: 'Process Builder', icon: IconLayers },
-  { id: 'dashboard', label: 'Carbon Twin', icon: IconTwin },
-  { id: 'whatif', label: 'What-If', icon: IconSliders },
+const TABS: { id: Tab; label: string; icon: typeof IconTwin }[] = [
+  { id: 'twin', label: 'Carbon Twin', icon: IconTwin },
   { id: 'export', label: 'Export', icon: IconDownload },
 ]
 
@@ -36,8 +32,7 @@ export default function App() {
   const [offline, setOffline] = useState(false)
   const { data, source, loading, error } = useSeed(offline)
   const [spec, setSpec] = useState<PartSpec>(DEFAULT_SPEC)
-  const [tab, setTab] = useState<Tab>('builder')
-  const [view, setView] = useState<'technical' | 'business'>('business')
+  const [tab, setTab] = useState<Tab>('twin')
 
   return (
     <div className="min-h-screen max-w-7xl mx-auto p-4 lg:p-6 space-y-4 text-[16px]">
@@ -73,10 +68,6 @@ export default function App() {
             </button>
           )
         })}
-        <button className={`btn py-2.5 ml-auto ${view === 'technical' ? 'btn-active' : ''}`}
-                onClick={() => setView(view === 'technical' ? 'business' : 'technical')}>
-          {view === 'technical' ? 'Technical' : 'Business'} View
-        </button>
       </nav>
 
       {loading && <LoadingSkeleton />}
@@ -85,11 +76,7 @@ export default function App() {
       {/* Body: main + right rail */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 space-y-4">
-          {!loading && tab === 'builder' && (
-            <ProcessBuilder spec={spec} setSpec={setSpec} data={data} onAnalyze={() => setTab('dashboard')} />
-          )}
-          {!loading && tab === 'dashboard' && <Dashboard spec={spec} data={data} view={view} />}
-          {!loading && tab === 'whatif' && <WhatIf spec={spec} setSpec={setSpec} data={data} />}
+          {!loading && tab === 'twin' && <UnifiedTwin spec={spec} setSpec={setSpec} data={data} />}
           {!loading && tab === 'export' && <PdfReport spec={spec} data={data} />}
         </div>
         <aside className="space-y-4">

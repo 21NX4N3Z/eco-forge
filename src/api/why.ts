@@ -1,6 +1,8 @@
-// Embedded AI Assistant — JSON-in / JSON-out via Vercel serverless proxy (Nous API).
-// Tries the REAL model first; only falls back to a local rule-based explainer
-// when the network/proxy is unavailable, and reports which mode was used.
+// Embedded AI Assistant — JSON-in / JSON-out.
+// Resolution order (so it "really runs" in every context):
+//   1. VITE_NOUS_KEY set  → call Nous Portal directly from the frontend (dev/demo)
+//   2. /api/why proxy      → Vercel serverless (key stays server-side, prod)
+//   3. offline rule-based   → only when no network/key; reported honestly
 
 export interface WhyRequest {
   hotspot: string
@@ -14,7 +16,7 @@ export interface WhyResponse {
   explanation: string
   suggestion: string
   severity: 'high' | 'med' | 'low'
-  source: 'ai' | 'local' // tells the UI whether the model really ran
+  source: 'ai' | 'local'
 }
 
 const LOCAL_FALLBACK: Record<string, Omit<WhyResponse, 'source'>> = {
@@ -43,7 +45,41 @@ const LOCAL_FALLBACK: Record<string, Omit<WhyResponse, 'source'>> = {
   },
 }
 
+const SYS =
+  'You are a carbon engineering assistant for Thai SME parts manufacturers facing EU CBAM. ' +
+  'Reply ONLY with strict JSON: {"explanation": string, "suggestion": string, "severity": "high"|"med"|"low"}. ' +
+  'Be concise and engineering-focused. No markdown, no prose outside the JSON.'
+
+async function callNous(req: WhyRequest, key: string): Promise<WhyResponse> {
+  const upstream = await fetch('https://portal.nousresearch.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
+    body: JSON.stringify({
+      model: 'hermes',
+      messages: [
+        { role: 'system', content: SYS },
+        { role: 'user', content: JSON.stringify(req) },
+      ],
+    }),
+  })
+  if (!upstream.ok) throw new Error('nous ' + upstream.status)
+  const j = await upstream.json()
+  const content = j?.choices?.[0]?.message?.content ?? ''
+  const parsed = JSON.parse(content) as Omit<WhyResponse, 'source'>
+  return { ...parsed, source: 'ai' }
+}
+
 export async function askWhy(req: WhyRequest): Promise<WhyResponse> {
+  // 1) direct key (dev/demo)
+  const key = (import.meta as any).env?.VITE_NOUS_KEY
+  if (key) {
+    try {
+      return await callNous(req, key)
+    } catch {
+      /* fall through */
+    }
+  }
+  // 2) vercel proxy
   try {
     const res = await fetch('/api/why', {
       method: 'POST',
@@ -52,12 +88,11 @@ export async function askWhy(req: WhyRequest): Promise<WhyResponse> {
     })
     if (res.ok) {
       const data = (await res.json()) as Omit<WhyResponse, 'source'>
-      // tolerate either {explanation,...} or Nous {choices:[{message:{content}}]}
       if (data.explanation) return { ...data, source: 'ai' }
-      return { ...(LOCAL_FALLBACK[req.hotspot] ?? LOCAL_FALLBACK.default), source: 'ai' }
     }
-    throw new Error('proxy ' + res.status)
   } catch {
-    return { ...(LOCAL_FALLBACK[req.hotspot] ?? LOCAL_FALLBACK.default), source: 'local' }
+    /* fall through */
   }
+  // 3) offline
+  return { ...(LOCAL_FALLBACK[req.hotspot] ?? LOCAL_FALLBACK.default), source: 'local' }
 }
