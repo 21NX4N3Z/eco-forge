@@ -6,31 +6,55 @@
 
 html, body, #root { height: 100%; }
 body {
-  @apply bg-base-900 text-slate-900 font-mono antialiased;
+  /* soft app background — Notion/Linear style */
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgba(14,165,183,0.08), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(124,58,237,0.06), transparent 55%),
+    #f6f7f9;
+  @apply font-sans text-ink antialiased;
   margin: 0;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Thin scrollbars */
 *::-webkit-scrollbar { width: 8px; height: 8px; }
-*::-webkit-scrollbar-thumb { @apply bg-base-500 rounded; }
-*::-webkit-scrollbar-track { @apply bg-base-700; }
+*::-webkit-scrollbar-thumb { background: rgba(15,23,42,0.18); border-radius: 9999px; }
+*::-webkit-scrollbar-track { background: transparent; }
 
 @layer components {
+  /* Glassmorphism card — frosted, blurred, hairline border */
   .card {
-    @apply bg-base-800 border border-base-600 rounded-lg p-4 shadow-sm;
+    @apply rounded-2xl p-5 border border-base-600;
+    background: rgba(255,255,255,0.62);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px -12px rgba(15,23,42,0.12);
   }
+  .card-inset {
+    @apply rounded-xl p-3 border border-base-600;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  /* Material button — elevation on hover, smooth */
   .btn {
-    @apply px-3 py-2 rounded-md text-sm font-semibold transition-colors
-           border border-base-500 bg-base-700 hover:bg-base-600 text-slate-800 disabled:opacity-40;
+    @apply px-3.5 py-2 rounded-xl text-sm font-semibold transition-all duration-150
+           border border-base-500 bg-white/70 text-slate-600
+           hover:bg-white hover:shadow-md hover:-translate-y-px
+           active:translate-y-0 active:shadow-sm disabled:opacity-40 disabled:cursor-not-allowed;
   }
   .btn-primary {
-    @apply bg-signal-cyan/15 border-signal-cyan/50 text-signal-cyan hover:bg-signal-cyan/25;
+    @apply text-white border-transparent;
+    background: linear-gradient(135deg, #0ea5b7, #0891b2);
+    box-shadow: 0 6px 16px -6px rgba(14,165,183,0.55);
   }
+  .btn-primary:hover { background: linear-gradient(135deg, #0ea5b7, #0e7490); }
   .btn-active {
-    @apply bg-signal-cyan/20 border-signal-cyan text-signal-cyan;
+    @apply text-white border-transparent;
+    background: linear-gradient(135deg, #0ea5b7, #0891b2);
+    box-shadow: 0 6px 16px -6px rgba(14,165,183,0.55);
   }
-  .label { @apply text-xs uppercase tracking-wider text-slate-500; }
-  .stat { @apply text-2xl font-bold text-slate-900; }
+  .label { @apply text-[11px] uppercase tracking-wider text-ink-mute font-semibold; }
+  .stat { @apply text-3xl font-bold text-ink tracking-tight; }
 }
 
 /* ---- PDF / print container: rgb-only, never oklch (html2canvas safe) ---- */

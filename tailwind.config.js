@@ -5,19 +5,25 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Light theme — clean white/slate base + readable signal tones
+        // Modern light — Notion/Linear inspired: clean white + soft slate + vivid accent
         base: {
-          900: '#f8fafc', // page bg (slate-50)
-          800: '#ffffff', // card bg
-          700: '#f1f5f9', // input/inset bg (slate-100)
-          600: '#cbd5e1', // border (slate-300)
-          500: '#94a3b8', // muted border (slate-400)
+          900: '#f6f7f9', // app bg (soft gray-white)
+          800: 'rgba(255,255,255,0.65)', // glass card
+          700: 'rgba(255,255,255,0.45)', // inset glass
+          600: 'rgba(15,23,42,0.08)', // hairline border
+          500: 'rgba(15,23,42,0.14)', // stronger border
+        },
+        ink: {
+          DEFAULT: '#0f172a',
+          soft: '#475569',
+          mute: '#94a3b8',
         },
         signal: {
-          cyan: '#0891b2', // cyan-600 (readable on white)
-          green: '#059669', // emerald-600
-          amber: '#d97706', // amber-600
-          red: '#dc2626',   // red-600
+          cyan: '#0ea5b7',
+          green: '#059669',
+          amber: '#d97706',
+          red: '#e11d48',
+          violet: '#7c3aed',
         },
       },
       fontFamily: {

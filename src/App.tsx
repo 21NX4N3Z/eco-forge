@@ -41,7 +41,7 @@ export default function App() {
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-base-600 pb-3">
         <div>
           <h1 className="text-2xl font-bold text-signal-cyan">EcoForge</h1>
-          <div className="text-xs text-slate-500">Carbon Engineering for SME · EU CBAM · Sriracha Hackathon 2026</div>
+          <div className="text-xs text-ink-mute">Carbon Engineering for SME · EU CBAM · Sriracha Hackathon 2026</div>
         </div>
         <div className="flex items-center gap-2">
           <SdgBadges compact />
