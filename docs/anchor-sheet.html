@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>EcoForge — Anchor Sheet (ถ่ายคลิป 23 ส.ค.)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a; color: #e8e8e8;
+    font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+    padding: 40px 48px; min-height: 100vh;
+  }
+  h1 { font-size: 28px; color: #00d4ff; letter-spacing: 2px; margin-bottom: 6px; }
+  .sub { color: #888; font-size: 14px; margin-bottom: 32px; }
+  h2 { font-size: 16px; color: #00d4ff; letter-spacing: 3px; text-transform: uppercase;
+       border-bottom: 1px solid #222; padding-bottom: 8px; margin: 36px 0 18px; }
+  .row { display: flex; align-items: baseline; gap: 20px; padding: 10px 0; border-bottom: 1px dashed #1c1c1c; }
+  .label { width: 340px; color: #999; font-size: 15px; flex-shrink: 0; }
+  .value { font-size: 44px; font-weight: 700; color: #fff; letter-spacing: 1px; }
+  .value small { font-size: 18px; color: #666; font-weight: 400; }
+  .ok { color: #2ee56b; } .bad { color: #ff4d5e; } .accent { color: #00d4ff; }
+  .check { margin-left: auto; font-size: 26px; color: #333; user-select: none; cursor: pointer; }
+  .check.on { color: #2ee56b; }
+  .where { color: #555; font-size: 12px; display: block; margin-top: 2px; }
+  .warn { margin-top: 40px; border: 1px solid #3a2500; background: #171000; padding: 18px 22px; border-radius: 8px; }
+  .warn h3 { color: #ffb020; font-size: 15px; margin-bottom: 10px; letter-spacing: 1px; }
+  .warn li { color: #c9a86a; font-size: 14px; line-height: 1.9; list-style: none; }
+  .warn li::before { content: '[ ] '; color: #ffb020; }
+</style>
+</head>
+<body>
+
+<h1>ECOFORGE // ANCHOR SHEET</h1>
+<div class="sub">ถ่ายคลิป 23 ส.ค. · ตัวเลข verified จาก engine · ถ้าหน้าจอไม่ตรงตัวเลขนี้ = ห้ามถ่าย ให้หยุดและเรียก comes/hermes</div>
+
+<h2>① KPI Strip — หน้า Carbon Twin (Bracket, default spec)</h2>
+<div class="row"><span class="label">Carbon Score</span><span class="value accent">— /100 <small>(ดูสด · deterministic)</small></span></div>
+<div class="row"><span class="label">CO₂ / ปี (Current)</span><span class="value">4.23 <small>tCO₂/yr</small></span><span class="check" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'✓':'□'">□</span></div>
+<div class="row"><span class="label">ต้นทุน / ปี (Current)</span><span class="value">฿524K <small>/yr</small></span><span class="check" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'✓':'□'">□</span></div>
+<div class="row"><span class="label">CBAM Tax 2028 (Current)</span><span class="value bad">€124.78 <small>/yr — ต้องจ่าย</small></span><span class="check" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'✓':'□'">□</span></div>
+<span class="where">ตำแหน่ง: การ์ดแถวบนสุด 4 ใบ · ต้องเห็น "ต้องจ่ายภาษี" สีแดง</span>
+
+<h2>② AI Comparison — ตาราง A/B/C (scroll ล่างสุดของหน้า)</h2>
+<div class="row"><span class="label">Option A — CO₂/ปี</span><span class="value ok">0.88 <small>t (−79%)</small></span><span class="check" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'✓':'□'">□</span></div>
+<div class="row"><span class="label">Option A — CBAM 2028</span><span class="value ok">€0 <small>ผ่านเกณฑ์</small></span><span class="check" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'✓':'□'">□</span></div>
+<div class="row"><span class="label">Option A — Payback</span><span class="value">~7.8 <small>เดือน</small></span><span class="check" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'✓':'□'">□</span></div>
+<div class="row"><span class="label">Option B — CO₂ / Payback</span><span class="value">1.35 <small>t · ~6 เดือน</small></span></div>
+<div class="row"><span class="label">Option C — CO₂ / CBAM</span><span class="value">2.51 <small>t · €1.07</small></span></div>
+<span class="where">ตำแหน่ง: แถว Option A ต้อง highlight ★ CO₂ ต่ำสุด · radar ยิ่งกาง = ยิ่งดี</span>
+
+<h2>③ Export Tab — Compliance Badge + PDF</h2>
+<div class="row"><span class="label">Badge (Current spec)</span><span class="value bad">WARNING <small>+ Porosity ASTM E155</small></span></div>
+<div class="row"><span class="label">Badge (หลัง apply Option A)</span><span class="value ok">PASS <small>below EU benchmark</small></span></div>
+<div class="row"><span class="label">PDF filename</span><span class="value">EcoForge_&lt;Template&gt;.pdf</span></div>
+<span class="where">Template Picker: EU CBAM Standard / Executive Summary / Technical Report / Business Report</span>
+
+<div class="warn">
+  <h3>PRE-ROLL CHECKLIST — ทำก่อนกด REC</h3>
+  <li>Factory History มี ≥1 scenario ใน localStorage (โชว์ Input ③)</li>
+  <li>AI endpoint live: POST /api/why → 200 (OpenRouter stealth/ox-alpha)</li>
+  <li>Viewport ≥1280px · zoom 100% · ปิด notification ทุกอย่าง</li>
+  <li>Part type = Bracket · Net Mass 3.7 · Batch 3 pcs/mo (default spec)</li>
+  <li>เปิดไฟล์นี้ไว้จอที่สอง ตีเครื่องหมาย ✓ ไล่ทีละตัวระหว่างถ่าย</li>
+</div>
+
+<script>document.title = 'ANCHOR ✓ ' + document.querySelectorAll('.check.on').length + '/7'</script>
+</body>
+</html>
