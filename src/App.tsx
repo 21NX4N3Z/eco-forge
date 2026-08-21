@@ -81,7 +81,7 @@ export default function App() {
       {/* Body: main + right rail */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 space-y-4">
-          {!loading && tab === 'twin' && <UnifiedTwin spec={spec} setSpec={setSpec} data={data} addMaterial={addMaterial} view={view} />}
+          {!loading && tab === 'twin' && <UnifiedTwin spec={spec} setSpec={setSpec} data={data} addMaterial={addMaterial} view={view} setView={setView} />}
           {!loading && tab === 'export' && <PdfReport spec={spec} data={data} />}
         </div>
         <aside className="space-y-4">

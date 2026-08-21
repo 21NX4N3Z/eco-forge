@@ -32,7 +32,7 @@ export default function ActivityFeed() {
   useEffect(() => {
     const t = setInterval(() => {
       setEvents((e) => [
-        { id: Date.now(), icon: IconCheck, tone: 'ok', text: 'Re-calc Carbon Twin — score อัปเดต', time: 'now' },
+        { id: Date.now(), icon: IconCheck, tone: 'ok' as const, text: 'Re-calc Carbon Twin — score อัปเดต', time: 'now' },
         ...e,
       ].slice(0, 8))
     }, 12000)

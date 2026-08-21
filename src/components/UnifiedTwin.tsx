@@ -11,7 +11,8 @@ import WhyButton from './WhyButton'
 import SdgBadges from './SdgBadges'
 import PartTypeSelector from './PartTypeSelector'
 import AiComparison from './AiComparison'
-import { paybackPeriod as payback, paybackLabel } from '../engine/payback'
+import ViewToggle from './ViewToggle'
+import { paybackMonths, paybackLabel } from '../utils/payback'
 import { ManualMaterialForm, HistoryPanel, SupplierPanel } from './InputSources'
 
 const COLORS = ['#0075de', '#dd5b00', '#1aae39', '#a39e98']
@@ -31,7 +32,7 @@ const VIZ_LABEL: Record<Viz, string> = {
   radial: 'วงแหวน', hbar: 'แท่งนอน', vbar: 'แท่งตั้ง', radar: 'เรดาร์',
 }
 
-export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = 'technical' }: { spec: PartSpec; setSpec: (s: PartSpec) => void; data: SeedData; addMaterial: (m: any) => void; view?: 'technical' | 'business' }) {
+export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = 'technical', setView }: { spec: PartSpec; setSpec: (s: PartSpec) => void; data: SeedData; addMaterial: (m: any) => void; view?: 'technical' | 'business'; setView?: (v: 'technical' | 'business') => void }) {
   const set = (p: Partial<PartSpec>) => setSpec({ ...spec, ...p })
   const [srcPanel, setSrcPanel] = useState<'standard' | 'manual' | 'history' | 'supplier'>('standard')
   const [show, setShow] = useState<Record<ChartKey, boolean>>({
@@ -198,6 +199,14 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
 
   return (
     <div className="space-y-4">
+      {/* Business/Technical view toggle pills — brief §4.2/§4.3 */}
+      {setView && (
+        <div className="flex items-center justify-between gap-2">
+          <ViewToggle view={view} setView={setView} />
+          <span className="text-[11px] text-ink-mute">{view === 'technical' ? 'มุมมองวิศวกร' : 'มุมมองผู้ประกอบการ'}</span>
+        </div>
+      )}
+
       {/* KPI strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="card"><div className="label">Carbon Score</div><div className="text-[34px] leading-none font-bold text-accent tabular-nums">{cur.score}<span className="text-ink-mute text-xl">/100</span></div></div>
@@ -330,15 +339,16 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
           <div className="label">Technical View</div>
           <div>Gross mass: {cur.grossMass.toFixed(2)} kg · Scrap: {cur.scrapMass.toFixed(2)} kg ({(spec.netMass > 0 ? (cur.scrapMass / cur.grossMass) * 100 : 0).toFixed(0)}%)</div>
           <div>Mix CO₂: {cur.mixCo2.toFixed(2)} kg/kg · Per-part: {cur.perPartCo2.toFixed(3)} kg</div>
+          <div>Formula: CBAM Tax = (Embodied − Benchmark) × ETS × Obligation%</div>
           <div>Scope 1: {Math.round(cur.mrv.scope1)} · Scope 2: {Math.round(cur.mrv.scope2)} · Scope 3: {Math.round(cur.mrv.scope3)} kgCO₂/yr</div>
-          <div>Standards: ASTM E155 (porosity), ISO 14040 (LCA)</div>
+          <div>Standards: ISO 14040 · ASTM E155 · TGO CFP</div>
         </div>
       )}
       {view === 'business' && bestRes && (
         <div className="card text-xs text-ink-mute space-y-1">
           <div className="label">Business View</div>
           <div>ต้นทุน/ปี: {money(cur.annualCost)} · ประหยัดหากปรับปรุง: {money(cur.annualCost - bestRes.annualCost)}/yr</div>
-          <div>Payback (Option {best?.label}): {paybackLabel(payback({ spec, result: cur }, { spec: best.spec, result: bestRes }))} · CBAM เสียหายหากไม่ปรับปรุง: €{cbam2028}/yr</div>
+          <div>Payback (Option {best?.label}): {paybackLabel(paybackMonths(cur.annualCost, bestRes.annualCost, cur.annualCo2 - bestRes.annualCo2))} · CBAM เสียหายหากไม่ปรับปรุง: €{cbam2028}/yr</div>
         </div>
       )}
     </div>

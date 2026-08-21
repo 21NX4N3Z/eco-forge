@@ -4,7 +4,7 @@ import html2canvas from 'html2canvas'
 import { PartSpec, SeedData } from '../types'
 import { evaluate } from '../engine/cbam'
 import { generateAlternatives } from '../engine/optimize'
-import { paybackPeriod, paybackLabel } from '../engine/payback'
+import { paybackMonths, paybackLabel } from '../utils/payback'
 import SdgBadges from './SdgBadges'
 import TemplatePicker, { TemplateId } from './TemplatePicker'
 import { complianceItems, BadgeList } from './ComplianceBadge'
@@ -29,7 +29,7 @@ export default function PdfReport({ spec, data }: { spec: PartSpec; data: SeedDa
   const best = alts.length
     ? alts.reduce((a, b) => (b.result.annualCo2 < a.result.annualCo2 ? b : a))
     : null
-  const bestPb = best ? paybackPeriod({ spec, result: cur }, { spec: best.spec, result: best.result }) : null
+  const bestPb = best ? paybackMonths(cur.annualCost, best.result.annualCost, cur.annualCo2 - best.result.annualCo2) : null
 
   const TPL_TITLE: Record<TemplateId, string> = {
     cbam: 'EU CBAM Carbon Report',
@@ -82,6 +82,19 @@ export default function PdfReport({ spec, data }: { spec: PartSpec; data: SeedDa
             Net {spec.netMass} kg · Batch {spec.batchSize}/mo
           </p>
 
+          {/* Brief feature 6 — CBAM Compliance Badge (rgb-only for html2canvas) */}
+          <div style={{
+            margin: '10px 0', padding: '8px 12px', borderRadius: 6,
+            backgroundColor: cbam2028 === 0 ? '#e7f5ea' : '#fdeaea',
+            border: `1px solid ${cbam2028 === 0 ? '#1aae39' : '#d43a3a'}`,
+            color: cbam2028 === 0 ? '#157a2c' : '#b02a2a', fontSize: 13, fontWeight: 700,
+            display: 'flex', alignItems: 'center', gap: 6,
+          }}>
+            {cbam2028 === 0
+              ? '✓ CBAM Compliance: PASS — below EU benchmark (ผ่านเกณฑ์)'
+              : `✗ CBAM Compliance: WARNING — €${cbam2028}/yr payable · Porosity check required (ASTM E155)`}
+          </div>
+
           <div className="p-card" style={{ margin: '12px 0' }}>
             <h2 style={{ fontSize: 15, margin: '0 0 6px' }}>Carbon Score: {cur.score}/100</h2>
             <div>Annual CO₂: <b>{(cur.annualCo2 / 1000).toFixed(2)} t</b></div>
@@ -110,6 +123,23 @@ export default function PdfReport({ spec, data }: { spec: PartSpec; data: SeedDa
                   {best && <tr><th>แนะนำ (Option {best.label})</th><td>{best.note}</td></tr>}
                 </tbody>
               </table>
+              <h2 style={{ fontSize: 15, marginTop: 12 }}>Options Comparison</h2>
+              <table>
+                <thead><tr><th>Option</th><th>CO₂/yr</th><th>Cost/yr</th><th>CBAM 2028</th></tr></thead>
+                <tbody>
+                  <tr><td>Current</td><td>{(cur.annualCo2 / 1000).toFixed(2)} t</td><td>฿{(cur.annualCost / 1000).toFixed(0)}K</td><td>€{cbam2028}</td></tr>
+                  {alts.map((a) => (
+                    <tr key={a.label}>
+                      <td>{a.label} — {a.note}</td>
+                      <td>{(a.result.annualCo2 / 1000).toFixed(2)} t</td>
+                      <td>฿{(a.result.annualCost / 1000).toFixed(0)}K</td>
+                      <td>€{a.result.cbam.find((c) => c.year === 2028)?.taxEur ?? 0}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <h2 style={{ fontSize: 15, marginTop: 12 }}>Sustainable Development Goals</h2>
+              <SdgInline />
             </>
           )}
 
@@ -122,13 +152,12 @@ export default function PdfReport({ spec, data }: { spec: PartSpec; data: SeedDa
                 <tbody>
                   <tr><td>ปัจจุบัน</td><td>฿{(cur.annualCost / 1000).toFixed(0)}K</td><td>—</td><td>—</td><td>—</td></tr>
                   {alts.map((a) => {
-                    const pb = paybackPeriod({ spec, result: cur }, { spec: a.spec, result: a.result })
+                    const pb = paybackMonths(cur.annualCost, a.result.annualCost, cur.annualCo2 - a.result.annualCo2)
                     return (
                       <tr key={a.label}>
                         <td>{a.label}</td>
                         <td>฿{(a.result.annualCost / 1000).toFixed(0)}K</td>
                         <td>฿{Math.max(0, cur.annualCost - a.result.annualCost) / 1000 > 0 ? ((cur.annualCost - a.result.annualCost) / 1000).toFixed(0) + 'K' : '—'}</td>
-                        <td>{pb.investmentThb > 0 ? `฿${pb.investmentThb.toLocaleString()}` : '—'}</td>
                         <td>{paybackLabel(pb)}</td>
                       </tr>
                     )
@@ -156,6 +185,11 @@ export default function PdfReport({ spec, data }: { spec: PartSpec; data: SeedDa
                   ))}
                 </tbody>
               </table>
+              {cbam2028 > 0 && (
+                <div style={{ marginTop: 10, padding: '8px 12px', borderRadius: 6, backgroundColor: '#fdeaea', border: '1px solid #d43a3a', color: '#b02a2a', fontSize: 12, fontWeight: 700 }}>
+                  ⚠ Lost Profit Warning: ไม่ปรับปรุง = เสียภาษี CBAM €{cbam2028}/yr (และเพิ่มขึ้นทุกปีตาม Obligation %)
+                </div>
+              )}
             </>
           )}
 
@@ -172,6 +206,27 @@ export default function PdfReport({ spec, data }: { spec: PartSpec; data: SeedDa
                   <tr><th>Standards</th><td>ASTM E155 (porosity), ISO 14040 (LCA)</td></tr>
                 </tbody>
               </table>
+              {(() => {
+                const m = data.materials.find((x) => x.id === spec.materialId)
+                if (!m) return null
+                return (
+                  <>
+                    <h2 style={{ fontSize: 15, marginTop: 12 }}>Material Science — {m.name}</h2>
+                    <table>
+                      <tbody>
+                        <tr><th>Alloy</th><td>{m.alloy}</td></tr>
+                        <tr><th>Density</th><td>{m.density} kg/m³</td></tr>
+                        <tr><th>Emission factor</th><td>{m.emissionFactor} kgCO₂/kg</td></tr>
+                        <tr><th>Tensile / Yield</th><td>{m.tensileStrength} / {m.yieldStrength} MPa</td></tr>
+                        <tr><th>Hardness</th><td>{m.hardness} HB · Elongation {m.elongation}%</td></tr>
+                        <tr><th>Thermal / Electrical</th><td>{m.thermalCond} W/m·K · {m.electricalCond} %IACS</td></tr>
+                        <tr><th>Porosity class</th><td>{m.porosityClass} (ASTM E155)</td></tr>
+                        <tr><th>Recycle grade</th><td>{m.recycleGrade}{m.rohs ? ' · RoHS compliant' : ''}</td></tr>
+                      </tbody>
+                    </table>
+                  </>
+                )
+              })()}
             </>
           )}
 
