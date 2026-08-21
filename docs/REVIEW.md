@@ -64,6 +64,23 @@ Fix these before the 25 Aug demo or risk losing points / breaking live:
 - 1:40–1:55 ❓ Why this? → AI explains point + One-Click PDF to EU customer.
 - 1:55–2:00 Closer: ฿370,000 → ฿0, EU-ready report instantly.
 
+## v2 update (post-meeting 20 Aug 2026)
+Brief expanded significantly. New scope added on top of v1:
+- **4 Input Sources** (Standard DB / Manual / Factory History / Supplier) — pick before wizard.
+- **CBAM Tax liability** = `(Embodied CO₂ − EU Benchmark) × ETS Price × Obligation%`.
+- **CBAM Obligation trend** 2026 0% → 2033 100% (shown as Trend Chart).
+- **MRV Stacked Bar** (Scope 1/2/3) per EU CBAM requirement.
+- **AI Comparison Table + Radar** (Alt A/B/C with CO₂/Cost/CBAM Tax/Payback).
+- **EU CBAM Template PDF** + **Technical / Business** output views.
+- **Material Mix / Alloy** calculation (weighted CO₂).
+- New NocoDB tables: `suppliers`, `factory_history`, `cbam_rates`, `material_mixes`.
+
+All new calculations are **rule-based / deterministic** (same as v1 principle) — Hermes still only
+explains points via JSON, never calculates. This strengthens the "not a chatbot" defense.
+
+⚠️ **UI aesthetic note:** meeting mockups use emoji (🏭✏️📂🤝🔴✅). Per machine-aesthetic
+constraint, replace all emoji with **SVG icons** in the real build. See `ARCHITECTURE.md` §6.
+
 ## Assumptions
 - Tailwind v3 (not v4) to avoid R2.
 - Local JSON = demo source of truth; NocoDB = scalable story.
