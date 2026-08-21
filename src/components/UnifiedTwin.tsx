@@ -14,6 +14,7 @@ import AiComparison from './AiComparison'
 import ViewToggle from './ViewToggle'
 import { paybackMonths, paybackLabel } from '../utils/payback'
 import { ManualMaterialForm, HistoryPanel, SupplierPanel } from './InputSources'
+import FileAnalyzer from './FileAnalyzer'
 
 const COLORS = ['#0075de', '#dd5b00', '#1aae39', '#a39e98']
 
@@ -249,6 +250,7 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
             <SupplierPanel data={data} onPick={(mid) => set({ materialId: mid, inputSource: 'supplier' })} source={source} />
           )}
         </div>
+        <FileAnalyzer data={data} onApply={(patch) => set(patch)} />
         <div>
           <div className="label mb-1">วัสดุ</div>
           <select className="w-full card-inset" value={spec.materialId} onChange={(e) => set({ materialId: Number(e.target.value) })}>
