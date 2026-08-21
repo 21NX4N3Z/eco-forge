@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/why.ts": {
+      "memory": 128,
+      "maxDuration": 30
+    }
+  }
+}

@@ -118,3 +118,9 @@ npm install
 npm run dev
 ```
 App code and `.env` are added in later phases. See `docs/ARCHITECTURE.md` for full spec and `docs/REVIEW.md` for review/decisions.
+
+## Live deployment
+- **Production:** https://eco-forge.vercel.app (Vercel, auto-build from `dist/`)
+- **AI endpoint:** `POST /api/why` — Vercel Function proxying the Nous inference API (`stealth/ox-alpha`, JSON-in/out, key stays server-side via `NOUS_API_KEY`). Graceful 504 on upstream timeout; frontend falls back to offline heuristic analysis.
+- **Verified numbers** (deterministic engine, Bracket default spec): Current 4.23 tCO₂/yr · ฿524K · CBAM 2028 €124.78 — Alt A 0.88 t · €0 · payback ~7.8 months.
+- Feature-complete per brief v2: part-type selector with geometry presets, AI comparison table A/B/C + radar + payback engine (tooling cost in seed), Technical/Business view toggle, PDF template picker (EU CBAM / Executive / Technical / Business), CBAM compliance badges, real SDG logo export.
