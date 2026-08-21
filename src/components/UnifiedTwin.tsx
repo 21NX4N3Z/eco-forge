@@ -17,10 +17,15 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
     donut: true, trend: true, mrv: true, radar: true, strength: true,
   })
   const toggle = (k: ChartKey) => setCharts((c) => ({ ...c, [k]: !c[k] }))
-  const [types, setTypes] = useState<{ breakdown: 'pie' | 'bar' | 'line'; trend: 'bar' | 'line'; mrv: 'h' | 'v' }>({
-    breakdown: 'pie', trend: 'bar', mrv: 'h',
+  const [types, setTypes] = useState<{ breakdown: 'pie' | 'bar' | 'line'; trend: 'bar' | 'line'; mrv: 'h' | 'v'; radar: 'radar' | 'bar'; strength: 'bar' | 'line' }>({
+    breakdown: 'pie', trend: 'bar', mrv: 'h', radar: 'radar', strength: 'bar',
   })
   const setType = (k: keyof typeof types, v: any) => setTypes((t) => ({ ...t, [k]: v }))
+  const [curSym, setCurSym] = useState<'THB' | 'EUR' | 'USD' | 'JPY' | 'CNY' | 'GBP' | 'SGD'>('THB')
+  const RATES: Record<string, number> = { THB: 1, EUR: 0.026, USD: 0.028, JPY: 4.3, CNY: 0.20, GBP: 0.022, SGD: 0.038 }
+  const SYM: Record<string, string> = { THB: '฿', EUR: '€', USD: '$', JPY: '¥', CNY: '¥', GBP: '£', SGD: 'S$' }
+  const conv = (thb: number) => thb * (RATES[curSym] ?? 1)
+  const money = (thb: number) => `${SYM[curSym]}${conv(thb).toLocaleString('en-US', { maximumFractionDigits: 0 })}`
 
   const cur = evaluate(spec, data)
   const best = generateAlternatives(spec, data)[0]
@@ -65,13 +70,26 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
     <button onClick={() => toggle(k)} className={`btn text-xs py-1.5 ${charts[k] ? 'btn-active' : ''}`}>{charts[k] ? '✓ ' : '○ '}{label}</button>
   )
 
+  const NumField = ({ label, value, step, min, max, onChange }: { label: string; value: number; step: number; min?: number; max?: number; onChange: (v: number) => void }) => (
+    <label className="block">
+      <div className="flex justify-between text-sm mb-0.5"><span className="text-ink-mute">{label}</span></div>
+      <input type="number" value={value} step={step} min={min} max={max}
+        onChange={(e) => { const v = Number(e.target.value); if (!Number.isNaN(v)) onChange(v) }}
+        className="w-full card-inset tabular-nums text-[15px] font-medium" />
+    </label>
+  )
+
   return (
     <div className="space-y-4">
       {/* KPI strip */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="card"><div className="label">Carbon Score</div><div className="text-[34px] leading-none font-bold text-accent tabular-nums">{cur.score}<span className="text-ink-mute text-xl">/100</span></div></div>
         <div className="card"><div className="label">CO₂ / ปี</div><div className="text-[34px] leading-none font-bold text-ink tabular-nums">{(cur.annualCo2/1000).toFixed(2)}<span className="text-ink-mute text-xl"> t</span></div></div>
-        <div className="card"><div className="label">ต้นทุน / ปี</div><div className="text-[34px] leading-none font-bold text-ink tabular-nums">฿{(cur.annualCost/1000).toFixed(0)}<span className="text-ink-mute text-xl">K</span></div></div>
+        <div className="card"><div className="label">ต้นทุน / ปี</div><div className="text-[34px] leading-none font-bold text-ink tabular-nums">{money(cur.annualCost/1000)}<span className="text-ink-mute text-xl">K</span></div>
+          <select className="mt-1 card-inset py-0.5 text-xs" value={curSym} onChange={(e) => setCurSym(e.target.value as any)}>
+            {Object.keys(RATES).map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </div>
         <div className="card"><div className="label">CBAM 2028</div><div className={`text-[34px] leading-none font-bold tabular-nums ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>€{cbam2028}<span className="text-ink-mute text-xl">/yr</span></div></div>
       </div>
 
@@ -87,17 +105,13 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
             {data.processes.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
           </select>
         </div>
-        <div>
-          <div className="flex justify-between text-sm"><span>Net Mass (kg)</span><span>{spec.netMass}</span></div>
-          <input type="range" min={0.5} max={20} step={0.1} value={spec.netMass} onChange={(e) => set({ netMass: Number(e.target.value) })} className="w-full mt-2 accent-accent" />
-          <div className="flex justify-between text-sm mt-3"><span>% Recycled</span><span>{spec.recycledPercent}%</span></div>
-          <input type="range" min={0} max={100} value={spec.recycledPercent} onChange={(e) => set({ recycledPercent: Number(e.target.value) })} className="w-full mt-2 accent-accent" />
+        <div className="space-y-3">
+          <NumField label="Net Mass (kg)" value={spec.netMass} step={0.1} min={0.1} onChange={(v) => set({ netMass: v })} />
+          <NumField label="% Recycled" value={spec.recycledPercent} step={1} min={0} max={100} onChange={(v) => set({ recycledPercent: v })} />
         </div>
-        <div>
-          <div className="flex justify-between text-sm"><span>Batch (pcs/mo)</span><span>{spec.batchSize}</span></div>
-          <input type="range" min={100} max={5000} step={100} value={spec.batchSize} onChange={(e) => set({ batchSize: Number(e.target.value) })} className="w-full mt-2 accent-accent" />
-          <div className="flex justify-between text-sm mt-3"><span>Transport (km)</span><span>{spec.transportDist}</span></div>
-          <input type="range" min={0} max={2000} step={10} value={spec.transportDist} onChange={(e) => set({ transportDist: Number(e.target.value) })} className="w-full mt-2 accent-accent" />
+        <div className="space-y-3">
+          <NumField label="Batch (pcs/mo)" value={spec.batchSize} step={100} min={1} onChange={(v) => set({ batchSize: v })} />
+          <NumField label="Transport (km)" value={spec.transportDist} step={10} min={0} onChange={(v) => set({ transportDist: v })} />
         </div>
         <div className="flex flex-col justify-between">
           <div>
@@ -108,38 +122,22 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
         </div>
       </div>
 
-      {/* Chart controls: toggle on/off + choose type */}
+      {/* Chart visibility toggles (type switched by clicking the chart itself) */}
       <div className="card flex flex-wrap items-center gap-3">
-        <span className="label">กราฟ:</span>
-        <label className="flex items-center gap-1.5 text-sm">Carbon
-          <select className="card-inset py-1" value={types.breakdown} onChange={(e) => setType('breakdown', e.target.value)}>
-            <option value="pie">โดนัด</option><option value="bar">แท่ง</option><option value="line">เส้น</option>
-          </select>
-        </label>
-        <label className="flex items-center gap-1.5 text-sm">Trend
-          <select className="card-inset py-1" value={types.trend} onChange={(e) => setType('trend', e.target.value)}>
-            <option value="bar">แท่ง</option><option value="line">เส้น</option>
-          </select>
-        </label>
-        <label className="flex items-center gap-1.5 text-sm">MRV
-          <select className="card-inset py-1" value={types.mrv} onChange={(e) => setType('mrv', e.target.value)}>
-            <option value="h">แท่งแนวนอน</option><option value="v">แท่งแนวตั้ง</option>
-          </select>
-        </label>
-        <label className="flex items-center gap-1.5 text-sm">Radar
-          <input type="checkbox" checked={charts.radar} onChange={() => toggle('radar')} className="accent-accent" /> แสดง
-        </label>
-        <label className="flex items-center gap-1.5 text-sm">Strength
-          <input type="checkbox" checked={charts.strength} onChange={() => toggle('strength')} className="accent-accent" /> แสดง
-        </label>
+        <span className="label">กราฟ (คลิกที่กราฟเพื่อเปลี่ยนรูปแบบ):</span>
+        <label className="flex items-center gap-1.5 text-sm">Carbon <input type="checkbox" checked={charts.donut} onChange={() => toggle('donut')} className="accent-accent" /></label>
+        <label className="flex items-center gap-1.5 text-sm">Trend <input type="checkbox" checked={charts.trend} onChange={() => toggle('trend')} className="accent-accent" /></label>
+        <label className="flex items-center gap-1.5 text-sm">MRV <input type="checkbox" checked={charts.mrv} onChange={() => toggle('mrv')} className="accent-accent" /></label>
+        <label className="flex items-center gap-1.5 text-sm">Radar <input type="checkbox" checked={charts.radar} onChange={() => toggle('radar')} className="accent-accent" /></label>
+        <label className="flex items-center gap-1.5 text-sm">Strength <input type="checkbox" checked={charts.strength} onChange={() => toggle('strength')} className="accent-accent" /></label>
         <span className="ml-auto"><SdgBadges /></span>
       </div>
 
       {/* Charts grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {charts.donut && (
-          <div className="card md:col-span-2">
-            <div className="label mb-2">Carbon Breakdown — Before vs After ({types.breakdown === 'pie' ? 'โดนัด' : types.breakdown === 'bar' ? 'แท่ง' : 'เส้น'})</div>
+          <div className="card md:col-span-2 cursor-pointer" onClick={() => setType('breakdown', types.breakdown === 'pie' ? 'bar' : types.breakdown === 'bar' ? 'line' : 'pie')} title="คลิกเพื่อเปลี่ยน โดนัด/แท่ง/เส้น">
+            <div className="label mb-2">Carbon Breakdown — Before vs After ({types.breakdown === 'pie' ? 'โดนัด' : types.breakdown === 'bar' ? 'แท่ง' : 'เส้น'} · คลิกเปลี่ยน)</div>
             <ResponsiveContainer width="100%" height={240}>
               {types.breakdown === 'pie' ? (
                 <PieChart>
@@ -153,11 +151,11 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
                   <Bar dataKey="value" name="Before" fill="#0075de" radius={[4,4,0,0]} /><Bar dataKey="value" name="After" fill="#1aae39" radius={[4,4,0,0]} />
                 </BarChart>
               ) : (
-                <LineChart data={[...beforeData.map((d, i) => ({ name: d.name, Before: d.value, After: afterData[i]?.value }))].reduce((acc: any[], d) => acc, [
+                <LineChart data={[
                   { name: 'Material', Before: beforeData[0].value, After: afterData[0].value },
                   { name: 'Process', Before: beforeData[1].value, After: afterData[1].value },
                   { name: 'Transport', Before: beforeData[2].value, After: afterData[2].value },
-                ])}>
+                ]}>
                   <XAxis dataKey="name" tick={{ fontSize: 12 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend />
                   <Line dataKey="Before" stroke="#0075de" strokeWidth={2} dot={{ r: 3 }} />
                   <Line dataKey="After" stroke="#1aae39" strokeWidth={2} dot={{ r: 3 }} />
@@ -167,8 +165,8 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
           </div>
         )}
         {charts.trend && (
-          <div className="card">
-            <div className="label mb-2">CBAM Obligation Trend ({types.trend === 'bar' ? 'แท่ง' : 'เส้น'})</div>
+          <div className="card cursor-pointer" onClick={() => setType('trend', types.trend === 'bar' ? 'line' : 'bar')} title="คลิกเพื่อเปลี่ยน แท่ง/เส้น">
+            <div className="label mb-2">CBAM Obligation Trend ({types.trend === 'bar' ? 'แท่ง' : 'เส้น'} · คลิกเปลี่ยน)</div>
             <ResponsiveContainer width="100%" height={220}>
               {types.trend === 'bar' ? (
                 <BarChart data={trend}><XAxis dataKey="year" tick={{ fontSize: 13 }} /><YAxis tick={{ fontSize: 13 }} /><Tooltip /><Bar dataKey="tax" fill="#0075de" radius={[4,4,0,0]} /><Legend /></BarChart>
@@ -179,8 +177,8 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
           </div>
         )}
         {charts.mrv && (
-          <div className="card">
-            <div className="label mb-2">MRV (EU CBAM scopes) — {types.mrv === 'h' ? 'แนวนอน' : 'แนวตั้ง'}</div>
+          <div className="card cursor-pointer" onClick={() => setType('mrv', types.mrv === 'h' ? 'v' : 'h')} title="คลิกเพื่อเปลี่ยน แนวนอน/แนวตั้ง">
+            <div className="label mb-2">MRV (EU CBAM scopes) — {types.mrv === 'h' ? 'แนวนอน' : 'แนวตั้ง'} · คลิกเปลี่ยน</div>
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={mrv} layout={types.mrv === 'h' ? 'vertical' : 'horizontal'}>
                 <XAxis type={types.mrv === 'h' ? 'number' : 'category'} dataKey={types.mrv === 'h' ? undefined : 'scope'} tick={{ fontSize: 12 }} />
@@ -191,10 +189,28 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
           </div>
         )}
         {charts.radar && (
-          <div className="card"><div className="label mb-2">Mechanical Profile (Radar)</div><ResponsiveContainer width="100%" height={220}><RadarChart data={radarData}><PolarGrid /><PolarAngleAxis dataKey="metric" tick={{ fontSize: 11 }} /><Radar name="Current" dataKey="cur" stroke="#0075de" fill="#0075de" fillOpacity={0.35} /><Radar name="Recycled Alt" dataKey="alt" stroke="#1aae39" fill="#1aae39" fillOpacity={0.25} /><Legend /></RadarChart></ResponsiveContainer></div>
+          <div className="card cursor-pointer" onClick={() => setType('radar', types.radar === 'radar' ? 'bar' : 'radar')} title="คลิกเพื่อเปลี่ยน Radar/แท่ง">
+            <div className="label mb-2">วัสดุศาสตร์ — Mechanical Profile ({types.radar === 'radar' ? 'Radar' : 'แท่ง'} · คลิกเปลี่ยน)</div>
+            <ResponsiveContainer width="100%" height={220}>
+              {types.radar === 'radar' ? (
+                <RadarChart data={radarData}><PolarGrid /><PolarAngleAxis dataKey="metric" tick={{ fontSize: 11 }} /><Radar name="Current" dataKey="cur" stroke="#0075de" fill="#0075de" fillOpacity={0.35} /><Radar name="Recycled Alt" dataKey="alt" stroke="#1aae39" fill="#1aae39" fillOpacity={0.25} /><Legend /></RadarChart>
+              ) : (
+                <BarChart data={radarData}><XAxis dataKey="metric" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Bar dataKey="cur" name="Current" fill="#0075de" radius={[4,4,0,0]} /><Bar dataKey="alt" name="Recycled" fill="#1aae39" radius={[4,4,0,0]} /></BarChart>
+              )}
+            </ResponsiveContainer>
+          </div>
         )}
         {charts.strength && (
-          <div className="card"><div className="label mb-2">Strength &amp; Hardness Comparison</div><ResponsiveContainer width="100%" height={220}><BarChart data={strengthData}><XAxis dataKey="name" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Bar dataKey="uts" name="Ultimate (MPa)" fill="#0075de" radius={[4,4,0,0]} /><Bar dataKey="ys" name="Yield (MPa)" fill="#dd5b00" radius={[4,4,0,0]} /><Bar dataKey="hb" name="Hardness (HB)" fill="#1aae39" radius={[4,4,0,0]} /></BarChart></ResponsiveContainer></div>
+          <div className="card cursor-pointer" onClick={() => setType('strength', types.strength === 'bar' ? 'line' : 'bar')} title="คลิกเพื่อเปลี่ยน แท่ง/เส้น">
+            <div className="label mb-2">Strength &amp; Hardness Comparison ({types.strength === 'bar' ? 'แท่ง' : 'เส้น'} · คลิกเปลี่ยน)</div>
+            <ResponsiveContainer width="100%" height={220}>
+              {types.strength === 'bar' ? (
+                <BarChart data={strengthData}><XAxis dataKey="name" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Bar dataKey="uts" name="Ultimate (MPa)" fill="#0075de" radius={[4,4,0,0]} /><Bar dataKey="ys" name="Yield (MPa)" fill="#dd5b00" radius={[4,4,0,0]} /><Bar dataKey="hb" name="Hardness (HB)" fill="#1aae39" radius={[4,4,0,0]} /></BarChart>
+              ) : (
+                <LineChart data={strengthData.map((d) => ({ name: d.name, Ultimate: d.uts, Yield: d.ys, Hardness: d.hb }))}><XAxis dataKey="name" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Line dataKey="Ultimate" stroke="#0075de" strokeWidth={2} dot={{ r: 3 }} /><Line dataKey="Yield" stroke="#dd5b00" strokeWidth={2} dot={{ r: 3 }} /><Line dataKey="Hardness" stroke="#1aae39" strokeWidth={2} dot={{ r: 3 }} /></LineChart>
+              )}
+            </ResponsiveContainer>
+          </div>
         )}
       </div>
 

@@ -1,23 +1,34 @@
-const SDGS = [
-  { id: 9, label: 'Industry & Innovation', color: '#fbbf24' },
-  { id: 12, label: 'Responsible Consumption', color: '#34d399' },
-  { id: 13, label: 'Climate Action', color: '#22d3ee' },
+// Real SDG badge logos (UN Sustainable Development Goals) as inline SVG.
+// Each is the official colored ring + white number, drawn as SVG (no emoji, no text hack).
+
+const GOALS: { n: number; name: string; color: string }[] = [
+  { n: 7, name: 'Affordable & Clean Energy', color: '#FCB711' },
+  { n: 9, name: 'Industry, Innovation & Infrastructure', color: '#FD9D24' },
+  { n: 12, name: 'Responsible Consumption & Production', color: '#BF8B2E' },
+  { n: 13, name: 'Climate Action', color: '#407A47' },
+  { n: 17, name: 'Partnerships for the Goals', color: '#134A8E' },
 ]
+
+function SdgLogo({ n, name, color }: { n: number; name: string; color: string }) {
+  return (
+    <div title={`SDG ${n}: ${name}`} className="inline-flex flex-col items-center gap-1">
+      <svg viewBox="0 0 100 100" className="w-9 h-9" role="img" aria-label={`SDG ${n}`}>
+        <circle cx="50" cy="50" r="48" fill={color} />
+        <circle cx="50" cy="50" r="48" fill="none" stroke="#fff" strokeWidth="3" strokeDasharray="2 4" opacity="0.8" />
+        <text x="50" y="62" textAnchor="middle" fontSize="40" fontWeight="700" fill="#fff" fontFamily="Arial, sans-serif">
+          {n}
+        </text>
+      </svg>
+      {!name && null}
+    </div>
+  )
+}
 
 export default function SdgBadges({ compact = false }: { compact?: boolean }) {
   return (
-    <div className="flex gap-2 items-center">
-      {SDGS.map((s) => (
-        <div
-          key={s.id}
-          className="flex items-center gap-1 px-2 py-1 rounded border text-xs font-semibold"
-          style={{ borderColor: s.color, color: s.color }}
-          title={`SDG ${s.id}: ${s.label}`}
-        >
-          <span className="w-4 h-4 rounded-full grid place-items-center text-[10px]"
-                style={{ background: s.color, color: '#070b14' }}>{s.id}</span>
-          {!compact && <span>{s.label}</span>}
-        </div>
+    <div className={`flex items-center gap-${compact ? '1' : '1.5'}`}>
+      {GOALS.map((g) => (
+        <SdgLogo key={g.n} {...g} />
       ))}
     </div>
   )
