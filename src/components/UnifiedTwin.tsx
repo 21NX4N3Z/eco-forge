@@ -32,7 +32,7 @@ const VIZ_LABEL: Record<Viz, string> = {
   radial: 'วงแหวน', hbar: 'แท่งนอน', vbar: 'แท่งตั้ง', radar: 'เรดาร์',
 }
 
-export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = 'technical', setView }: { spec: PartSpec; setSpec: (s: PartSpec) => void; data: SeedData; addMaterial: (m: any) => void; view?: 'technical' | 'business'; setView?: (v: 'technical' | 'business') => void }) {
+export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = 'technical', setView, source = 'local' }: { spec: PartSpec; setSpec: (s: PartSpec) => void; data: SeedData; addMaterial: (m: any) => void; view?: 'technical' | 'business'; setView?: (v: 'technical' | 'business') => void; source?: 'local' | 'nocodb' }) {
   const set = (p: Partial<PartSpec>) => setSpec({ ...spec, ...p })
   const [srcPanel, setSrcPanel] = useState<'standard' | 'manual' | 'history' | 'supplier'>('standard')
   const [show, setShow] = useState<Record<ChartKey, boolean>>({
@@ -241,7 +241,7 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
             <HistoryPanel spec={spec} onRestore={(s) => setSpec(s)} />
           )}
           {srcPanel === 'supplier' && (
-            <SupplierPanel data={data} onPick={(mid) => set({ materialId: mid, inputSource: 'supplier' })} />
+            <SupplierPanel data={data} onPick={(mid) => set({ materialId: mid, inputSource: 'supplier' })} source={source} />
           )}
         </div>
         <div>

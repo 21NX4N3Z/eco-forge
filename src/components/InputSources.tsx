@@ -121,10 +121,15 @@ export function HistoryPanel({ spec, onRestore }: { spec: PartSpec; onRestore: (
 }
 
 /** ④ Supplier DB — pick certified materials from partner suppliers. */
-export function SupplierPanel({ data, onPick }: { data: SeedData; onPick: (materialId: number) => void }) {
+export function SupplierPanel({ data, onPick, source }: { data: SeedData; onPick: (materialId: number) => void; source?: 'local' | 'nocodb' }) {
   return (
     <div className="card lg:col-span-4">
-      <div className="label mb-2">④ Supplier DB — วัสดุจากพาร์ทเนอร์ (พร้อมใบรับรอง CO₂)</div>
+      <div className="flex items-center justify-between gap-2 mb-2">
+        <div className="label">④ Supplier DB — วัสดุจากพาร์ทเนอร์ (พร้อมใบรับรอง CO₂)</div>
+        <span className={`pill ${source === 'nocodb' ? 'pill-ok' : 'pill-accent'}`}>
+          {source === 'nocodb' ? 'NocoDB live' : 'Local seed'}
+        </span>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {data.suppliers.map((s) => (
           <div key={s.id} className="card-inset">

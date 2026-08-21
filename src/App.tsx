@@ -59,6 +59,9 @@ export default function App() {
       {source === 'local' && (
         <div className="text-xs text-accent">● Local seed (offline-safe) — demo source of truth</div>
       )}
+      {source === 'nocodb' && (
+        <div className="text-xs text-ok">● NocoDB live — materials/processes pulled from cloud DB</div>
+      )}
 
       {/* Tabs */}
       <nav className="flex gap-2 flex-wrap items-center">
@@ -81,7 +84,7 @@ export default function App() {
       {/* Body: main + right rail */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 space-y-4">
-          {!loading && tab === 'twin' && <UnifiedTwin spec={spec} setSpec={setSpec} data={data} addMaterial={addMaterial} view={view} setView={setView} />}
+          {!loading && tab === 'twin' && <UnifiedTwin spec={spec} setSpec={setSpec} data={data} addMaterial={addMaterial} view={view} setView={setView} source={source} />}
           {!loading && tab === 'export' && <PdfReport spec={spec} data={data} />}
         </div>
         <aside className="space-y-4">
