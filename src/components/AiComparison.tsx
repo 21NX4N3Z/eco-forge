@@ -26,7 +26,7 @@ export default function AiComparison({
   const minAltCo2 = Math.min(...alts.map((a) => a.result.annualCo2))
 
   const rows = [
-    { label: 'ปัจจุบัน', note: `${spec.partType}`, proc: procName(spec.processId), r: cur, base: true },
+    { label: 'ปัจจุบัน', note: `${spec.partType}`, proc: procName(spec.processId), r: cur, base: true, toolingDeltaThb: 0 },
     ...alts.map((a) => ({
       label: a.label,
       note: a.note,
@@ -34,6 +34,7 @@ export default function AiComparison({
       r: a.result,
       best: a.result.annualCo2 === minAltCo2,
       base: false,
+      toolingDeltaThb: a.toolingDeltaThb ?? 0,
     })),
   ]
 
