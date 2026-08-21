@@ -1,10 +1,14 @@
 {
   "gridFactor": 0.42,
   "materials": [
-    { "id": 1, "name": "Al 6061-T6 (Virgin)", "density": 2700, "emissionFactor": 8.24, "costPerKg": 180, "recyclable": true, "source": "ICE v3.0" },
-    { "id": 2, "name": "Al 6061-T6 (Recycled)", "density": 2700, "emissionFactor": 0.50, "costPerKg": 150, "recyclable": true, "source": "ICE v3.0" },
-    { "id": 3, "name": "Steel 1018", "density": 7850, "emissionFactor": 2.05, "costPerKg": 45, "recyclable": true, "source": "EcoInvent" },
-    { "id": 4, "name": "AlSi10Mg (Additive powder)", "density": 2670, "emissionFactor": 3.10, "costPerKg": 520, "recyclable": true, "source": "EcoInvent" }
+    { "id": 1, "name": "Al 6061-T6 (Virgin)", "alloy": "Al-Mg-Si (AA6061-T6)", "density": 2700, "emissionFactor": 8.24, "costPerKg": 180, "recyclable": true,
+      "tensileStrength": 310, "yieldStrength": 276, "hardness": 95, "elongation": 12, "corrosion": 4, "thermalCond": 167, "electricalCond": 43, "recycleGrade": "A", "porosityClass": "ASTM E155 Class 1", "rohs": true, "source": "ICE v3.0" },
+    { "id": 2, "name": "Al 6061-T6 (Recycled)", "alloy": "Al-Mg-Si (AA6061-T6, post-consumer)", "density": 2700, "emissionFactor": 0.50, "costPerKg": 150, "recyclable": true,
+      "tensileStrength": 295, "yieldStrength": 260, "hardness": 90, "elongation": 14, "corrosion": 4, "thermalCond": 170, "electricalCond": 45, "recycleGrade": "A", "porosityClass": "ASTM E155 Class 1", "rohs": true, "source": "ICE v3.0" },
+    { "id": 3, "name": "Steel 1018", "alloy": "Low-Carbon Steel (AISI 1018)", "density": 7850, "emissionFactor": 2.05, "costPerKg": 45, "recyclable": true,
+      "tensileStrength": 440, "yieldStrength": 370, "hardness": 126, "elongation": 15, "corrosion": 2, "thermalCond": 51, "electricalCond": 12, "recycleGrade": "A", "porosityClass": "ASTM E155 Class 2", "rohs": true, "source": "EcoInvent" },
+    { "id": 4, "name": "AlSi10Mg (Additive powder)", "alloy": "Al-Si-Mg (AA AlSi10Mg)", "density": 2670, "emissionFactor": 3.10, "costPerKg": 520, "recyclable": true,
+      "tensileStrength": 360, "yieldStrength": 240, "hardness": 105, "elongation": 8, "corrosion": 4, "thermalCond": 155, "electricalCond": 38, "recycleGrade": "B", "porosityClass": "ASTM E155 Class 3 (as-printed)", "rohs": true, "source": "EcoInvent" }
   ],
   "processes": [
     { "id": 1, "name": "CNC from Billet", "energyIntensity": 2.1, "scrapRate": 0.70, "procEmission": 0.40, "extraCostPerKg": 1000 },

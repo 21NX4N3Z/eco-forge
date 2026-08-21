@@ -3,10 +3,22 @@
 export interface Material {
   id: number
   name: string
+  alloy: string // metallurgical designation, e.g. Al 6061-T6
   density: number // kg/m3
   emissionFactor: number // kgCO2 per kg material (embodied, cradle-to-gate)
   costPerKg: number // THB per kg
   recyclable: boolean
+  // — Material-science detail (for Carbon Twin depth) —
+  tensileStrength: number // MPa (ultimate)
+  yieldStrength: number // MPa
+  hardness: number // Brinell (HB)
+  elongation: number // % fracture strain
+  corrosion: number // 1..5 (5 = excellent)
+  thermalCond: number // W/m·K
+  electricalCond: number // %IACS
+  recycleGrade: 'A' | 'B' | 'C' | 'D' // end-of-life sorting grade
+  porosityClass: string // ASTM E155 class
+  rohs: boolean // RoHS compliant
   source?: string
 }
 

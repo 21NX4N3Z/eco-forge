@@ -38,9 +38,9 @@ body {
     letter-spacing: 0.125px;
   }
   .pill-accent { background: #f2f9ff; color: #097fe8; }
-  .pill-ok { background: rgba(26,174,57,0.12); color: #1aae39; }
-  .pill-warn { background: rgba(221,91,0,0.12); color: #dd5b00; }
-  .pill-bad { background: rgba(225,29,72,0.12); color: #e11d48; }
+  .pill-warn { background: #fff6e8; color: #a35a00; }
+  .pill-bad { background: #fff0f0; color: #c01b1b; }
+  .pill-ok { background: #eafaf0; color: #0c8a3e; }
 
   /* Linear button: 6px radius, near-flat, accent only on primary */
   .btn {

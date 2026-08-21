@@ -43,6 +43,7 @@ export default function Dashboard({
 
   const saved = bestRes ? (cur.annualCo2 - bestRes.annualCo2) / 1000 : 0
   const savedCost = bestRes ? (cur.annualCost - bestRes.annualCost) / 1000 : 0
+  const mat = data.materials.find((m) => m.id === spec.materialId)
 
   return (
     <div className="space-y-4">
@@ -114,6 +115,32 @@ export default function Dashboard({
         <WhyButton req={{ hotspot: 'material', part: spec.partType, co2: cur.annualCo2, score: cur.score, cbam2028 }} />
       </div>
 
+      {/* Material Science — deep properties */}
+      <div className="card">
+        <div className="label mb-3">วัสดุศาสตร์ — {mat?.name}</div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-3">
+          <MatProp label="Alloy" value={mat?.alloy ?? '—'} />
+          <MatProp label="Density" value={`${mat?.density} kg/m³`} />
+          <MatProp label="Emission Factor" value={`${mat?.emissionFactor} kgCO₂/kg`} accent />
+          <MatProp label="Cost" value={`฿${mat?.costPerKg}/kg`} />
+          <MatProp label="Ultimate Strength" value={`${mat?.tensileStrength} MPa`} />
+          <MatProp label="Yield Strength" value={`${mat?.yieldStrength} MPa`} />
+          <MatProp label="Hardness" value={`${mat?.hardness} HB`} />
+          <MatProp label="Elongation" value={`${mat?.elongation} %`} />
+          <MatProp label="Thermal Cond." value={`${mat?.thermalCond} W/m·K`} />
+          <MatProp label="Electrical Cond." value={`${mat?.electricalCond} %IACS`} />
+          <MatProp label="Corrosion" value={`${'★'.repeat(mat?.corrosion ?? 0)}${'☆'.repeat(5 - (mat?.corrosion ?? 0))}`} />
+          <MatProp label="Recycle Grade" value={mat?.recycleGrade ?? '—'} badge={mat?.recycleGrade} />
+          <MatProp label="Porosity" value={mat?.porosityClass ?? '—'} />
+          <MatProp label="RoHS" value={mat?.rohs ? '✓ Compliant' : '✗'} />
+        </div>
+        {spec.recycledPercent > 0 && (
+          <div className="mt-3 text-[13px] text-accent">
+            ● ผสมวัสดุรีไซเคิล {spec.recycledPercent}% — ลด emission factor ลงประมาณ {(spec.recycledPercent / 100 * (mat?.emissionFactor ?? 0) * 0.94).toFixed(2)} kgCO₂/kg
+          </div>
+        )}
+      </div>
+
       {/* Trend + MRV */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="card">
@@ -178,6 +205,22 @@ export default function Dashboard({
           <div>ต้นทุน/ปี: ฿{(cur.annualCost / 1000).toFixed(0)}K · ประหยัดหากปรับปรุง: ฿{savedCost.toFixed(0)}K/yr</div>
           <div>Payback (Alt {best?.label}): ~8 เดือน</div>
         </div>
+      )}
+    </div>
+  )
+}
+
+function MatProp({ label, value, accent, badge }: { label: string; value: string; accent?: boolean; badge?: string }) {
+  const badgeCls: Record<string, string> = {
+    A: 'pill-accent', B: 'pill-warn', C: 'pill-warn', D: 'pill-bad',
+  }
+  return (
+    <div>
+      <div className="text-[11px] uppercase tracking-wide text-ink-mute font-semibold">{label}</div>
+      {badge ? (
+        <span className={`pill ${badgeCls[badge] ?? 'pill-accent'}`}>{value}</span>
+      ) : (
+        <div className={`text-[15px] font-medium ${accent ? 'text-accent' : 'text-ink'}`}>{value}</div>
       )}
     </div>
   )
