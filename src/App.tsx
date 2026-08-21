@@ -37,10 +37,10 @@ export default function App() {
   ]
 
   return (
-    <div className="min-h-screen max-w-6xl mx-auto p-4 space-y-4">
+    <div className="min-h-screen max-w-7xl mx-auto p-4 lg:p-6 space-y-4 text-[16px]">
       <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
         <div>
-          <h1 className="text-2xl font-bold text-accent">EcoForge</h1>
+          <h1 className="text-3xl font-bold text-accent tracking-display">EcoForge</h1>
           <div className="text-xs text-ink-mute">Carbon Engineering for SME · EU CBAM · Sriracha Hackathon 2026</div>
         </div>
         <div className="flex items-center gap-2">
@@ -55,11 +55,11 @@ export default function App() {
 
       <nav className="flex gap-2 flex-wrap">
         {tabs.map((t) => (
-          <button key={t.id} className={`btn ${tab === t.id ? 'btn-active' : ''}`} onClick={() => setTab(t.id)}>
+          <button key={t.id} className={`btn py-2.5 ${tab === t.id ? 'btn-active' : ''}`} onClick={() => setTab(t.id)}>
             {t.label}
           </button>
         ))}
-        <button className={`btn ml-auto ${view === 'technical' ? 'btn-active' : ''}`}
+        <button className={`btn py-2.5 ml-auto ${view === 'technical' ? 'btn-active' : ''}`}
                 onClick={() => setView(view === 'technical' ? 'business' : 'technical')}>
           {view === 'technical' ? 'Technical' : 'Business'} View
         </button>

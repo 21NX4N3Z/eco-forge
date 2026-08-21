@@ -6,7 +6,7 @@ import WhyButton from './WhyButton'
 import SdgBadges from './SdgBadges'
 import { IconCheck, IconAlert } from './icons'
 
-const COLORS = ['#22d3ee', '#f87171', '#34d399', '#fbbf24']
+const COLORS = ['#0075de', '#dd5b00', '#1aae39', '#a39e98']
 
 export default function Dashboard({
   spec, data, view,
@@ -46,18 +46,35 @@ export default function Dashboard({
 
   return (
     <div className="space-y-4">
-      {/* Header */}
+      {/* KPI strip — projector-safe large numbers */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="card">
+          <div className="label">Carbon Score</div>
+          <div className="text-[34px] leading-none font-bold text-accent tabular-nums">{cur.score}<span className="text-ink-mute text-xl">/100</span></div>
+          <div className="text-xs text-ink-mute mt-1">วิศวกรรมคาร์บอน</div>
+        </div>
+        <div className="card">
+          <div className="label">CO₂ / ปี</div>
+          <div className="text-[34px] leading-none font-bold text-ink tabular-nums">{(cur.annualCo2/1000).toFixed(2)}<span className="text-ink-mute text-xl"> t</span></div>
+          <div className="text-xs text-ink-mute mt-1">Embodied + Energy</div>
+        </div>
+        <div className="card">
+          <div className="label">ต้นทุน / ปี</div>
+          <div className="text-[34px] leading-none font-bold text-ink tabular-nums">฿{(cur.annualCost/1000).toFixed(0)}<span className="text-ink-mute text-xl">K</span></div>
+          <div className="text-xs text-ink-mute mt-1">วัสดุ + กระบวนการ</div>
+        </div>
+        <div className="card">
+          <div className="label">CBAM Tax 2028</div>
+          <div className={`text-[34px] leading-none font-bold tabular-nums ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>€{cbam2028}<span className="text-ink-mute text-xl">/yr</span></div>
+          <div className="text-xs text-ink-mute mt-1">{cbam2028 > 0 ? <span className="inline-flex items-center gap-1"><IconAlert className="w-3.5 h-3.5" /> ต้องจ่ายภาษี</span> : <span className="inline-flex items-center gap-1 text-ok"><IconCheck className="w-3.5 h-3.5" /> ผ่านเกณฑ์</span>}</div>
+        </div>
+      </div>
+
+      {/* Old header kept minimal */}
       <div className="card flex flex-wrap items-center justify-between gap-3">
         <div>
-          <div className="label">Carbon Score</div>
-          <div className="text-4xl font-bold text-accent">{cur.score}/100</div>
-        </div>
-        <div className="text-right">
-          <div className="text-sm text-ink-mute">CBAM Tax Liability (2028)</div>
-          <div className={`text-2xl font-bold ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>
-            €{cbam2028}/yr {cbam2028 > 0 ? '🔴'.replace('🔴', '') : ''}
-            {cbam2028 > 0 ? <IconAlert className="w-5 h-5 inline" /> : <IconCheck className="w-5 h-5 inline" />}
-          </div>
+          <div className="label">Carbon Twin — {spec.partType}</div>
+          <div className="text-lg font-semibold">ก่อน vs หลังปรับปรุง (AI Option {best?.label})</div>
         </div>
         <SdgBadges />
       </div>
@@ -66,9 +83,9 @@ export default function Dashboard({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="card">
           <div className="label mb-2">Before — {spec.partType}</div>
-          <ResponsiveContainer width="100%" height={200}>
+          <ResponsiveContainer width="100%" height={240}>
             <PieChart>
-              <Pie data={beforeData} dataKey="value" nameKey="name" outerRadius={70} label>
+              <Pie data={beforeData} dataKey="value" nameKey="name" outerRadius={85} label>
                 {beforeData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
               </Pie>
               <Tooltip />
@@ -77,7 +94,7 @@ export default function Dashboard({
         </div>
         <div className="card">
           <div className="label mb-2">After — AI Option {best?.label} ({best?.note})</div>
-          <ResponsiveContainer width="100%" height={200}>
+          <ResponsiveContainer width="100%" height={240}>
             <PieChart>
               <Pie data={afterData} dataKey="value" nameKey="name" outerRadius={70} label>
                 {afterData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
@@ -101,24 +118,24 @@ export default function Dashboard({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="card">
           <div className="label mb-2">CBAM Obligation Trend</div>
-          <ResponsiveContainer width="100%" height={180}>
+          <ResponsiveContainer width="100%" height={220}>
             <BarChart data={trend}>
-              <XAxis dataKey="year" tick={{ fontSize: 11 }} />
-              <YAxis tick={{ fontSize: 11 }} />
+              <XAxis dataKey="year" tick={{ fontSize: 13 }} />
+              <YAxis tick={{ fontSize: 13 }} />
               <Tooltip />
-              <BarChart data={trend} />
+              <Bar dataKey="tax" fill="#0075de" radius={[4,4,0,0]} />
               <Legend />
             </BarChart>
           </ResponsiveContainer>
         </div>
         <div className="card">
           <div className="label mb-2">MRV (EU CBAM scopes)</div>
-          <ResponsiveContainer width="100%" height={180}>
+          <ResponsiveContainer width="100%" height={220}>
             <BarChart data={mrv} layout="vertical">
-              <XAxis type="number" tick={{ fontSize: 11 }} />
-              <YAxis type="category" dataKey="scope" width={120} tick={{ fontSize: 10 }} />
+              <XAxis type="number" tick={{ fontSize: 13 }} />
+              <YAxis type="category" dataKey="scope" width={140} tick={{ fontSize: 12 }} />
               <Tooltip />
-              <BarChart data={mrv} />
+              <Bar dataKey="co2" fill="#1aae39" radius={[0,4,4,0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -128,7 +145,7 @@ export default function Dashboard({
       <div className="card">
         <div className="label mb-2">AI Recommendation — Compare Options</div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-[15px]">
             <thead className="text-ink-mute">
               <tr><th className="text-left">Option</th><th>CO₂/yr</th><th>Cost/yr</th><th>CBAM 2028</th><th>Saved</th></tr>
             </thead>
