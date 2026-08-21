@@ -1,34 +1,24 @@
-// Real SDG badge logos (UN Sustainable Development Goals) as inline SVG.
-// Each is the official colored ring + white number, drawn as SVG (no emoji, no text hack).
+// Real SDG logo images (UN Global Goals icons) loaded from src/assets/sdg/.
+import sdg7 from '../assets/sdg/TGG_Icon_Color_07.png'
+import sdg9 from '../assets/sdg/TGG_Icon_Color_09.png'
+import sdg12 from '../assets/sdg/TGG_Icon_Color_12.png'
+import sdg13 from '../assets/sdg/TGG_Icon_Color_13.png'
+import sdg17 from '../assets/sdg/TGG_Icon_Color_17.png'
 
-const GOALS: { n: number; name: string; color: string }[] = [
-  { n: 7, name: 'Affordable & Clean Energy', color: '#FCB711' },
-  { n: 9, name: 'Industry, Innovation & Infrastructure', color: '#FD9D24' },
-  { n: 12, name: 'Responsible Consumption & Production', color: '#BF8B2E' },
-  { n: 13, name: 'Climate Action', color: '#407A47' },
-  { n: 17, name: 'Partnerships for the Goals', color: '#134A8E' },
+const GOALS = [
+  { n: 7, name: 'Affordable & Clean Energy', img: sdg7 },
+  { n: 9, name: 'Industry, Innovation & Infrastructure', img: sdg9 },
+  { n: 12, name: 'Responsible Consumption & Production', img: sdg12 },
+  { n: 13, name: 'Climate Action', img: sdg13 },
+  { n: 17, name: 'Partnerships for the Goals', img: sdg17 },
 ]
-
-function SdgLogo({ n, name, color }: { n: number; name: string; color: string }) {
-  return (
-    <div title={`SDG ${n}: ${name}`} className="inline-flex flex-col items-center gap-1">
-      <svg viewBox="0 0 100 100" className="w-9 h-9" role="img" aria-label={`SDG ${n}`}>
-        <circle cx="50" cy="50" r="48" fill={color} />
-        <circle cx="50" cy="50" r="48" fill="none" stroke="#fff" strokeWidth="3" strokeDasharray="2 4" opacity="0.8" />
-        <text x="50" y="62" textAnchor="middle" fontSize="40" fontWeight="700" fill="#fff" fontFamily="Arial, sans-serif">
-          {n}
-        </text>
-      </svg>
-      {!name && null}
-    </div>
-  )
-}
 
 export default function SdgBadges({ compact = false }: { compact?: boolean }) {
   return (
-    <div className={`flex items-center gap-${compact ? '1' : '1.5'}`}>
+    <div className="flex items-center gap-1.5">
       {GOALS.map((g) => (
-        <SdgLogo key={g.n} {...g} />
+        <img key={g.n} src={g.img} alt={`SDG ${g.n}: ${g.name}`} title={`SDG ${g.n}: ${g.name}`}
+          className={compact ? 'h-7 w-auto' : 'h-10 w-auto'} />
       ))}
     </div>
   )
