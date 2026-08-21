@@ -95,6 +95,17 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
 
       {/* Controls — Process + WhatIf together, realtime */}
       <div className="card grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="lg:col-span-4 mb-1">
+          <div className="label mb-2">แหล่งข้อมูลนำเข้า (Input Source)</div>
+          <div className="flex flex-wrap gap-2">
+            {(['standard', 'manual', 'history', 'supplier'] as const).map((s) => (
+              <button key={s} onClick={() => set({ inputSource: s })}
+                className={`btn text-xs py-1.5 ${spec.inputSource === s ? 'btn-active' : ''}`}>
+                {s === 'standard' ? '① Standard DB' : s === 'manual' ? '② Manual Input' : s === 'history' ? '③ Factory History' : '④ Supplier DB'}
+              </button>
+            ))}
+          </div>
+        </div>
         <div>
           <div className="label mb-1">วัสดุ</div>
           <select className="w-full card-inset" value={spec.materialId} onChange={(e) => set({ materialId: Number(e.target.value) })}>
