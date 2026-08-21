@@ -344,9 +344,12 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
           <div className="label">Technical View</div>
           <div>Gross mass: {cur.grossMass.toFixed(2)} kg · Scrap: {cur.scrapMass.toFixed(2)} kg ({(spec.netMass > 0 ? (cur.scrapMass / cur.grossMass) * 100 : 0).toFixed(0)}%)</div>
           <div>Mix CO₂: {cur.mixCo2.toFixed(2)} kg/kg · Per-part: {cur.perPartCo2.toFixed(3)} kg</div>
-          <div>Formula: CBAM Tax = (Embodied − Benchmark) × ETS × Obligation%</div>
+          <div>Formula: CBAM Tax = (Embodied − Benchmark) × ETS × CBAM Factor</div>
           <div>Scope 1: {Math.round(cur.mrv.scope1)} · Scope 2: {Math.round(cur.mrv.scope2)} · Scope 3: {Math.round(cur.mrv.scope3)} kgCO₂/yr</div>
-          <div>Standards: ISO 14040 · ASTM E155 · TGO CFP</div>
+          {cur.directOnly && <div className="text-accent">⚠ CN {spec.cnCode} = Annex II (Al products): direct emissions only — Scope 2 excluded from taxable base (Guidance No.5e §2.2)</div>}
+          {cur.deMinimis && <div className="text-ok">✓ De minimis: taxable &lt; 50 t/yr → importer exempt from certificate surrender (Guidance No.1)</div>}
+          <div>Benchmark used: {cur.benchmark} tCO₂e/t{cur.dvTh ? ` · DV Thailand fallback: ${cur.dvTh}` : ''}</div>
+          <div>Standards: ISO 14040:2006 · ISO 14044:2006 · ISO 14067:2018 · ASTM E155 · TGO CFP</div>
         </div>
       )}
       {view === 'business' && bestRes && (

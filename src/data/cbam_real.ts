@@ -39,6 +39,29 @@ export const STANDARDS = {
 }
 
 /**
+ * CBAM factor schedule (Guidance No.4): obligation % of embedded emissions
+ * that must be covered by certificates, as EU ETS free allocation phases out.
+ * 2026=2.5% → 2034=100%.
+ */
+export const CBAM_FACTOR: Record<number, number> = {
+  2026: 0.025, 2027: 0.05, 2028: 0.10, 2029: 0.225, 2030: 0.35,
+  2031: 0.475, 2032: 0.60, 2033: 0.775, 2034: 1.0,
+}
+
+/** De minimis threshold (Guidance No.1): importers below 50 t/yr are exempt. */
+export const DE_MINIMIS_TONNES = 50
+
+/**
+ * Aluminium products (CN 7603–7616) fall under Annex II — ONLY direct
+ * emissions count in the definitive period (Guidance No.5e §2.2).
+ */
+const DIRECT_ONLY_PREFIXES = ['7603', '7604', '7605', '7606', '7607', '7608', '7609', '7610', '7611', '7612', '7613', '7614', '7616']
+
+export function isDirectOnly(cn: string): boolean {
+  return DIRECT_ONLY_PREFIXES.some((p) => cn.startsWith(p))
+}
+
+/**
  * Pick benchmark for a part: route L (scrap-based/EAF route) is the default
  * production-route benchmark for downstream semi-finished goods per EU Annex.
  * Falls back to legacy 2.5 if no CN match (non-Al materials).

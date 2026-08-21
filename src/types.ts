@@ -107,6 +107,8 @@ export interface CalcResult {
   mrv: Mrv
   benchmark: number // EU benchmark used (tCO2e/t) — real value by CN code
   dvTh: number | null // Thailand default value fallback (tCO2e/t)
+  directOnly: boolean // Annex II (Al products): only direct emissions count
+  deMinimis: boolean // importer below 50 t/yr threshold → exempt
 }
 
 export interface Alternative {
