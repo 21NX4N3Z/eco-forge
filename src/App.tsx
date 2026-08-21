@@ -10,8 +10,7 @@ import { LoadingSkeleton, ErrorCard } from './components/StatusCards'
 import SdgBadges from './components/SdgBadges'
 import ActivityFeed from './components/ActivityFeed'
 import Milestones from './components/Milestones'
-import Members from './components/Members'
-import { IconLayers, IconTwin, IconSliders, IconDownload } from './components/icons'
+import { IconLayers, IconTwin, IconSliders, IconDownload, IconSpark } from './components/icons'
 
 const DEFAULT_SPEC: PartSpec = {
   inputSource: 'standard',
@@ -52,6 +51,9 @@ export default function App() {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <span className={`pill ${offline ? 'pill-warn' : 'pill-ok'}`}>
+            <IconSpark className="w-3.5 h-3.5" /> {offline ? 'AI Offline' : 'AI Live'}
+          </span>
           <SdgBadges compact />
           <OfflineToggle offline={offline} setOffline={setOffline} />
         </div>
@@ -93,7 +95,6 @@ export default function App() {
         <aside className="space-y-4">
           <ActivityFeed />
           <Milestones />
-          <Members />
         </aside>
       </div>
     </div>

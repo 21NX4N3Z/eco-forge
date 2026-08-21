@@ -1,7 +1,7 @@
 import { Alternative, CalcResult, PartSpec, SeedData } from '../types'
 import { evaluate } from '../engine/cbam'
 import { generateAlternatives } from '../engine/optimize'
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { PieChart, Pie, Cell, BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, Radar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import WhyButton from './WhyButton'
 import SdgBadges from './SdgBadges'
 import { IconCheck, IconAlert } from './icons'
@@ -44,6 +44,25 @@ export default function Dashboard({
   const saved = bestRes ? (cur.annualCo2 - bestRes.annualCo2) / 1000 : 0
   const savedCost = bestRes ? (cur.annualCost - bestRes.annualCost) / 1000 : 0
   const mat = data.materials.find((m) => m.id === spec.materialId)
+  const mats = data.materials
+  const norm = (v: number, key: 'tensileStrength' | 'yieldStrength' | 'hardness' | 'thermalCond' | 'electricalCond' | 'corrosion') => {
+    const vals = mats.map((m) => m[key] as number)
+    const max = Math.max(...vals, 1)
+    return Math.round((v / max) * 100)
+  }
+  const recycledAlt = mats.find((m) => m.id === 2) // Al 6061 Recycled
+  const radarData = [
+    { metric: 'Strength', cur: norm(mat?.tensileStrength ?? 0, 'tensileStrength'), alt: norm(recycledAlt?.tensileStrength ?? 0, 'tensileStrength') },
+    { metric: 'Yield', cur: norm(mat?.yieldStrength ?? 0, 'yieldStrength'), alt: norm(recycledAlt?.yieldStrength ?? 0, 'yieldStrength') },
+    { metric: 'Hardness', cur: norm(mat?.hardness ?? 0, 'hardness'), alt: norm(recycledAlt?.hardness ?? 0, 'hardness') },
+    { metric: 'Thermal', cur: norm(mat?.thermalCond ?? 0, 'thermalCond'), alt: norm(recycledAlt?.thermalCond ?? 0, 'thermalCond') },
+    { metric: 'Electric', cur: norm(mat?.electricalCond ?? 0, 'electricalCond'), alt: norm(recycledAlt?.electricalCond ?? 0, 'electricalCond') },
+    { metric: 'Corrosion', cur: norm(mat?.corrosion ?? 0, 'corrosion'), alt: norm(recycledAlt?.corrosion ?? 0, 'corrosion') },
+  ]
+  const strengthData = mats.map((m) => ({
+    name: m.name.replace(' (Virgin)','').replace(' (Recycled)','').replace(' (Additive powder)',''),
+    uts: m.tensileStrength, ys: m.yieldStrength, hb: m.hardness,
+  }))
 
   return (
     <div className="space-y-4">
@@ -139,6 +158,37 @@ export default function Dashboard({
             ● ผสมวัสดุรีไซเคิล {spec.recycledPercent}% — ลด emission factor ลงประมาณ {(spec.recycledPercent / 100 * (mat?.emissionFactor ?? 0) * 0.94).toFixed(2)} kgCO₂/kg
           </div>
         )}
+      </div>
+
+      {/* Material Science — charts (numbers made visible) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="card">
+          <div className="label mb-2">Mechanical Profile (Radar)</div>
+          <ResponsiveContainer width="100%" height={240}>
+            <RadarChart data={radarData}>
+              <PolarGrid />
+              <PolarAngleAxis dataKey="metric" tick={{ fontSize: 11 }} />
+              <Radar name="Current" dataKey="cur" stroke="#0075de" fill="#0075de" fillOpacity={0.35} />
+              <Radar name="Recycled Alt" dataKey="alt" stroke="#1aae39" fill="#1aae39" fillOpacity={0.25} />
+              <Legend />
+            </RadarChart>
+          </ResponsiveContainer>
+          <div className="text-[11px] text-ink-mute mt-1">ค่าปกติเป็น 0–100 (normalized) · เปรียบเทียบวัสดุปัจจุบัน vs ทางเลือก recycled</div>
+        </div>
+        <div className="card">
+          <div className="label mb-2">Strength &amp; Hardness Comparison</div>
+          <ResponsiveContainer width="100%" height={240}>
+            <BarChart data={strengthData}>
+              <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="uts" name="Ultimate (MPa)" fill="#0075de" radius={[4,4,0,0]} />
+              <Bar dataKey="ys" name="Yield (MPa)" fill="#dd5b00" radius={[4,4,0,0]} />
+              <Bar dataKey="hb" name="Hardness (HB)" fill="#1aae39" radius={[4,4,0,0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
 
       {/* Trend + MRV */}
