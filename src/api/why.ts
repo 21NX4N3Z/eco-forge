@@ -1,8 +1,8 @@
 // Embedded AI Assistant — JSON-in / JSON-out.
 // Resolution order (so it "really runs" in every context):
-//   1. VITE_NOUS_KEY set  → call Nous Portal directly from the frontend (dev/demo)
-//   2. /api/why proxy      → Vercel serverless (key stays server-side, prod)
-//   3. offline rule-based   → only when no network/key; reported honestly
+//   1. VITE_OPENROUTER_KEY set → call OpenRouter directly from the frontend (dev/demo)
+//   2. /api/why proxy           → Vercel serverless (key stays server-side, prod)
+//   3. offline rule-based        → only when no network/key; reported honestly
 
 export interface WhyRequest {
   hotspot: string
@@ -50,19 +50,20 @@ const SYS =
   'Reply ONLY with strict JSON: {"explanation": string, "suggestion": string, "severity": "high"|"med"|"low"}. ' +
   'Be concise and engineering-focused. No markdown, no prose outside the JSON.'
 
-async function callNous(req: WhyRequest, key: string): Promise<WhyResponse> {
-  const upstream = await fetch('https://portal.nousresearch.com/v1/chat/completions', {
+async function callOpenRouter(req: WhyRequest, key: string): Promise<WhyResponse> {
+  const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
     body: JSON.stringify({
-      model: 'hermes',
+      model: 'stealth/ox-alpha',
+      max_tokens: 400,
       messages: [
         { role: 'system', content: SYS },
         { role: 'user', content: JSON.stringify(req) },
       ],
     }),
   })
-  if (!upstream.ok) throw new Error('nous ' + upstream.status)
+  if (!upstream.ok) throw new Error('openrouter ' + upstream.status)
   const j = await upstream.json()
   const content = j?.choices?.[0]?.message?.content ?? ''
   const parsed = JSON.parse(content) as Omit<WhyResponse, 'source'>
@@ -71,10 +72,10 @@ async function callNous(req: WhyRequest, key: string): Promise<WhyResponse> {
 
 export async function askWhy(req: WhyRequest): Promise<WhyResponse> {
   // 1) direct key (dev/demo)
-  const key = (import.meta as any).env?.VITE_NOUS_KEY
+  const key = (import.meta as any).env?.VITE_OPENROUTER_KEY
   if (key) {
     try {
-      return await callNous(req, key)
+      return await callOpenRouter(req, key)
     } catch {
       /* fall through */
     }

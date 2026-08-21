@@ -1,4 +1,4 @@
-// Vercel serverless proxy for the Nous inference API.
+// Vercel serverless proxy for the AI inference API (OpenRouter).
 // Key stays server-side — frontend never sees it. Returns JSON only.
 //
 // Vercel Node Functions use the classic (req, res) signature: the default
@@ -25,9 +25,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return
   }
 
-  const key = (process as any).env?.NOUS_API_KEY
+  const key = (process as any).env?.OPENROUTER_API_KEY
   if (!key) {
-    res.status(500).send(JSON.stringify({ error: 'NOUS_API_KEY not set' }))
+    res.status(500).send(JSON.stringify({ error: 'OPENROUTER_API_KEY not set' }))
     return
   }
 
@@ -42,7 +42,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const timer = setTimeout(() => controller.abort(), 20000)
 
   try {
-    const upstream = await fetch('https://inference-api.nousresearch.com/v1/chat/completions', {
+    const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       signal: controller.signal,
       headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
