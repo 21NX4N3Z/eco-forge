@@ -12,11 +12,11 @@ export function LoadingSkeleton() {
 
 export function ErrorCard({ message }: { message: string }) {
   return (
-    <div className="card border-signal-red/50 text-signal-red flex items-start gap-2">
+    <div className="card border-bad/50 text-bad flex items-start gap-2">
       <IconAlert className="w-5 h-5 mt-0.5" />
       <div>
         <div className="font-semibold text-sm">เกิดข้อผิดพลาด</div>
-        <div className="text-xs text-slate-600">{message}</div>
+        <div className="text-xs text-ink-soft">{message}</div>
         <div className="text-xs text-ink-mute mt-1">ระบบสลับไปใช้โหมด offline อัตโนมัติ — ยังวิเคราะห์ได้ตามปกติ</div>
       </div>
     </div>

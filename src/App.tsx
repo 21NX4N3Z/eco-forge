@@ -38,9 +38,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen max-w-6xl mx-auto p-4 space-y-4">
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-base-600 pb-3">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
         <div>
-          <h1 className="text-2xl font-bold text-signal-cyan">EcoForge</h1>
+          <h1 className="text-2xl font-bold text-accent">EcoForge</h1>
           <div className="text-xs text-ink-mute">Carbon Engineering for SME · EU CBAM · Sriracha Hackathon 2026</div>
         </div>
         <div className="flex items-center gap-2">
@@ -50,7 +50,7 @@ export default function App() {
       </header>
 
       {source === 'local' && (
-        <div className="text-xs text-signal-cyan">● Local seed (offline-safe) — demo source of truth</div>
+        <div className="text-xs text-accent">● Local seed (offline-safe) — demo source of truth</div>
       )}
 
       <nav className="flex gap-2 flex-wrap">

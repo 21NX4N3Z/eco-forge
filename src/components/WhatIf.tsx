@@ -20,7 +20,7 @@ export default function WhatIf({
         <div className="flex justify-between text-sm"><span>% Recycled</span><span>{spec.recycledPercent}%</span></div>
         <input type="range" min={0} max={100} value={spec.recycledPercent}
                onChange={(e) => set({ recycledPercent: Number(e.target.value) })}
-               className="w-full accent-signal-cyan" />
+               className="w-full accent-accent" />
       </div>
       <div>
         <div className="label">กระบวนการ</div>
@@ -33,7 +33,7 @@ export default function WhatIf({
         <div className="flex justify-between text-sm"><span>Batch (pcs/mo)</span><span>{spec.batchSize}</span></div>
         <input type="range" min={100} max={5000} step={100} value={spec.batchSize}
                onChange={(e) => set({ batchSize: Number(e.target.value) })}
-               className="w-full accent-signal-cyan" />
+               className="w-full accent-accent" />
       </div>
 
       <div className="grid grid-cols-3 gap-2">
@@ -46,7 +46,7 @@ export default function WhatIf({
 }
 
 function Stat({ label, value, tone }: { label: string; value: string; tone: 'cyan' | 'green' | 'red' }) {
-  const c = { cyan: 'text-signal-cyan', green: 'text-signal-green', red: 'text-signal-red' }[tone]
+  const c = { cyan: 'text-accent', green: 'text-ok', red: 'text-bad' }[tone]
   return (
     <div className="p-card text-center">
       <div className="label">{label}</div>

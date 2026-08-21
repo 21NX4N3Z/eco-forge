@@ -50,11 +50,11 @@ export default function Dashboard({
       <div className="card flex flex-wrap items-center justify-between gap-3">
         <div>
           <div className="label">Carbon Score</div>
-          <div className="text-4xl font-bold text-signal-cyan">{cur.score}/100</div>
+          <div className="text-4xl font-bold text-accent">{cur.score}/100</div>
         </div>
         <div className="text-right">
           <div className="text-sm text-ink-mute">CBAM Tax Liability (2028)</div>
-          <div className={`text-2xl font-bold ${cbam2028 > 0 ? 'text-signal-red' : 'text-signal-green'}`}>
+          <div className={`text-2xl font-bold ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>
             €{cbam2028}/yr {cbam2028 > 0 ? '🔴'.replace('🔴', '') : ''}
             {cbam2028 > 0 ? <IconAlert className="w-5 h-5 inline" /> : <IconCheck className="w-5 h-5 inline" />}
           </div>
@@ -141,7 +141,7 @@ export default function Dashboard({
           </table>
         </div>
         {bestRes && (
-          <div className="mt-2 text-sm text-signal-green">
+          <div className="mt-2 text-sm text-ok">
             Best: Option {best?.label} → ลด CO₂ {saved.toFixed(2)} t/yr, ประหยัด ฿{savedCost.toFixed(0)}K/yr, CBAM 2028 €{best2028}
           </div>
         )}
@@ -173,7 +173,7 @@ function Row({ label, r, base }: { label: string; r: CalcResult; base?: boolean 
       <td className="text-center">{(r.annualCo2 / 1000).toFixed(2)} t</td>
       <td className="text-center">฿{(r.annualCost / 1000).toFixed(0)}K</td>
       <td className="text-center">{`€${r.cbam.find((c) => c.year === 2028)?.taxEur ?? 0}`}</td>
-      <td className="text-center text-signal-green">
+      <td className="text-center text-ok">
         {base ? '—' : `${(r.score)}`}
       </td>
     </tr>

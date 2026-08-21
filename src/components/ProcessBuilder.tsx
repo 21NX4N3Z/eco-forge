@@ -57,7 +57,7 @@ export default function ProcessBuilder({
           </select>
           <input type="range" min={0} max={100} value={spec.recycledPercent}
                  onChange={(e) => set({ recycledPercent: Number(e.target.value) })}
-                 className="w-full mt-2 accent-signal-cyan" />
+                 className="w-full mt-2 accent-accent" />
         </div>
         <div>
           <div className="label">4. กระบวนการ</div>
