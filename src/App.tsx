@@ -9,7 +9,8 @@ import SdgBadges from './components/SdgBadges'
 import ActivityFeed from './components/ActivityFeed'
 import Milestones from './components/Milestones'
 import ViewToggle from './components/ViewToggle'
-import { IconTwin, IconDownload, IconSpark } from './components/icons'
+import SourcesPanel from './components/SourcesPanel'
+import { IconTwin, IconDownload, IconSpark, IconDatabase } from './components/icons'
 
 const DEFAULT_SPEC: PartSpec = {
   inputSource: 'standard',
@@ -22,11 +23,12 @@ const DEFAULT_SPEC: PartSpec = {
   transportDist: 120,
 }
 
-type Tab = 'twin' | 'export'
+type Tab = 'twin' | 'export' | 'sources'
 
 const TABS: { id: Tab; label: string; icon: typeof IconTwin }[] = [
   { id: 'twin', label: 'Carbon Twin', icon: IconTwin },
   { id: 'export', label: 'Export', icon: IconDownload },
+  { id: 'sources', label: 'แหล่งอ้างอิง', icon: IconDatabase },
 ]
 
 export default function App() {
@@ -81,6 +83,10 @@ export default function App() {
       {loading && <LoadingSkeleton />}
       {error && <ErrorCard message={error} />}
 
+      {tab === 'sources' ? (
+        <SourcesPanel />
+      ) : (
+        <>
       {/* Body: main + right rail */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 space-y-4">
@@ -92,6 +98,8 @@ export default function App() {
           <Milestones />
         </aside>
       </div>
+        </>
+      )}
     </div>
   )
 }
