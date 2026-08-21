@@ -43,3 +43,18 @@ export const IconCheck = (p: P) => base(p, <path d="M20 6 9 17l-5-5" />)
 export const IconAlert = (p: P) => base(p, <>
   <path d="M12 3 2 20h20Z" /><path d="M12 9v5" /><path d="M12 18h.01" />
 </>)
+export const IconLayers = (p: P) => base(p, <>
+  <path d="M12 3 2 8l10 5 10-5Z" /><path d="M2 13l10 5 10-5" /><path d="M2 18l10 5 10-5" />
+</>)
+export const IconTwin = (p: P) => base(p, <>
+  <circle cx="9" cy="9" r="5" /><circle cx="15" cy="15" r="5" />
+</>)
+export const IconSliders = (p: P) => base(p, <>
+  <path d="M4 6h10" /><circle cx="17" cy="6" r="2" /><path d="M4 12h4" /><circle cx="11" cy="12" r="2" /><path d="M14 12h6" /><circle cx="9" cy="18" r="2" /><path d="M14 18h6" />
+</>)
+export const IconDownload = (p: P) => base(p, <>
+  <path d="M12 3v12" /><path d="M8 11l4 4 4-4" /><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+</>)
+export const IconSpark = (p: P) => base(p, <>
+  <path d="M12 3v4" /><path d="M12 17v4" /><path d="M3 12h4" /><path d="M17 12h4" /><path d="M6 6l2 2" /><path d="M16 16l2 2" /><path d="M18 6l-2 2" /><path d="M8 16l-2 2" />
+</>)
