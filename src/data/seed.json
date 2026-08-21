@@ -1,0 +1,32 @@
+{
+  "gridFactor": 0.42,
+  "materials": [
+    { "id": 1, "name": "Al 6061-T6 (Virgin)", "density": 2700, "emissionFactor": 8.24, "costPerKg": 180, "recyclable": true, "source": "ICE v3.0" },
+    { "id": 2, "name": "Al 6061-T6 (Recycled)", "density": 2700, "emissionFactor": 0.50, "costPerKg": 150, "recyclable": true, "source": "ICE v3.0" },
+    { "id": 3, "name": "Steel 1018", "density": 7850, "emissionFactor": 2.05, "costPerKg": 45, "recyclable": true, "source": "EcoInvent" },
+    { "id": 4, "name": "AlSi10Mg (Additive powder)", "density": 2670, "emissionFactor": 3.10, "costPerKg": 520, "recyclable": true, "source": "EcoInvent" }
+  ],
+  "processes": [
+    { "id": 1, "name": "CNC from Billet", "energyIntensity": 2.1, "scrapRate": 0.70, "procEmission": 0.40, "extraCostPerKg": 1000 },
+    { "id": 2, "name": "Gravity Die Casting", "energyIntensity": 1.3, "scrapRate": 0.12, "procEmission": 0.90, "extraCostPerKg": 2386 },
+    { "id": 3, "name": "Extrusion + CNC", "energyIntensity": 1.1, "scrapRate": 0.08, "procEmission": 0.60, "extraCostPerKg": 1500 },
+    { "id": 4, "name": "Additive Mfg", "energyIntensity": 8.5, "scrapRate": 0.05, "procEmission": 0.20, "extraCostPerKg": 4200 }
+  ],
+  "cbamRates": [
+    { "year": 2026, "obligationPercent": 0.00, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2027, "obligationPercent": 0.22, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2028, "obligationPercent": 0.40, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2029, "obligationPercent": 0.60, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2030, "obligationPercent": 0.80, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2031, "obligationPercent": 1.00, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2032, "obligationPercent": 1.00, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2033, "obligationPercent": 1.00, "etsPriceEur": 180, "benchmarkCo2": 2.5 }
+  ],
+  "suppliers": [
+    { "id": 1, "name": "Thai Metal Supply Co.", "materialIds": [1, 2], "co2Certificate": "ISO 14040", "contact": "sales@tms.co.th" },
+    { "id": 2, "name": "AeroCast Partners", "materialIds": [2, 4], "co2Certificate": "ISO 14067", "contact": "am@aerocast.co.th" }
+  ],
+  "mixes": [
+    { "id": "mix-50r", "name": "Al 6061 (50% Recycled)", "parts": [ { "materialId": 1, "percent": 50 }, { "materialId": 2, "percent": 50 } ], "calculatedCo2": 4.37 }
+  ]
+}
