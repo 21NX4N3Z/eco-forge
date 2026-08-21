@@ -8,6 +8,7 @@ import { LoadingSkeleton, ErrorCard } from './components/StatusCards'
 import SdgBadges from './components/SdgBadges'
 import ActivityFeed from './components/ActivityFeed'
 import Milestones from './components/Milestones'
+import ViewToggle from './components/ViewToggle'
 import { IconTwin, IconDownload, IconSpark } from './components/icons'
 
 const DEFAULT_SPEC: PartSpec = {
@@ -33,6 +34,7 @@ export default function App() {
   const { data, source, loading, error, addMaterial } = useSeed(offline)
   const [spec, setSpec] = useState<PartSpec>(DEFAULT_SPEC)
   const [tab, setTab] = useState<Tab>('twin')
+  const [view, setView] = useState<'technical' | 'business'>('technical')
 
   return (
     <div className="min-h-screen max-w-7xl mx-auto p-4 lg:p-6 space-y-4 text-[16px]">
@@ -59,7 +61,7 @@ export default function App() {
       )}
 
       {/* Tabs */}
-      <nav className="flex gap-2 flex-wrap">
+      <nav className="flex gap-2 flex-wrap items-center">
         {TABS.map((t) => {
           const Ic = t.icon
           return (
@@ -68,6 +70,9 @@ export default function App() {
             </button>
           )
         })}
+        <div className="ml-auto">
+          <ViewToggle view={view} setView={setView} />
+        </div>
       </nav>
 
       {loading && <LoadingSkeleton />}
@@ -76,7 +81,7 @@ export default function App() {
       {/* Body: main + right rail */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 space-y-4">
-          {!loading && tab === 'twin' && <UnifiedTwin spec={spec} setSpec={setSpec} data={data} addMaterial={addMaterial} />}
+          {!loading && tab === 'twin' && <UnifiedTwin spec={spec} setSpec={setSpec} data={data} addMaterial={addMaterial} view={view} />}
           {!loading && tab === 'export' && <PdfReport spec={spec} data={data} />}
         </div>
         <aside className="space-y-4">
