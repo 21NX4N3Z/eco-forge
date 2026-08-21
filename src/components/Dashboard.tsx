@@ -1,7 +1,7 @@
 import { Alternative, CalcResult, PartSpec, SeedData } from '../types'
 import { evaluate } from '../engine/cbam'
 import { generateAlternatives } from '../engine/optimize'
-import { PieChart, Pie, Cell, BarChart, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import WhyButton from './WhyButton'
 import SdgBadges from './SdgBadges'
 import { IconCheck, IconAlert } from './icons'
