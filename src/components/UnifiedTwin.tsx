@@ -59,7 +59,12 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
   const [curSym, setCurSym] = useState<'THB' | 'EUR' | 'USD' | 'JPY' | 'CNY' | 'GBP' | 'SGD'>('THB')
   const RATES: Record<string, number> = { THB: 1, EUR: 0.026, USD: 0.028, JPY: 4.3, CNY: 0.20, GBP: 0.022, SGD: 0.038 }
   const SYM: Record<string, string> = { THB: '฿', EUR: '€', USD: '$', JPY: '¥', CNY: '¥', GBP: '£', SGD: 'S$' }
-  const money = (thb: number) => `${SYM[curSym]}${(thb * (RATES[curSym] ?? 1)).toLocaleString('en-US', { maximumFractionDigits: 0 })}`
+  const money = (thb: number) => {
+    const v = thb * (RATES[curSym] ?? 1)
+    if (v >= 1_000_000) return `${SYM[curSym]}${(v / 1_000_000).toLocaleString('en-US', { maximumFractionDigits: 2 })}M`
+    if (v >= 10_000) return `${SYM[curSym]}${Math.round(v / 1000)}K`
+    return `${SYM[curSym]}${v.toLocaleString('en-US', { maximumFractionDigits: 0 })}`
+  }
 
   const norm = (v: number, key: 'tensileStrength' | 'yieldStrength' | 'hardness' | 'thermalCond' | 'electricalCond' | 'corrosion') => {
     const vals = mats.map((m) => m[key] as number); const max = Math.max(...vals, 1); return Math.round((v / max) * 100)
@@ -207,16 +212,16 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         </div>
       )}
 
-      {/* KPI strip */}
+      {/* KPI strip — numbers auto-shrink when long, never overflow */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="card"><div className="label">Carbon Score</div><div className="text-[34px] leading-none font-bold text-accent tabular-nums">{cur.score}<span className="text-ink-mute text-xl">/100</span></div></div>
-        <div className="card"><div className="label">CO₂ / ปี</div><div className="text-[34px] leading-none font-bold text-ink tabular-nums">{(cur.annualCo2/1000).toFixed(2)}<span className="text-ink-mute text-xl"> t</span></div></div>
-        <div className="card"><div className="label">ต้นทุน / ปี</div><div className="text-[30px] leading-none font-bold text-ink tabular-nums">{money(cur.annualCost)}</div>
+        <div className="card min-w-0"><div className="label">Carbon Score</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-accent tabular-nums break-all">{cur.score}<span className="text-ink-mute text-xl">/100</span></div></div>
+        <div className="card min-w-0"><div className="label">CO₂ / ปี</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-ink tabular-nums break-all">{(cur.annualCo2/1000).toFixed(2)}<span className="text-ink-mute text-xl"> t</span></div></div>
+        <div className="card min-w-0"><div className="label">ต้นทุน / ปี</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ink tabular-nums break-all">{money(cur.annualCost)}</div>
           <select className="mt-1 card-inset py-0.5 text-xs" value={curSym} onChange={(e) => setCurSym(e.target.value as any)}>
             {Object.keys(RATES).map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
-        <div className="card"><div className="label">CBAM 2028</div><div className={`text-[34px] leading-none font-bold tabular-nums ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>€{cbam2028}<span className="text-ink-mute text-xl">/yr</span></div></div>
+        <div className="card min-w-0"><div className="label">CBAM 2028</div><div className={`text-[clamp(24px,3vw,34px)] leading-none font-bold tabular-nums break-all ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>€{cbam2028}<span className="text-ink-mute text-xl">/yr</span></div></div>
       </div>
 
       {/* Controls */}
@@ -327,7 +332,7 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
           </div>
         </div>
         {bestRes && (
-          <div className="mt-3 text-sm text-ok">
+          <div className="mt-3 text-sm text-ok break-words leading-relaxed">
             Best: Option {best?.label} → ลด CO₂ {((cur.annualCo2 - bestRes.annualCo2)/1000).toFixed(2)} t/yr · ประหยัด {money(cur.annualCost - bestRes.annualCost)}/yr · CBAM 2028 €{bestRes.cbam.find((c) => c.year === 2028)?.taxEur ?? 0}
           </div>
         )}
