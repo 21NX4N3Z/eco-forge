@@ -43,20 +43,19 @@ function currentEnv(): EnvLike {
   }
 }
 
-async function fetchTable(cfg: NocoConfig, tableId: string): Promise<Record<string, unknown>[] | null> {
+async function fetchTable(key: string): Promise<Record<string, unknown>[] | null> {
   const ctrl = new AbortController()
   const timer = setTimeout(() => ctrl.abort(), 3000) // hard cap — demo must never hang
   try {
-    const res = await fetch(`${cfg.baseUrl}/api/v2/tables/${tableId}/records?limit=1000`, {
-      headers: { 'xc-token': cfg.token },
-      signal: ctrl.signal,
-    })
+    // Server-side proxy (api/noco.ts) holds NOCODB_* env — nothing secret in the bundle.
+    // 501 = proxy not configured yet, 502/504 = upstream problem → local fallback either way.
+    const res = await fetch(`/api/noco?table=${encodeURIComponent(key)}`, { signal: ctrl.signal })
     if (!res.ok) return null
     const json: unknown = await res.json()
     const list = (json as { list?: unknown })?.list
     return Array.isArray(list) ? (list as Record<string, unknown>[]) : null
   } catch {
-    return null // abort / CORS / network / bad JSON → caller falls back
+    return null // abort / network / bad JSON → caller falls back
   } finally {
     clearTimeout(timer)
   }
@@ -157,25 +156,20 @@ function mapMix(r: Record<string, unknown>): MaterialMix | null {
   }
 }
 
-/** Pull every configured table; returns null if nothing usable came back. */
-export async function fetchNocoSeed(cfg: NocoConfig): Promise<Partial<SeedData> | null> {
-  const wanted: [keyof NocoConfig['tables'] & string, (r: Record<string, unknown>) => unknown][] = [
+/** Pull every configured table via the /api/noco proxy; null if nothing usable. */
+export async function fetchNocoSeed(_cfg: NocoConfig | null): Promise<Partial<SeedData> | null> {
+  const wanted: [string, (r: Record<string, unknown>) => unknown][] = [
     ['materials', mapMaterial],
     ['processes', mapProcess],
     ['cbam_rates', mapCbamRate],
     ['suppliers', mapSupplier],
     ['material_mixes', mapMix],
   ]
-  const jobs = wanted
-    .map(([key, map]) => ({ key, map, id: cfg.tables[key] }))
-    .filter((j) => j.id)
-  if (!jobs.length) return null // nothing configured → treat as no-credentials
-
   const mapped: Partial<SeedData> = {}
   let gotAny = false
   await Promise.all(
-    jobs.map(async ({ key, map, id }) => {
-      const rows = await fetchTable(cfg, id)
+    wanted.map(async ([key, map]) => {
+      const rows = await fetchTable(key)
       if (!rows) return
       const clean = rows.map(map).filter((x) => x != null)
       if (!clean.length) return
