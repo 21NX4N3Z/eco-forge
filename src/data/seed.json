@@ -8,7 +8,9 @@
     { "id": 3, "name": "Steel 1018", "alloy": "Low-Carbon Steel (AISI 1018)", "density": 7850, "emissionFactor": 2.05, "costPerKg": 45, "recyclable": true,
       "tensileStrength": 440, "yieldStrength": 370, "hardness": 126, "elongation": 15, "corrosion": 2, "thermalCond": 51, "electricalCond": 12, "recycleGrade": "A", "porosityClass": "ASTM E155 Class 2", "rohs": true, "source": "EcoInvent" },
     { "id": 4, "name": "AlSi10Mg (Additive powder)", "alloy": "Al-Si-Mg (AA AlSi10Mg)", "density": 2670, "emissionFactor": 3.10, "costPerKg": 520, "recyclable": true,
-      "tensileStrength": 360, "yieldStrength": 240, "hardness": 105, "elongation": 8, "corrosion": 4, "thermalCond": 155, "electricalCond": 38, "recycleGrade": "B", "porosityClass": "ASTM E155 Class 3 (as-printed)", "rohs": true, "source": "EcoInvent" }
+      "tensileStrength": 360, "yieldStrength": 240, "hardness": 105, "elongation": 8, "corrosion": 4, "thermalCond": 155, "electricalCond": 38, "recycleGrade": "B", "porosityClass": "ASTM E155 Class 3 (as-printed)", "rohs": true, "source": "EcoInvent" },
+    { "id": 5, "name": "AM-C7X Graphene-Al MMC", "alloy": "Al 6061 Matrix + 5% Graphene Reinforcement", "density": 2675, "emissionFactor": 13.83, "costPerKg": 3400, "recyclable": false,
+      "tensileStrength": 415, "yieldStrength": 355, "hardness": 150, "elongation": 4, "corrosion": 3, "thermalCond": 210, "electricalCond": 50, "recycleGrade": "D", "porosityClass": "ASTM E155 Class 2 (MMC interface)", "rohs": true, "source": "Rule-of-Mixtures est.: 0.95×Al6061(8.24) + 0.05×Graphene(~120)" }
   ],
   "processes": [
     { "id": 1, "name": "CNC from Billet", "energyIntensity": 2.1, "scrapRate": 0.70, "procEmission": 0.40, "extraCostPerKg": 1000 },
