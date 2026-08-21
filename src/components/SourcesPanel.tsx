@@ -1,9 +1,40 @@
 import { SOURCES } from '../data/sources'
+import { CERTS } from '../data/certs'
+
+const STATUS_STYLE: Record<string, string> = {
+  achieved: 'pill-ok',
+  'in-progress': 'pill-warn',
+  planned: 'pill-accent',
+  target: 'pill-warn',
+}
+const STATUS_LABEL: Record<string, string> = {
+  achieved: '✓ ตามมาตรฐานแล้ว', 'in-progress': '◐ กำลังดำเนินการ', planned: '◉ dSURE roadmap', target: '○ เป้าหมายระยะถัดไป',
+}
 
 export default function SourcesPanel() {
   const entries = Object.values(SOURCES)
   return (
     <div className="space-y-4">
+      {/* Certification & compliance roadmap */}
+      <div className="card">
+        <div className="label mb-3">การรับรอง &amp; มาตรฐาน — สถานะ EcoForge</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {CERTS.map((c) => (
+            <div key={c.id} className="card-inset">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <span className="text-[15px] font-semibold text-ink">{c.name}</span>
+                <span className={`pill ${STATUS_STYLE[c.status]}`}>{STATUS_LABEL[c.status]}</span>
+              </div>
+              <div className="text-[13px] text-accent">{c.org}</div>
+              <div className="text-xs text-ink-mute mt-1">{c.scope}</div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 text-xs text-ink-mute">
+          💡 dSURE = ตรารับรองผลิตภัณฑ์ดิจิทัลของ depa (Security/Safety/Functionality) — EcoForge วางแผนสมัครเพื่อสร้างความเชื่อมั่นให้ SME ที่ส่งข้อมูลโรงงาน
+        </div>
+      </div>
+
       <div className="card">
         <div className="label mb-1">แหล่งอ้างอิงทั้งหมด — ทุกตัวเลขใน EcoForge ย้อนกลับถึงเอกสารทางการ</div>
         <div className="text-xs text-ink-mute">

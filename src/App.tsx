@@ -10,6 +10,7 @@ import ActivityFeed from './components/ActivityFeed'
 import Milestones from './components/Milestones'
 import ViewToggle from './components/ViewToggle'
 import SourcesPanel from './components/SourcesPanel'
+import { badgeLine } from './data/certs'
 import { IconTwin, IconDownload, IconSpark, IconDatabase } from './components/icons'
 
 const DEFAULT_SPEC: PartSpec = {
@@ -100,6 +101,10 @@ export default function App() {
       </div>
         </>
       )}
+
+      <footer className="text-center text-[11px] text-ink-mute pt-2 pb-4 border-t border-line">
+        EcoForge · Carbon Engineering for Thai SMEs · EU CBAM methodology · {badgeLine()}
+      </footer>
     </div>
   )
 }
