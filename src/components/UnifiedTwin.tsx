@@ -9,6 +9,7 @@ import {
 } from 'recharts'
 import WhyButton from './WhyButton'
 import SdgBadges from './SdgBadges'
+import { ManualMaterialForm, HistoryPanel, SupplierPanel } from './InputSources'
 
 const COLORS = ['#0075de', '#dd5b00', '#1aae39', '#a39e98']
 
@@ -27,8 +28,9 @@ const VIZ_LABEL: Record<Viz, string> = {
   radial: 'วงแหวน', hbar: 'แท่งนอน', vbar: 'แท่งตั้ง', radar: 'เรดาร์',
 }
 
-export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; setSpec: (s: PartSpec) => void; data: SeedData }) {
+export default function UnifiedTwin({ spec, setSpec, data, addMaterial }: { spec: PartSpec; setSpec: (s: PartSpec) => void; data: SeedData; addMaterial: (m: any) => void }) {
   const set = (p: Partial<PartSpec>) => setSpec({ ...spec, ...p })
+  const [srcPanel, setSrcPanel] = useState<'standard' | 'manual' | 'history' | 'supplier'>('standard')
   const [show, setShow] = useState<Record<ChartKey, boolean>>({
     breakdown: true, trend: true, mrv: true, radar: true, strength: true,
   })
@@ -211,12 +213,22 @@ export default function UnifiedTwin({ spec, setSpec, data }: { spec: PartSpec; s
           <div className="label mb-2">แหล่งข้อมูลนำเข้า (Input Source)</div>
           <div className="flex flex-wrap gap-2">
             {(['standard', 'manual', 'history', 'supplier'] as const).map((s) => (
-              <button key={s} onClick={() => set({ inputSource: s })}
+              <button key={s} onClick={() => { set({ inputSource: s }); setSrcPanel(s) }}
                 className={`btn text-xs py-1.5 ${spec.inputSource === s ? 'btn-active' : ''}`}>
                 {s === 'standard' ? '① Standard DB' : s === 'manual' ? '② Manual Input' : s === 'history' ? '③ Factory History' : '④ Supplier DB'}
               </button>
             ))}
           </div>
+          {srcPanel === 'manual' && (
+            <ManualMaterialForm nextId={Math.max(...data.materials.map((m) => m.id)) + 1}
+              onAdd={(m) => { addMaterial(m); set({ materialId: m.id }) }} />
+          )}
+          {srcPanel === 'history' && (
+            <HistoryPanel spec={spec} onRestore={(s) => setSpec(s)} />
+          )}
+          {srcPanel === 'supplier' && (
+            <SupplierPanel data={data} onPick={(mid) => set({ materialId: mid, inputSource: 'supplier' })} />
+          )}
         </div>
         <div>
           <div className="label mb-1">วัสดุ</div>

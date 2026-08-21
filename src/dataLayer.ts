@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import seedJson from './data/seed.json'
-import { SeedData } from './types'
+import { Material, SeedData } from './types'
 
 /**
  * Data layer. Local seed.json is the DEMO SOURCE OF TRUTH (offline-safe).
@@ -25,5 +25,9 @@ export function useSeed(offline: boolean) {
     setSource('local')
   }, [offline])
 
-  return { data, source, loading, error }
+  const addMaterial = (m: Material) => {
+    setData((d) => (d.materials.some((x) => x.id === m.id) ? d : { ...d, materials: [...d.materials, m] }))
+  }
+
+  return { data, source, loading, error, addMaterial }
 }

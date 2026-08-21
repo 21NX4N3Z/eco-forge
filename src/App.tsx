@@ -30,7 +30,7 @@ const TABS: { id: Tab; label: string; icon: typeof IconTwin }[] = [
 
 export default function App() {
   const [offline, setOffline] = useState(false)
-  const { data, source, loading, error } = useSeed(offline)
+  const { data, source, loading, error, addMaterial } = useSeed(offline)
   const [spec, setSpec] = useState<PartSpec>(DEFAULT_SPEC)
   const [tab, setTab] = useState<Tab>('twin')
 
@@ -76,7 +76,7 @@ export default function App() {
       {/* Body: main + right rail */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 space-y-4">
-          {!loading && tab === 'twin' && <UnifiedTwin spec={spec} setSpec={setSpec} data={data} />}
+          {!loading && tab === 'twin' && <UnifiedTwin spec={spec} setSpec={setSpec} data={data} addMaterial={addMaterial} />}
           {!loading && tab === 'export' && <PdfReport spec={spec} data={data} />}
         </div>
         <aside className="space-y-4">
