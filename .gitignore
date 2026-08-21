@@ -37,3 +37,6 @@ pnpm-debug.log*
 # Local data (keep seed committed, ignore runtime overrides)
 *.local.json
 tmp/
+
+.vercel
+.env*
