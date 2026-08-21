@@ -1,30 +1,26 @@
+// Real CBAM timeline per TGO CBAM Aluminium Manual (Aug 2024) + EU regulation.
 const MS = [
-  { year: 2026, label: 'เริ่มรายงาน CBAM', note: 'Transitional period — ส่งรายงานembedding quota', done: true },
-  { year: 2027, label: 'ขยายขอบเขต', note: 'เพิ่ม indirect emissions (electricity)', done: true },
-  { year: 2028, label: 'เริ่มจ่ายภาษี', note: 'Financial obligation เต็มรูปแบบ', done: false, active: true },
-  { year: 2030, label: 'ลด free allocation', note: 'ETS แจกฟรีลดลง 50%', done: false },
-  { year: 2033, label: 'เต็มร้อย', note: 'No free allocation — ภาษีเต็ม', done: false },
+  { date: 'ต.ค. 2566 (2023)', label: 'Transitional Period เริ่ม', note: 'ผู้นำเข้ารายงาน embedded emissions — ยังไม่เสียค่าธรรมเนียม · ไม่บังคับทวนสอบ', state: 'done' },
+  { date: 'ธ.ค. 2568 (2025)', label: 'Transitional Period สิ้นสุด', note: 'เตรียมข้อมูล actual emissions + เอกสารทวนสอบให้พร้อม', state: 'active' },
+  { date: 'ม.ค. 2569 (2026)', label: 'Definitive Period เริ่ม', note: 'ซื้อ CBAM certificates ตามปริมาณคาร์บอนจริง — obligation ไล่ขึ้นถึง 100% ปี 2034', state: 'upcoming' },
+  { date: '2034', label: 'Phase-in เต็มรูปแบบ', note: 'CBAM แทนที่ใบอนุญาต ETS ฟรีโดยสมบูรณ์', state: 'upcoming' },
 ]
 
 export default function Milestones() {
   return (
     <div className="card">
-      <div className="label mb-4">ไทม์ไลน์ CBAM → 2033</div>
-      <ol className="relative border-l border-line ml-2 space-y-4">
+      <div className="label mb-3">ไทม์ไลน์ CBAM (ตามกฎจริง EU/TGO)</div>
+      <div className="space-y-3">
         {MS.map((m) => (
-          <li key={m.year} className="ml-4">
-            <span className={`absolute -left-[7px] w-3 h-3 rounded-full border-2 ${
-              m.done ? 'bg-ok border-ok' : m.active ? 'bg-accent border-accent' : 'bg-surface-card border-line'
-            }`} />
-            <div className="flex items-baseline gap-2">
-              <span className="text-[15px] font-semibold text-ink">{m.year}</span>
-              <span className="text-[13px] text-ink-soft">{m.label}</span>
-              {m.active && <span className="pill pill-accent">ปัจจุบัน</span>}
+          <div key={m.label} className="flex gap-2.5">
+            <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${m.state === 'done' ? 'bg-ok' : m.state === 'active' ? 'bg-warn animate-pulse' : 'bg-line'}`} />
+            <div>
+              <div className="text-[13px] font-semibold text-ink">{m.date} — {m.label}</div>
+              <div className="text-xs text-ink-mute">{m.note}</div>
             </div>
-            <div className="text-[12px] text-ink-mute">{m.note}</div>
-          </li>
+          </div>
         ))}
-      </ol>
+      </div>
     </div>
   )
 }

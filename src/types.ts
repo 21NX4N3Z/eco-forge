@@ -67,6 +67,7 @@ export type InputSource = 'standard' | 'manual' | 'history' | 'supplier'
 export interface PartSpec {
   inputSource: InputSource
   partType: string
+  cnCode?: string // EU CN code (e.g. '76061250') — picks real CBAM benchmark
   netMass: number // kg
   materialId: number
   recycledPercent: number // 0..100
@@ -103,6 +104,8 @@ export interface CalcResult {
   score: number // 0..100
   cbam: CbamYear[]
   mrv: Mrv
+  benchmark: number // EU benchmark used (tCO2e/t) — real value by CN code
+  dvTh: number | null // Thailand default value fallback (tCO2e/t)
 }
 
 export interface Alternative {
