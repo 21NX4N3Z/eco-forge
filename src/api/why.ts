@@ -88,8 +88,24 @@ export async function askWhy(req: WhyRequest): Promise<WhyResponse> {
       body: JSON.stringify(req),
     })
     if (res.ok) {
-      const data = (await res.json()) as Omit<WhyResponse, 'source'>
-      if (data.explanation) return { ...data, source: 'ai' }
+      const j = await res.json()
+      // proxy returns raw OpenRouter envelope — unwrap choices[0].message.content
+      let data: any = j
+      if (!data.explanation && j?.choices?.[0]?.message?.content) {
+        try {
+          data = JSON.parse(String(j.choices[0].message.content).replace(/```json|```/g, '').trim())
+        } catch {
+          data = null
+        }
+      }
+      if (data?.explanation && data?.suggestion) {
+        return {
+          explanation: String(data.explanation),
+          suggestion: String(data.suggestion),
+          severity: (['high', 'med', 'low'].includes(data.severity) ? data.severity : 'med'),
+          source: 'ai',
+        }
+      }
     }
   } catch {
     /* fall through */
