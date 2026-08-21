@@ -35,7 +35,7 @@ export default function ProcessBuilder({
             >
               <Icon className="w-6 h-6" />
               <span className="text-sm font-semibold">{s.label}</span>
-              <span className="text-[10px] text-slate-400">{s.desc}</span>
+              <span className="text-[10px] text-slate-500">{s.desc}</span>
             </button>
           )
         })}

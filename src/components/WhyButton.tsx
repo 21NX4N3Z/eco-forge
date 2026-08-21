@@ -37,7 +37,7 @@ export default function WhyButton({ req, label = 'Why this?' }: { req: WhyReques
           <div className="flex items-center gap-2 mb-1 font-semibold text-sm">
             <Icon className="w-4 h-4" /> {loading ? 'Analyzing…' : res?.explanation}
           </div>
-          {res && <p className="text-xs text-slate-300">{res.suggestion}</p>}
+          {res && <p className="text-xs text-slate-600">{res.suggestion}</p>}
         </div>
       )}
     </div>

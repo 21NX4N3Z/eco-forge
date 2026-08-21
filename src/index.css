@@ -2,35 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
+:root { color-scheme: light; }
 
 html, body, #root { height: 100%; }
 body {
-  @apply bg-base-900 text-slate-100 font-mono antialiased;
+  @apply bg-base-900 text-slate-900 font-mono antialiased;
   margin: 0;
 }
 
-/* Thin machine-style scrollbars */
+/* Thin scrollbars */
 *::-webkit-scrollbar { width: 8px; height: 8px; }
-*::-webkit-scrollbar-thumb { @apply bg-base-600 rounded; }
-*::-webkit-scrollbar-track { @apply bg-base-800; }
+*::-webkit-scrollbar-thumb { @apply bg-base-500 rounded; }
+*::-webkit-scrollbar-track { @apply bg-base-700; }
 
 @layer components {
   .card {
-    @apply bg-base-800 border border-base-600 rounded-lg p-4;
+    @apply bg-base-800 border border-base-600 rounded-lg p-4 shadow-sm;
   }
   .btn {
     @apply px-3 py-2 rounded-md text-sm font-semibold transition-colors
-           border border-base-500 bg-base-700 hover:bg-base-600 disabled:opacity-40;
+           border border-base-500 bg-base-700 hover:bg-base-600 text-slate-800 disabled:opacity-40;
   }
   .btn-primary {
-    @apply bg-signal-cyan/20 border-signal-cyan/50 text-signal-cyan hover:bg-signal-cyan/30;
+    @apply bg-signal-cyan/15 border-signal-cyan/50 text-signal-cyan hover:bg-signal-cyan/25;
   }
   .btn-active {
-    @apply bg-signal-cyan/30 border-signal-cyan text-signal-cyan;
+    @apply bg-signal-cyan/20 border-signal-cyan text-signal-cyan;
   }
-  .label { @apply text-xs uppercase tracking-wider text-slate-400; }
-  .stat { @apply text-2xl font-bold text-slate-100; }
+  .label { @apply text-xs uppercase tracking-wider text-slate-500; }
+  .stat { @apply text-2xl font-bold text-slate-900; }
 }
 
 /* ---- PDF / print container: rgb-only, never oklch (html2canvas safe) ---- */

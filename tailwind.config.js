@@ -5,19 +5,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Machine aesthetic — dark slate base + cyan/green signal
+        // Light theme — clean white/slate base + readable signal tones
         base: {
-          900: '#070b14',
-          800: '#0b1120',
-          700: '#111a2e',
-          600: '#1a2640',
-          500: '#243355',
+          900: '#f8fafc', // page bg (slate-50)
+          800: '#ffffff', // card bg
+          700: '#f1f5f9', // input/inset bg (slate-100)
+          600: '#cbd5e1', // border (slate-300)
+          500: '#94a3b8', // muted border (slate-400)
         },
         signal: {
-          cyan: '#22d3ee',
-          green: '#34d399',
-          amber: '#fbbf24',
-          red: '#f87171',
+          cyan: '#0891b2', // cyan-600 (readable on white)
+          green: '#059669', // emerald-600
+          amber: '#d97706', // amber-600
+          red: '#dc2626',   // red-600
         },
       },
       fontFamily: {

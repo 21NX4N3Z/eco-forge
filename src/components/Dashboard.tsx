@@ -53,7 +53,7 @@ export default function Dashboard({
           <div className="text-4xl font-bold text-signal-cyan">{cur.score}/100</div>
         </div>
         <div className="text-right">
-          <div className="text-sm text-slate-400">CBAM Tax Liability (2028)</div>
+          <div className="text-sm text-slate-500">CBAM Tax Liability (2028)</div>
           <div className={`text-2xl font-bold ${cbam2028 > 0 ? 'text-signal-red' : 'text-signal-green'}`}>
             €{cbam2028}/yr {cbam2028 > 0 ? '🔴'.replace('🔴', '') : ''}
             {cbam2028 > 0 ? <IconAlert className="w-5 h-5 inline" /> : <IconCheck className="w-5 h-5 inline" />}
@@ -129,7 +129,7 @@ export default function Dashboard({
         <div className="label mb-2">AI Recommendation — Compare Options</div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="text-slate-400">
+            <thead className="text-slate-500">
               <tr><th className="text-left">Option</th><th>CO₂/yr</th><th>Cost/yr</th><th>CBAM 2028</th><th>Saved</th></tr>
             </thead>
             <tbody>
@@ -148,7 +148,7 @@ export default function Dashboard({
       </div>
 
       {view === 'technical' && (
-        <div className="card text-xs text-slate-400 space-y-1">
+        <div className="card text-xs text-slate-500 space-y-1">
           <div className="label">Technical View</div>
           <div>Gross mass: {cur.grossMass.toFixed(2)} kg · Scrap: {cur.scrapMass.toFixed(2)} kg</div>
           <div>Mix CO₂: {cur.mixCo2.toFixed(2)} kg/kg · Per-part: {cur.perPartCo2.toFixed(3)} kg</div>
@@ -156,7 +156,7 @@ export default function Dashboard({
         </div>
       )}
       {view === 'business' && (
-        <div className="card text-xs text-slate-400 space-y-1">
+        <div className="card text-xs text-slate-500 space-y-1">
           <div className="label">Business View</div>
           <div>ต้นทุน/ปี: ฿{(cur.annualCost / 1000).toFixed(0)}K · ประหยัดหากปรับปรุง: ฿{savedCost.toFixed(0)}K/yr</div>
           <div>Payback (Alt {best?.label}): ~8 เดือน</div>
@@ -168,7 +168,7 @@ export default function Dashboard({
 
 function Row({ label, r, base }: { label: string; r: CalcResult; base?: boolean }) {
   return (
-    <tr className={base ? 'text-slate-400' : 'text-slate-100'}>
+    <tr className={base ? 'text-slate-500' : 'text-slate-900'}>
       <td className="py-1">{label}</td>
       <td className="text-center">{(r.annualCo2 / 1000).toFixed(2)} t</td>
       <td className="text-center">฿{(r.annualCost / 1000).toFixed(0)}K</td>
