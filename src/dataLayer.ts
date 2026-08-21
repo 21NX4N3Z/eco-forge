@@ -206,15 +206,11 @@ export function useSeed(offline: boolean) {
       setSource('local')
       return
     }
-    const cfg = nocoConfigFromEnv(currentEnv())
-    if (!cfg) {
-      setData(seedJson as SeedData)
-      setSource('local')
-      return
-    }
+    // Proxy-based: credentials live server-side only (api/noco.ts). No client
+    // gate needed — an unconfigured proxy returns 501 and we fall back to local.
     let cancelled = false
     setLoading(true)
-    fetchNocoSeed(cfg)
+    fetchNocoSeed(null)
       .then((remote) => {
         if (cancelled) return
         setData(mergeSeed(seedJson as SeedData, remote))
