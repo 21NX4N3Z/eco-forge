@@ -139,6 +139,14 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
 </head>
 <body>
 <div id="prog"></div>
+<!-- SDG logos — fixed top-right on every slide -->
+<div id="sdgfix" style="position:fixed; top:2.4vh; right:2.4vw; z-index:15; display:flex; gap:.35vw; opacity:0; transition:opacity .5s;">
+  <img src="/sdg/TGG_Icon_Color_07.png" alt="SDG7" style="height:4.6vh; border-radius:3px; box-shadow:0 1px 6px rgba(0,0,0,.10);">
+  <img src="/sdg/TGG_Icon_Color_09.png" alt="SDG9" style="height:4.6vh; border-radius:3px; box-shadow:0 1px 6px rgba(0,0,0,.10);">
+  <img src="/sdg/TGG_Icon_Color_12.png" alt="SDG12" style="height:4.6vh; border-radius:3px; box-shadow:0 1px 6px rgba(0,0,0,.10);">
+  <img src="/sdg/TGG_Icon_Color_13.png" alt="SDG13" style="height:4.6vh; border-radius:3px; box-shadow:0 1px 6px rgba(0,0,0,.10);">
+  <img src="/sdg/TGG_Icon_Color_17.png" alt="SDG17" style="height:4.6vh; border-radius:3px; box-shadow:0 1px 6px rgba(0,0,0,.10);">
+</div>
 
 <!-- S0 BLANK -->
 <section class="slide blank active">
@@ -378,6 +386,9 @@ function show(n){
   if(n===i) { onEnter(i); return; }
   slides[i].classList.remove('active'); i=n; slides[i].classList.add('active');
   document.getElementById('prog').style.width=((i)/(slides.length-1)*100)+'%';
+  // hide SDG corner on blank intro
+  document.getElementById('sdgfix').style.opacity = (i===0 ? '0' : '.92');
+  document.getElementById('sdgfix').style.transition = 'opacity .5s';
   onEnter(i);
 }
 
