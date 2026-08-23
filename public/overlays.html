@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>EcoForge — Overlay Assets (for video editing)</title>
+<title>EcoForge — Full Overlay Pack (every section)</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Sarabun:wght@400;600;700&display=swap');
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -17,7 +17,6 @@ body { font-family:'Inter','Sarabun',sans-serif; background:#111418; color:#e8ea
 .bgb.on { background:#0075de; border-color:#0075de; color:#fff; }
 .note { font-size:12px; color:#6b7589; margin-left:auto; }
 
-/* the recording stage */
 #stage { margin-top:64px; position:relative; width:100%; height:calc(100vh - 88px); border-radius:12px; overflow:hidden;
          transition:background .3s; }
 body[data-bg=check] #stage { background:repeating-conic-gradient(#1a1e26 0% 25%, #14181f 0% 50%) 0 0/28px 28px; }
@@ -27,7 +26,6 @@ body[data-bg=black] #stage { background:#000000; }
 
 /* ── generic pop-up asset ── */
 .asset { position:absolute; opacity:0; }
-/* loop timeline: 0-15% fly in · 15-85% hold (with float) · 85-100% fly out. total var --T */
 @keyframes pop {
   0%   { opacity:0; transform:translateY(40px) scale(.85); filter:blur(6px); }
   12%  { opacity:1; transform:translateY(0) scale(1); filter:blur(0);
@@ -42,113 +40,516 @@ body[data-bg=black] #stage { background:#000000; }
   86%  { opacity:1; transform:translateX(-6px); }
   100% { opacity:0; transform:translateX(-70px); }
 }
-@keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
-
 .pu { background:#ffffff; color:#0f1115; border-radius:16px;
       box-shadow:0 12px 44px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.18);
-      animation-name:pop; animation-duration:var(--T,6s); animation-iteration-count:infinite;
+      animation-name:pop; animation-duration:var(--T,7s); animation-iteration-count:infinite;
       animation-timing-function:cubic-bezier(.22,.9,.3,1); will-change:transform,opacity; }
 .pu.sl { animation-name:slideL; }
 .pu .lbl { font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#0075de; margin-bottom:4px; }
 .pu .val { font-size:34px; font-weight:800; line-height:1.1; white-space:nowrap; }
 .pu .sub { font-size:14px; color:#6b7280; margin-top:4px; }
-.chiprow { display:flex; gap:8px; margin-top:8px; }
+.chiprow { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
 .chip { font-size:12px; font-weight:700; padding:3px 10px; border-radius:999px; }
 .chip.ok { background:#e7f5ea; color:#157a2c; }
 .chip.bad { background:#fdeaea; color:#b02a2a; }
 .chip.bl { background:#e8f2ff; color:#0075de; }
+.chip.wr { background:#fdf1e6; color:#c05a00; }
+.ok-t { color:#157a2c; } .bad-t { color:#d43a3a; } .bl-t { color:#0075de; } .wr-t { color:#c05a00; }
+.strike { text-decoration:line-through; color:#9ca3af; }
 
-/* specific assets */
-.a-co2 { left:8%; top:20%; --T:7s; padding:20px 26px; }
-.a-co2 .val span.ok { color:#157a2c; } .a-co2 .val span.bad { color:#d43a3a; }
-.a-badge { right:8%; top:16%; --T:7s; animation-delay:1.2s; padding:16px 22px; display:flex; align-items:center; gap:12px; }
+/* ═══ SPECIFIC ASSETS ═══ */
+
+/* A01 title sting */
+.a-title { left:50%; top:8%; transform:translateX(-50%); --T:9s; padding:26px 42px; text-align:center; }
+.pu.pc.a-title { animation-name:popC; }
+.a-title .logo { display:flex; align-items:center; justify-content:center; gap:14px; }
+.a-title .esq { width:58px; height:58px; border-radius:14px; background:#0075de; color:#fff; font-size:34px; font-weight:800; display:grid; place-items:center; }
+.a-title .nm { font-size:44px; font-weight:800; letter-spacing:-.01em; color:#0f1115; }
+.a-title .tg { font-size:15px; color:#6b7280; margin-top:8px; }
+
+/* A02 KPI strip */
+.a-kpi { left:50%; top:24%; transform:translateX(-50%); --T:11s; padding:20px 24px; }
+.pu.pc.a-kpi { animation-name:popC; }
+.kpirow { display:flex; gap:14px; align-items:stretch; }
+.kpi { min-width:118px; }
+.kpi .k { font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:#6b7280; }
+.kpi .v { font-size:26px; font-weight:800; tabular-nums; line-height:1.15; white-space:nowrap; }
+.kpi .v small { font-size:14px; color:#6b7280; font-weight:700; }
+.kpisep { width:1px; background:#e5e7eb; }
+
+/* A03 co2 twin */
+.a-co2 { left:4%; top:14%; --T:8s; padding:20px 26px; }
+.a-badge { right:5%; top:12%; --T:8s; animation-delay:1.2s; padding:16px 22px; display:flex; align-items:center; gap:12px; }
 .a-badge .dot { width:38px; height:38px; border-radius:50%; background:#e7f5ea; color:#157a2c; display:grid; place-items:center; font-size:20px; font-weight:800; }
-.a-badge.warn .dot { background:#fdeaea; color:#b02a2a; }
 .a-badge .t1 { font-size:18px; font-weight:800; }
 .a-badge .t2 { font-size:13px; color:#6b7280; }
-.a-pay { left:12%; bottom:18%; --T:7s; animation-delay:2.4s; padding:18px 24px; }
+
+/* A05 donut */
+.a-donut { left:4%; top:42%; --T:9s; animation-delay:.5s; padding:18px 24px; }
+.donutwrap { display:flex; align-items:center; gap:18px; }
+.donut { transform:rotate(-90deg); }
+.donut circle.seg { fill:none; stroke-width:20; stroke-linecap:butt; }
+.donut .s1 { stroke:#0075de; stroke-dasharray:0 340; animation:dseg1 9s cubic-bezier(.22,.9,.3,1) infinite; }
+.donut .s2 { stroke:#dd5b00; stroke-dasharray:0 340; animation:dseg2 9s cubic-bezier(.22,.9,.3,1) infinite; }
+.donut .s3 { stroke:#1aae39; stroke-dasharray:0 340; animation:dseg3 9s cubic-bezier(.22,.9,.3,1) infinite; }
+@keyframes dseg1 { 0%,4%{stroke-dasharray:0 340} 22%,84%{stroke-dasharray:292 340} 96%,100%{stroke-dasharray:0 340} }
+@keyframes dseg2 { 0%,16%{stroke-dasharray:0 340} 30%,84%{stroke-dasharray:44 340} 96%,100%{stroke-dasharray:0 340} }
+@keyframes dseg3 { 0%,24%{stroke-dasharray:0 340} 36%,84%{stroke-dasharray:5 340} 96%,100%{stroke-dasharray:0 340} }
+.dleg { font-size:13px; color:#374151; line-height:2; white-space:nowrap; }
+.dleg i { display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:8px; }
+
+/* A06 hotspot reticle */
+.a-hot { left:22%; top:47%; --T:8s; animation-delay:1.6s; padding:12px 18px; display:flex; align-items:center; gap:10px; }
+.a-hot .ret { width:30px; height:30px; border:3px solid #d43a3a; border-radius:50%; position:relative; }
+.a-hot .ret::after { content:''; position:absolute; inset:-8px; border:1.5px dashed #d43a3a; border-radius:50%;
+  animation:spin 6s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.a-hot .t1 { font-size:17px; font-weight:800; color:#d43a3a; white-space:nowrap; }
+.a-hot .t2 { font-size:12px; color:#6b7280; }
+
+/* A07 CBAM trend bars */
+.a-trend { left:32%; top:36%; --T:10s; padding:18px 24px; }
+.trendbox { display:flex; align-items:flex-end; gap:9px; height:130px; margin-top:10px; }
+.tbar { width:30px; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:4px; height:100%; }
+.tbar b { font-size:11px; color:#374151; font-weight:700; }
+.tbar .col { width:100%; border-radius:5px 5px 0 0; background:#0075de; transform-origin:bottom; transform:scaleY(0);
+  animation:grow 10s cubic-bezier(.22,.9,.3,1) infinite; }
+.tbar span { font-size:10.5px; color:#6b7280; font-weight:600; }
+@keyframes grow { 0%{transform:scaleY(0)} 30%,86%{transform:scaleY(1)} 100%{transform:scaleY(0)} }
+.tbar:nth-child(1) .col { animation-delay:.10s; height:4%; }
+.tbar:nth-child(2) .col { animation-delay:.22s; height:7%; }
+.tbar:nth-child(3) .col { animation-delay:.34s; height:13%; }
+.tbar:nth-child(4) .col { animation-delay:.46s; height:29%; }
+.tbar:nth-child(5) .col { animation-delay:.58s; height:45%; }
+.tbar:nth-child(6) .col { animation-delay:.70s; height:61%; }
+.tbar:nth-child(7) .col { animation-delay:.82s; height:77%; }
+.tbar:nth-child(8) .col { animation-delay:.94s; height:100%; background:#dd5b00; }
+
+/* A08 MRV scopes */
+.a-mrv { right:5%; top:34%; --T:9s; animation-delay:2.1s; padding:18px 24px; }
+.mrvrow { display:flex; align-items:center; gap:10px; margin-top:9px; font-size:13px; }
+.mrvrow .sc { width:74px; font-weight:700; color:#374151; white-space:nowrap; }
+.mrvrow .track { width:190px; height:16px; background:#eef1f5; border-radius:99px; overflow:hidden; }
+.mrvrow .fill { height:100%; border-radius:99px; background:#1aae39; transform-origin:left;
+  animation:fillx 9s cubic-bezier(.22,.9,.3,1) infinite; }
+.mrvrow b { font-size:13px; tabular-nums; white-space:nowrap; }
+@keyframes fillx { 0%{transform:scaleX(0)} 30%,86%{transform:scaleX(1)} 100%{transform:scaleX(0)} }
+.mrvrow:nth-of-type(2) .fill { animation-delay:.15s; }
+.mrvrow:nth-of-type(3) .fill { animation-delay:.30s; }
+
+/* A09 radar */
+.a-radar { left:3%; top:66%; --T:10s; animation-delay:.8s; padding:16px 22px; }
+.radarwrap { display:flex; gap:14px; align-items:center; }
+.rlegend { font-size:12.5px; color:#374151; line-height:2; white-space:nowrap; }
+.rlegend i { display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:8px; }
+.radar-poly { stroke-dasharray:520; stroke-dashoffset:520; animation:draw 10s ease infinite; }
+@keyframes draw { 0%{stroke-dashoffset:520} 28%,86%{stroke-dashoffset:0} 100%{stroke-dashoffset:520} }
+
+/* A10 strength bars */
+.a-str { left:30%; top:66%; --T:10s; animation-delay:1.4s; padding:18px 24px; }
+.strbox { display:flex; gap:16px; align-items:flex-end; height:110px; margin-top:10px; }
+.sgrp { display:flex; gap:4px; align-items:flex-end; height:100%; }
+.sgrp .col { width:13px; border-radius:4px 4px 0 0; transform-origin:bottom; transform:scaleY(0);
+  animation:grow 10s cubic-bezier(.22,.9,.3,1) infinite; }
+.sgrp .c1 { background:#0075de; } .sgrp .c2 { background:#dd5b00; } .sgrp .c3 { background:#1aae39; }
+.strname { display:flex; gap:16px; margin-top:6px; }
+.strname span { width:47px; text-align:center; font-size:10px; color:#6b7280; font-weight:600; }
+.sgrp:nth-child(1) .col { animation-delay:.08s; } .sgrp:nth-child(2) .col { animation-delay:.20s; }
+.sgrp:nth-child(3) .col { animation-delay:.32s; } .sgrp:nth-child(4) .col { animation-delay:.44s; }
+.sgrp:nth-child(5) .col { animation-delay:.56s; }
+
+/* A11 AI compare table */
+.a-cmp { right:4%; top:56%; --T:11s; animation-delay:.9s; padding:18px 22px; max-width:560px; }
+.cmp { width:100%; border-collapse:collapse; font-size:13.5px; }
+.cmp th { text-align:right; color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:.05em; padding:4px 8px; }
+.cmp th:first-child { text-align:left; }
+.cmp td { text-align:right; padding:5px 8px; border-top:1px solid #f0f2f5; tabular-nums; white-space:nowrap; }
+.cmp td:first-child { text-align:left; }
+.cmp tr.base td { color:#9ca3af; }
+.cmp tr.best td { background:#f2fbf4; }
+.cmp tr.best td:first-child { color:#157a2c; font-weight:800; }
+.cmp tbody tr { opacity:0; animation:rowin 11s ease infinite; }
+.cmp tbody tr:nth-child(1){animation-delay:.15s}.cmp tbody tr:nth-child(2){animation-delay:.35s}
+.cmp tbody tr:nth-child(3){animation-delay:.55s}.cmp tbody tr:nth-child(4){animation-delay:.75s}
+@keyframes rowin { 0%{opacity:0; transform:translateX(18px)} 12%{opacity:1; transform:none} 86%{opacity:1} 100%{opacity:0} }
+
+/* A12 material spec sheet */
+.a-spec { right:26%; top:10%; --T:9s; animation-delay:2.6s; padding:18px 24px; min-width:330px; }
+.specgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px 18px; margin-top:8px; }
+.specgrid .sg .sk { font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:#6b7280; font-weight:700; }
+.specgrid .sg .sv { font-size:14.5px; font-weight:600; white-space:nowrap; }
+
+/* A13-A16 legacy popups */
+.a-pay { left:11%; bottom:22%; --T:8s; animation-delay:2.4s; padding:18px 24px; }
 .a-pay .val em { font-style:normal; font-size:18px; color:#0075de; }
-.a-tag { right:14%; bottom:24%; --T:7s; animation-delay:3.6s; padding:18px 24px; transform-origin:right center; }
+.a-tag { right:12%; bottom:30%; --T:8s; animation-delay:3.6s; padding:18px 24px; }
 .a-tag .val { font-size:24px; }
-.a-tag .strike { text-decoration:line-through; color:#9ca3af; font-size:20px; margin-right:10px; }
-.a-count { left:50%; top:12%; transform:translateX(-50%); --T:7s; animation-delay:.6s; padding:16px 30px; text-align:center; }
+.a-count { left:50%; top:6%; transform:translateX(-50%); --T:8s; animation-delay:.6s; padding:16px 30px; text-align:center; }
 .a-count .val { color:#d43a3a; }
-.a-ai { left:50%; bottom:10%; transform:translateX(-50%); --T:9s; animation-delay:1s; padding:18px 24px; max-width:520px; }
+.a-ai { left:38%; bottom:6%; --T:10s; animation-delay:1s; padding:18px 24px; max-width:500px; }
 .a-ai .who { font-size:11px; font-weight:800; letter-spacing:.1em; color:#0075de; margin-bottom:6px; }
 .a-ai p { font-size:15px; line-height:1.6; color:#1f2937; }
+.a-sdg { right:3%; bottom:8%; --T:9s; animation-delay:2s; padding:14px 18px; }
 .sdgstrip { display:flex; gap:6px; }
 .sdgstrip img { height:44px; border-radius:4px; box-shadow:0 2px 8px rgba(0,0,0,.15); }
-.a-sdg { right:6%; top:42%; --T:8s; animation-delay:2s; padding:14px 18px; }
 
-/* click to solo: hide others, center & enlarge chosen */
+/* A17 activity feed */
+.a-feed { right:24%; bottom:52%; --T:11s; animation-delay:1.8s; padding:16px 22px; min-width:360px; }
+.feed { margin-top:6px; }
+.fev { display:flex; gap:10px; padding:5px 0; font-size:13.5px; color:#1f2937; align-items:flex-start; opacity:0;
+  animation:fevin 11s ease infinite; }
+.fev .ic { width:16px; text-align:center; font-weight:800; }
+.fev .tm { color:#9ca3af; font-size:11px; margin-left:6px; }
+.fev.hot { color:#0075de; font-weight:700; }
+.fev.good { color:#157a2c; }
+.fev.warn { color:#c05a00; }
+.fev.dim { color:#6b7280; }
+.fev:nth-child(1){animation-delay:.2s}.fev:nth-child(2){animation-delay:.5s}.fev:nth-child(3){animation-delay:.8s}
+.fev:nth-child(4){animation-delay:1.1s}.fev:nth-child(5){animation-delay:1.4s}
+@keyframes fevin { 0%{opacity:0; transform:translateY(10px)} 10%{opacity:1; transform:none} 88%{opacity:1} 100%{opacity:0} }
+
+/* A18 CBAM timeline */
+.a-tml { left:50%; bottom:20%; transform:translateX(-50%); --T:11s; animation-delay:1.2s; padding:20px 30px; min-width:640px; }
+.pu.pc.a-tml { animation-name:popC; }
+.tmline { position:relative; height:74px; margin-top:14px; }
+.tlrail { position:absolute; top:8px; left:0; right:0; height:4px; background:#e5e7eb; border-radius:99px; }
+.tlfill { position:absolute; top:8px; left:0; height:4px; background:#157a2c; border-radius:99px; width:0;
+  animation:tlgrow 11s cubic-bezier(.22,.9,.3,1) infinite; }
+@keyframes tlgrow { 0%{width:0} 30%,88%{width:36%} 100%{width:36%} }
+.tlnode { position:absolute; top:0; width:210px; }
+.tlnode .pt { width:14px; height:14px; border-radius:50%; background:#c7ccd6; border:3px solid #fff; box-shadow:0 0 0 2px #c7ccd6; margin-bottom:8px; }
+.tlnode.done .pt { background:#157a2c; box-shadow:0 0 0 2px #157a2c; }
+.tlnode.act .pt { background:#c05a00; box-shadow:0 0 0 2px #c05a00; animation:pulse 1.6s ease infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.35)} }
+.tlnode .d { font-size:12.5px; font-weight:800; white-space:nowrap; }
+.tlnode .l { font-size:11.5px; color:#6b7280; line-height:1.35; margin-top:2px; }
+.tlnode:nth-child(3){left:0}.tlnode:nth-child(4){left:28%}.tlnode:nth-child(5){left:56%}.tlnode:nth-child(6){left:84%;margin-left:-40px}
+
+/* A19 certs strip */
+.a-cert { left:50%; bottom:8%; transform:translateX(-50%); --T:9s; animation-delay:2.8s; padding:16px 24px; }
+.pu.pc.a-cert { animation-name:popC; }
+.certrow { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; justify-content:center; }
+.cpill { font-size:12.5px; font-weight:700; padding:5px 13px; border-radius:999px; white-space:nowrap; }
+.cpill.ok { background:#e7f5ea; color:#157a2c; }
+.cpill.wr { background:#fdf1e6; color:#c05a00; }
+.cpill.bl { background:#e8f2ff; color:#0075de; }
+.cpill.ol { border:1.5px solid #c9d4e4; color:#5b6878; }
+
+/* centered variants: keyframes must carry their own translateX(-50%) */
+.pu.pc { animation-name:popC; }
+@keyframes popC {
+  0%   { opacity:0; transform:translate(-50%,40px) scale(.85); filter:blur(6px); }
+  12%  { opacity:1; transform:translate(-50%,0) scale(1); filter:blur(0);
+         animation-timing-function:cubic-bezier(.34,1.56,.64,1); }
+  82%  { opacity:1; transform:translate(-50%,-8px) scale(1); }
+  90%  { opacity:1; transform:translate(-50%,-10px) scale(.98); }
+  100% { opacity:0; transform:translate(-50%,-46px) scale(.9); filter:blur(4px); }
+}
+
+/* A20 input form */
+.a-input { left:24%; bottom:4%; --T:9s; animation-delay:.4s; padding:16px 22px; min-width:430px; }
+.inpgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px 16px; margin-top:8px; }
+.inp .ik { font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:#6b7280; font-weight:700; }
+.inp .iv { font-size:14px; font-weight:600; border-bottom:2px solid #0075de; padding-bottom:2px; margin-top:2px; white-space:nowrap; }
+.stepno { display:inline-grid; place-items:center; width:22px; height:22px; border-radius:50%; background:#0075de; color:#fff; font-size:12px; font-weight:800; margin-right:7px; vertical-align:-4px; }
+
+/* A21 view flipper */
+.a-view { right:30%; bottom:6%; --T:12s; animation-delay:1.5s; padding:16px 24px; min-width:420px; }
+.vtabs { display:flex; gap:8px; margin-bottom:10px; }
+.vtab { font-size:12px; font-weight:800; padding:4px 14px; border-radius:999px; border:1.5px solid #dde3ec; color:#6b7280; }
+.vtab.on { background:#0075de; border-color:#0075de; color:#fff; }
+.vpane p { font-size:13px; color:#374151; line-height:1.75; white-space:nowrap; }
+.vpane.tech { animation:vtech 12s steps(1) infinite; }
+.vpane.biz { animation:vbiz 12s steps(1) infinite; }
+@keyframes vtech { 0%,45%{display:block} 46%,100%{display:none} }
+@keyframes vbiz { 0%,45%{display:none} 46%,100%{display:block} }
+.vtabs .t-on { animation:vtech 12s steps(1) infinite; }
+.vtabs .b-on { animation:vbiz 12s steps(1) infinite; }
+
+/* solo mode */
 #stage.solo .asset { display:none; }
 #stage.solo .asset.pick { display:block !important; position:absolute; left:50% !important; top:50% !important;
-  transform:translate(-50%,-50%) scale(1.35); }
+  transform:translate(-50%,-50%) scale(1.35); animation-play-state:running; }
 .hint { position:fixed; bottom:12px; left:50%; transform:translateX(-50%); font-size:12px; color:#6b7589; z-index:100; }
 </style>
 </head>
-<body data-bg="check">
+<body data-bg="green">
 
 <div class="bar">
-  <b>Background:</b>
+  <b>EcoForge Overlay Pack</b><span style="font-size:12px;color:#6b7589">22 assets · ทุก section ในเว็บ</span>
   <button class="bgb" data-b="check">Checkerboard</button>
   <button class="bgb on" data-b="green">Green screen</button>
   <button class="bgb" data-b="white">White</button>
   <button class="bgb" data-b="black">Black</button>
-  <span class="note">คลิกที่ asset = โซโล่ขยายกลางจอ (ง่ายต่อการ record) · กดซ้ำ = กลับ grid</span>
+  <span class="note">คลิก asset = โซโล่ขยายกลางจอ · กดซ้ำ = กลับ grid</span>
 </div>
 
 <div id="stage">
 
-  <!-- 1. CO2 before/after -->
-  <div class="asset pu a-co2" title="คลิกโซโล่">
+  <!-- A01 · Title sting -->
+  <div class="asset pu pc a-title">
+    <div class="logo"><div class="esq">E</div><div class="nm">EcoForge</div></div>
+    <div class="tg">Carbon Engineering for SME · EU CBAM · Sriracha Hackathon 2026</div>
+  </div>
+
+  <!-- A02 · KPI strip (5 cards) -->
+  <div class="asset pu pc a-kpi">
+    <div class="lbl">KPI — ก่อน → หลัง (AI Option A)</div>
+    <div class="kpirow">
+      <div class="kpi"><div class="k">Carbon Score</div><div class="v bl-t">29 <small>→</small> 85<small>/100</small></div></div>
+      <div class="kpisep"></div>
+      <div class="kpi"><div class="k">CO₂ / ปี</div><div class="v">4.23 <small>→</small> <span class="ok-t">0.88</span> <small>t</small></div></div>
+      <div class="kpisep"></div>
+      <div class="kpi"><div class="k">ต้นทุน / ปี</div><div class="v">฿524K <small>→</small> ฿388K</div></div>
+      <div class="kpisep"></div>
+      <div class="kpi"><div class="k">CBAM Tax 2028</div><div class="v"><span class="bad-t">€31</span> <small>→</small> <span class="ok-t">€0</span><small>/yr</small></div></div>
+      <div class="kpisep"></div>
+      <div class="kpi"><div class="k">Credit (T-VER)</div><div class="v ok-t">+฿740<small>/yr</small></div></div>
+    </div>
+  </div>
+
+  <!-- A03 · CO2 twin -->
+  <div class="asset pu a-co2">
     <div class="lbl">Carbon Twin · Real Result</div>
-    <div class="val"><span class="bad">4.23 t</span> → <span class="ok">0.88 t</span></div>
+    <div class="val"><span class="bad-t">4.23 t</span> → <span class="ok-t">0.88 t</span></div>
     <div class="sub">CO₂ ต่อปี · ลดลง 79%</div>
     <div class="chiprow"><span class="chip ok">▼ 3.35 tCO₂/yr</span><span class="chip bl">EU Benchmark verified</span></div>
   </div>
 
-  <!-- 2. CBAM badge -->
-  <div class="asset pu a-badge" title="คลิกโซโล่">
+  <!-- A04 · Compliance badge -->
+  <div class="asset pu a-badge">
     <div class="dot">✓</div>
     <div>
-      <div class="t1">CBAM Compliance: PASS</div>
-      <div class="t2">below EU benchmark · ผ่านเกณฑ์ 2028</div>
+      <div class="t1">CBAM 2028: PASS — €0/yr</div>
+      <div class="t2">below EU benchmark · ผ่านเกณฑ์ทันปี 2028</div>
     </div>
   </div>
 
-  <!-- 3. Payback -->
-  <div class="asset pu a-pay" title="คลิกโซโล่">
+  <!-- A05 · Carbon Breakdown donut -->
+  <div class="asset pu a-donut">
+    <div class="lbl">Carbon Breakdown (Before)</div>
+    <div class="donutwrap">
+      <svg class="donut" width="150" height="150" viewBox="0 0 150 150">
+        <circle cx="75" cy="75" r="54" fill="none" stroke="#eef1f5" stroke-width="20"/>
+        <circle class="seg s1" cx="75" cy="75" r="54"/>
+        <circle class="seg s2" cx="75" cy="75" r="54" transform="rotate(310 75 75)"/>
+        <circle class="seg s3" cx="75" cy="75" r="54" transform="rotate(336.6 75 75)"/>
+      </svg>
+      <div class="dleg">
+        <div><i style="background:#0075de"></i>Material · 86%</div>
+        <div><i style="background:#dd5b00"></i>Process · 13%</div>
+        <div><i style="background:#1aae39"></i>Transport · &lt;1%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A06 · Hotspot reticle -->
+  <div class="asset pu a-hot">
+    <div class="ret"></div>
+    <div>
+      <div class="t1">HOTSPOT · MATERIAL 86%</div>
+      <div class="t2">วัสดุคือจุดที่ต้องเก็บก่อน · Process 13%</div>
+    </div>
+  </div>
+
+  <!-- A07 · CBAM obligation trend -->
+  <div class="asset pu a-trend">
+    <div class="lbl">CBAM Obligation Trend 2026→2033 (ไม่ปรับปรุง)</div>
+    <div class="trendbox">
+      <div class="tbar"><b>€8</b><div class="col"></div><span>2026</span></div>
+      <div class="tbar"><b>€16</b><div class="col"></div><span>2027</span></div>
+      <div class="tbar"><b>€31</b><div class="col"></div><span>2028</span></div>
+      <div class="tbar"><b>€70</b><div class="col"></div><span>2029</span></div>
+      <div class="tbar"><b>€109</b><div class="col"></div><span>2030</span></div>
+      <div class="tbar"><b>€148</b><div class="col"></div><span>2031</span></div>
+      <div class="tbar"><b>€187</b><div class="col"></div><span>2032</span></div>
+      <div class="tbar"><b>€242</b><div class="col"></div><span>2033</span></div>
+    </div>
+  </div>
+
+  <!-- A08 · MRV scopes -->
+  <div class="asset pu a-mrv">
+    <div class="lbl">MRV — EU CBAM Scopes (kgCO₂/yr)</div>
+    <div style="margin-top:8px">
+      <div class="mrvrow"><span class="sc">Scope 1</span><div class="track"><div class="fill" style="width:5%"></div></div><b>178</b></div>
+      <div class="mrvrow"><span class="sc">Scope 2</span><div class="track"><div class="fill" style="width:11%"></div></div><b>392</b></div>
+      <div class="mrvrow"><span class="sc">Scope 3</span><div class="track"><div class="fill" style="width:100%"></div></div><b>3,664</b></div>
+    </div>
+    <div class="sub">Embedded emissions คือฐานภาษี CBAM</div>
+  </div>
+
+  <!-- A09 · Mechanical profile radar -->
+  <div class="asset pu a-radar">
+    <div class="lbl">วัสดุศาสตร์ — Mechanical Profile</div>
+    <div class="radarwrap">
+      <svg width="180" height="180" viewBox="0 0 170 170">
+        <polygon points="85,23 138.7,54 138.7,116 85,147 31.3,116 31.3,54" fill="none" stroke="#e5e7eb" stroke-width="1.5"/>
+        <polygon points="85,54 111.8,69.5 111.8,100.5 85,116 58.2,100.5 58.2,69.5" fill="none" stroke="#eef1f5" stroke-width="1"/>
+        <line x1="85" y1="85" x2="85" y2="23" stroke="#eef1f5"/><line x1="85" y1="85" x2="138.7" y2="54" stroke="#eef1f5"/>
+        <line x1="85" y1="85" x2="138.7" y2="116" stroke="#eef1f5"/><line x1="85" y1="85" x2="85" y2="147" stroke="#eef1f5"/>
+        <line x1="85" y1="85" x2="31.3" y2="116" stroke="#eef1f5"/><line x1="85" y1="85" x2="31.3" y2="54" stroke="#eef1f5"/>
+        <polygon class="radar-poly" points="85,41.6 125.3,61.8 118.8,104.6 85,134.6 38.8,111.6 31.3,54"
+          fill="#0075de" fill-opacity=".3" stroke="#0075de" stroke-width="2"/>
+        <polygon class="radar-poly" points="85,43.5 122.6,63.3 117.2,103.6 85,135.2 36.7,112.9 31.3,54"
+          fill="#1aae39" fill-opacity=".22" stroke="#1aae39" stroke-width="2" style="animation-delay:.4s"/>
+      </svg>
+      <div class="rlegend">
+        <div><i style="background:#0075de"></i>Al 6061-T6 Virgin</div>
+        <div><i style="background:#1aae39"></i>Al 6061-T6 Recycled</div>
+        <div style="color:#9ca3af;font-size:11px;margin-top:4px">Strength · Yield · Hardness<br>Thermal · Electric · Corrosion</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A10 · Strength & hardness bars -->
+  <div class="asset pu a-str">
+    <div class="lbl">Strength &amp; Hardness — 5 วัสดุ (MPa / HB)</div>
+    <div class="strbox">
+      <div class="sgrp"><div class="col c1" style="height:69%"></div><div class="col c2" style="height:61%"></div><div class="col c3" style="height:21%"></div></div>
+      <div class="sgrp"><div class="col c1" style="height:66%"></div><div class="col c2" style="height:58%"></div><div class="col c3" style="height:20%"></div></div>
+      <div class="sgrp"><div class="col c1" style="height:98%"></div><div class="col c2" style="height:82%"></div><div class="col c3" style="height:28%"></div></div>
+      <div class="sgrp"><div class="col c1" style="height:80%"></div><div class="col c2" style="height:53%"></div><div class="col c3" style="height:23%"></div></div>
+      <div class="sgrp"><div class="col c1" style="height:92%"></div><div class="col c2" style="height:79%"></div><div class="col c3" style="height:33%"></div></div>
+    </div>
+    <div class="strname"><span>6061 V</span><span>6061 R</span><span>Steel</span><span>AlSi10Mg</span><span>G-MMC</span></div>
+    <div class="sub" style="font-size:11.5px">■ UTS ■ YS ■ HB — ข้อมูล ICE v3.0 / ASM</div>
+  </div>
+
+  <!-- A11 · AI comparison table -->
+  <div class="asset pu a-cmp sl">
+    <div class="lbl">AI Recommendation — เปรียบเทียบทางเลือก A / B / C</div>
+    <table class="cmp">
+      <thead><tr><th>ทางเลือก</th><th>CO₂/ปี</th><th>ลดได้</th><th>Cost/ปี</th><th>CBAM 2028</th><th>Payback</th></tr></thead>
+      <tbody>
+        <tr class="base"><td>ปัจจุบัน · CNC</td><td>4.23 t</td><td>—</td><td>฿524K</td><td>€31</td><td>—</td></tr>
+        <tr class="best"><td>A · Gravity Die + 50% Recycled ★</td><td>0.88 t</td><td>−79%</td><td>฿388K</td><td>€0</td><td>7.8 เดือน</td></tr>
+        <tr><td>B · Extrusion + CNC</td><td>1.35 t</td><td>−68%</td><td>฿243K</td><td>€0</td><td>6 เดือน</td></tr>
+        <tr><td>C · CNC + 50% Recycled</td><td>2.51 t</td><td>−41%</td><td>฿524K</td><td>€0.27</td><td>ทันที</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- A12 · Material spec sheet -->
+  <div class="asset pu a-spec">
+    <div class="lbl">Spec Sheet — Al 6061-T6 (Virgin)</div>
+    <div class="specgrid">
+      <div class="sg"><div class="sk">Alloy</div><div class="sv">Al-Mg-Si 6061-T6</div></div>
+      <div class="sg"><div class="sk">Density</div><div class="sv">2,700 kg/m³</div></div>
+      <div class="sg"><div class="sk">Emission Factor</div><div class="sv bl-t">8.24 kgCO₂/kg</div></div>
+      <div class="sg"><div class="sk">Cost</div><div class="sv">฿180/kg</div></div>
+      <div class="sg"><div class="sk">Ultimate Str.</div><div class="sv">310 MPa</div></div>
+      <div class="sg"><div class="sk">Yield Str.</div><div class="sv">276 MPa</div></div>
+      <div class="sg"><div class="sk">Hardness</div><div class="sv">95 HB</div></div>
+      <div class="sg"><div class="sk">Thermal</div><div class="sv">167 W/m·K</div></div>
+      <div class="sg"><div class="sk">Corrosion</div><div class="sv">★★★★☆</div></div>
+      <div class="sg"><div class="sk">Porosity</div><div class="sv">ASTM E155 Cl.1</div></div>
+      <div class="sg"><div class="sk">RoHS</div><div class="sv ok-t">✓ Compliant</div></div>
+      <div class="sg"><div class="sk">Recycle Grade</div><div class="sv"><span class="chip ok">A</span></div></div>
+    </div>
+  </div>
+
+  <!-- A13 · Payback -->
+  <div class="asset pu a-pay">
     <div class="lbl">Payback Period</div>
-    <div class="val">8.5 <em>เดือน</em></div>
+    <div class="val">7.8 <em>เดือน</em></div>
     <div class="sub">ประหยัด ฿136K/ปี · ขาย Credit ~฿740/yr</div>
     <div class="chiprow"><span class="chip ok">+ T-VER Revenue</span></div>
   </div>
 
-  <!-- 4. Carbon price tag -->
-  <div class="asset pu a-tag sl" title="คลิกโซโล่">
+  <!-- A14 · Carbon price tag -->
+  <div class="asset pu a-tag sl">
     <div class="lbl">ป้ายราคาคาร์บอน</div>
-    <div class="val"><span class="strike">ไม่มีป้าย</span> <span class="bad">€294/yr</span> → <span class="ok">€0</span></div>
-    <div class="sub">EU CBAM 2026–2034 · ตรงตาม Guidance No.4</div>
+    <div class="val"><span class="strike">ไม่มีป้าย</span> <span class="bad-t">€242/yr</span> → <span class="ok-t">€0</span></div>
+    <div class="sub">EU CBAM 2026–2034 phase-in · ปี 2033 ถึงศักยภาพสูงสุด</div>
   </div>
 
-  <!-- 5. Counter -->
-  <div class="asset pu a-count" title="คลิกโซโล่">
+  <!-- A15 · Market counter -->
+  <div class="asset pu a-count">
     <div class="lbl">โรงงานไทยที่กระทบ</div>
     <div class="val">1,000+ แห่ง</div>
     <div class="sub">ขยาย 6 → 180 product groups ปี 2571</div>
   </div>
 
-  <!-- 6. AI bubble -->
-  <div class="asset pu a-ai sl" title="คลิกโซโล่">
+  <!-- A16 · AI bubble -->
+  <div class="asset pu a-ai sl">
     <div class="who">● POWERED BY NOUS AI (LIVE)</div>
     <p>"ฮอตสปอตหลักอยู่ที่วัสดุ — CO₂ รวม 4,230 kgCO₂e สูงกว่าเกณฑ์ CBAM หลายเท่า<br>
-    แนะนำ: เปลี่ยนเป็นอะลูมิเนียมรีไซเคิล/EAF — carbon intensity ต่ำลง 50-70%"</p>
+    แนะนำ: Gravity Die Casting + อะลูมิเนียมรีไซเคิล 50% — carbon intensity ต่ำลง 94%"</p>
     <div class="chiprow"><span class="chip bl">ภาษาไทยหน้างาน</span><span class="chip ok">ตอบจริง ไม่ใช่ mockup</span></div>
   </div>
 
-  <!-- 7. SDG strip -->
-  <div class="asset pu a-sdg" title="คลิกโซโล่">
+  <!-- A17 · Activity feed -->
+  <div class="asset pu a-feed">
+    <div class="lbl">กิจกรรมล่าสุด — Live</div>
+    <div class="feed">
+      <div class="fev hot"><span class="ic">✦</span><div>AI แนะนำ Option A (Gravity Die + 50% Recycled)<span class="tm">now</span></div></div>
+      <div class="fev good"><span class="ic">✓</span><div>Re-calc Carbon Twin — score อัปเดต<span class="tm">just now</span></div></div>
+      <div class="fev dim"><span class="ic">▦</span><div>โหลดค่ามาตรฐาน ICE / EcoInvent / Thai Grid<span class="tm">2m</span></div></div>
+      <div class="fev good"><span class="ic">✓</span><div>ซัพพลายเออร์ Aluminium Thai ส่ง CO₂ certificate<span class="tm">14m</span></div></div>
+      <div class="fev warn"><span class="ic">▲</span><div>CBAM 2028: ต้องจ่ายภาษี €31/yr (Current)<span class="tm">31m</span></div></div>
+    </div>
+  </div>
+
+  <!-- A18 · CBAM timeline -->
+  <div class="asset pu pc a-tml">
+    <div class="lbl">ไทม์ไลน์ CBAM (ตามกฎจริง EU/TGO)</div>
+    <div class="tmline">
+      <div class="tlrail"></div><div class="tlfill"></div>
+      <div class="tlnode done"><div class="pt"></div><div class="d">ต.ค. 2566 — Transitional เริ่ม</div><div class="l">รายงาน embedded emissions · ยังไม่เสียค่าธรรมเนียม</div></div>
+      <div class="tlnode act"><div class="pt"></div><div class="d">ธ.ค. 2568 — Transitional สิ้นสุด</div><div class="l">เตรียม actual emissions + เอกสารทวนสอบ</div></div>
+      <div class="tlnode"><div class="pt"></div><div class="d">ม.ค. 2569 — Definitive เริ่ม</div><div class="l">ซื้อ CBAM certificates · ไล่ขึ้น 100% ปี 2034</div></div>
+      <div class="tlnode"><div class="pt"></div><div class="d">2034 — Phase-in เต็มรูปแบบ</div><div class="l">แทนที่ ETS free allowance ทั้งหมด</div></div>
+    </div>
+  </div>
+
+  <!-- A19 · Certifications -->
+  <div class="asset pu pc a-cert">
+    <div class="lbl" style="text-align:center">การรับรอง &amp; มาตรฐาน</div>
+    <div class="certrow">
+      <span class="cpill ok">EU CBAM Methodology ✓</span>
+      <span class="cpill ok">ISO 14040/14044/14067 ✓</span>
+      <span class="cpill ok">TGO aligned ✓</span>
+      <span class="cpill wr">PDPA ◐ in-progress</span>
+      <span class="cpill bl">dSURE ◉ planned</span>
+      <span class="cpill ol">ISO 27001 ○ roadmap</span>
+    </div>
+  </div>
+
+  <!-- A20 · Input section -->
+  <div class="asset pu a-input">
+    <div class="lbl"><span class="stepno">1</span>ข้อมูลนำเข้า — ④ แหล่งข้อมูล + Upload</div>
+    <div class="inpgrid">
+      <div class="inp"><div class="ik">Part Type</div><div class="iv">Bracket</div></div>
+      <div class="inp"><div class="ik">Material</div><div class="iv">Al 6061-T6 (Virgin)</div></div>
+      <div class="inp"><div class="ik">Process</div><div class="iv">CNC from Billet</div></div>
+      <div class="inp"><div class="ik">Net Mass</div><div class="iv">3.7 kg</div></div>
+      <div class="inp"><div class="ik">% Recycled</div><div class="iv">0%</div></div>
+      <div class="inp"><div class="ik">Batch</div><div class="iv">3 pcs/mo</div></div>
+      <div class="inp"><div class="ik">Transport</div><div class="iv">120 km</div></div>
+      <div class="inp"><div class="ik">Upload</div><div class="iv bl-t">PDF / STEP ✓</div></div>
+    </div>
+  </div>
+
+  <!-- A21 · Technical / Business flip -->
+  <div class="asset pu a-view">
+    <div class="vtabs">
+      <span class="vtab t-on on">Technical</span><span class="vtab b-on">Business</span>
+      <span style="font-size:11px;color:#9ca3af;align-self:center;margin-left:6px">สลับมุมมองอัตโนมัติ</span>
+    </div>
+    <div class="vpane tech">
+      <p>Gross mass 12.33 kg · Scrap 70% · Mix CO₂ 8.24 kg/kg · Per-part 117.59 kg</p>
+      <p>Formula: CBAM Tax = (Embodied − Benchmark) × ETS × CBAM Factor</p>
+      <p>Standards: ISO 14040:2006 · 14044 · 14067 · ASTM E155 · TGO CFP</p>
+    </div>
+    <div class="vpane biz">
+      <p>ต้นทุน/ปี ฿524K · ประหยัดหากปรับปรุง ฿136K/yr · Payback (A) 7.8 เดือน</p>
+      <p>CBAM เสียหายหากไม่ปรับปรุง: €31/yr ปี 2028 → €242/yr ปี 2033</p>
+      <p>T-VER Credit Revenue: +฿740/yr เมื่อลด CO₂ สำเร็จ</p>
+    </div>
+  </div>
+
+  <!-- A22 · SDG strip -->
+  <div class="asset pu a-sdg">
     <div class="lbl">Sustainable Development Goals</div>
     <div class="sdgstrip">
       <img src="/sdg/TGG_Icon_Color_07.png" alt="">
@@ -162,7 +563,7 @@ body[data-bg=black] #stage { background:#000000; }
 
 </div>
 
-<div class="hint">Record หน้านี้ด้วย OBS/screen recorder → ใช้ chroma key (#00b140) ตัดพื้นหลัง → วางทับคลิป</div>
+<div class="hint">Record หน้านี้ด้วย OBS/screen recorder → chroma key #00b140 → วางทับคลิป · คลิก asset เพื่อโซโล่</div>
 
 <script>
 // background switcher
