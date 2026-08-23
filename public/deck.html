@@ -13,93 +13,113 @@ body::before { content:''; position:fixed; inset:0;
   background: radial-gradient(55% 45% at 18% 8%, rgba(0,117,222,.07), transparent),
               radial-gradient(45% 38% at 85% 92%, rgba(26,174,57,.06), transparent);
   pointer-events:none; }
+/* subtle grid texture */
+body::after { content:''; position:fixed; inset:0;
+  background-image:linear-gradient(rgba(0,0,0,.025) 1px, transparent 1px),
+                   linear-gradient(90deg, rgba(0,0,0,.025) 1px, transparent 1px);
+  background-size:44px 44px; pointer-events:none; }
 
 .slide { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center;
-         padding:9vh 9vw; opacity:0; transform:translateY(30px) scale(.985); pointer-events:none;
+         padding:8vh 8vw; opacity:0; transform:translateY(34px) scale(.98); pointer-events:none;
          transition:opacity .5s cubic-bezier(.2,.7,.2,1), transform .5s cubic-bezier(.2,.7,.2,1); }
 .slide.active { opacity:1; transform:none; pointer-events:auto; }
+/* blank intro slide */
+.slide.blank { justify-content:center; align-items:center; }
+.slide.blank .mark { font-size:clamp(40px,5vw,72px); font-weight:800; letter-spacing:-.02em; color:#0f1115;
+  opacity:0; transform:scale(.92); transition:.8s .2s; }
+.slide.blank .mark span { color:#0075de; }
+.slide.blank.active .mark { opacity:1; transform:none; }
+.slide.blank .sub { margin-top:2vh; font-size:clamp(14px,1.3vw,18px); color:#9ca3af;
+  opacity:0; transition:.6s .8s; }
+.slide.blank.active .sub { opacity:1; }
 
 .kicker { color:#0075de; font-size:clamp(13px,1.3vw,18px); letter-spacing:.22em; text-transform:uppercase;
-          margin-bottom:2.4vh; font-weight:700; opacity:0; transform:translateY(18px); transition:.45s .12s; }
-h1 { font-size:clamp(38px,5.4vw,70px); line-height:1.14; margin-bottom:3vh; font-weight:800; color:#0f1115;
+          margin-bottom:2.6vh; font-weight:700; opacity:0; transform:translateY(18px); transition:.45s .12s; }
+h1 { font-size:clamp(36px,5vw,64px); line-height:1.22; margin-bottom:3.4vh; font-weight:800; color:#0f1115;
      opacity:0; transform:translateY(24px); transition:.55s .22s; }
-h2 { font-size:clamp(32px,4.2vw,54px); line-height:1.18; margin-bottom:3.2vh; font-weight:800; color:#0f1115;
+h2 { font-size:clamp(30px,4vw,50px); line-height:1.24; margin-bottom:3.4vh; font-weight:800; color:#0f1115;
      opacity:0; transform:translateY(24px); transition:.55s .22s; }
-p,li { font-size:clamp(16px,1.7vw,24px); line-height:1.65; color:#374151; }
-.big { font-size:clamp(42px,4.6vw,66px); font-weight:800; color:#0f1115; }
+p,li { font-size:clamp(16px,1.65vw,23px); line-height:1.8; color:#374151; }
+.big { font-size:clamp(38px,4.2vw,60px); font-weight:800; color:#0f1115; }
 .slide.active .kicker, .slide.active h1, .slide.active h2, .slide.active p, .slide.active li,
 .slide.active .row, .slide.active .card, .slide.active .foot, .slide.active .demo { opacity:1; transform:none; }
 .row, li, .card, p, .foot, .demo { opacity:0; transform:translateY(14px); transition:.45s; }
-.slide.active li:nth-child(1){transition-delay:.32s}.slide.active li:nth-child(2){transition-delay:.44s}
-.slide.active li:nth-child(3){transition-delay:.56s}.slide.active li:nth-child(4){transition-delay:.68s}
+.slide.active li:nth-child(1){transition-delay:.32s}.slide.active li:nth-child(2){transition-delay:.46s}
+.slide.active li:nth-child(3){transition-delay:.60s}.slide.active li:nth-child(4){transition-delay:.74s}
 .slide.active .row{transition-delay:.42s}
-.slide.active .card:nth-child(1){transition-delay:.52s}.slide.active .card:nth-child(2){transition-delay:.64s}
-.slide.active .card:nth-child(3){transition-delay:.76s}.slide.active .demo{transition-delay:.5s}
-.slide.active .foot{transition-delay:.85s}
+.slide.active .card:nth-child(1){transition-delay:.52s}.slide.active .card:nth-child(2){transition-delay:.66s}
+.slide.active .card:nth-child(3){transition-delay:.80s}.slide.active .demo{transition-delay:.5s}
+.slide.active .foot{transition-delay:.9s}
 
 .accent { color:#0075de; } .ok { color:#157a2c; } .bad { color:#d43a3a; }
 ul { list-style:none; }
-li { margin-bottom:2vh; padding-left:2.2vw; position:relative; }
+li { margin-bottom:2.4vh; padding-left:2.2vw; position:relative; }
 li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
 
-.row { display:flex; gap:2vw; margin-top:3.4vh; }
-.card { background:#ffffff; border:1px solid rgba(0,0,0,.10); border-radius:14px; padding:3vh 2.2vw; flex:1;
-        box-shadow:0 1px 2px rgba(0,0,0,.04), 0 10px 34px rgba(0,0,0,.06); }
-.card h3 { font-size:clamp(14px,1.35vw,18px); color:#0075de; margin-bottom:1.3vh; letter-spacing:.04em; font-weight:700; }
-.card p, .card .big { font-size:clamp(15px,1.5vw,21px); line-height:1.5; color:#374151; }
-.big { font-size:clamp(40px,4.4vw,62px); font-weight:800; }
-.small { font-size:clamp(12px,1.15vw,15px); color:#6b7280; }
-.foot { position:absolute; bottom:4vh; left:9vw; right:9vw; display:flex; justify-content:space-between;
+.row { display:flex; gap:2vw; margin-top:3.6vh; }
+.card { background:#ffffff; border:1px solid rgba(0,0,0,.10); border-radius:16px; padding:3.2vh 2.2vw; flex:1;
+        box-shadow:0 1px 2px rgba(0,0,0,.04), 0 10px 34px rgba(0,0,0,.06);
+        transition:transform .45s, box-shadow .45s; }
+.slide.active .card:hover { transform:translateY(-4px); box-shadow:0 2px 4px rgba(0,0,0,.05), 0 18px 44px rgba(0,0,0,.10); }
+.card h3 { font-size:clamp(14px,1.35vw,18px); color:#0075de; margin-bottom:1.5vh; letter-spacing:.04em; font-weight:700; }
+.card p, .card .big { font-size:clamp(15px,1.5vw,21px); line-height:1.55; color:#374151; margin-top:.8vh; }
+.big { font-size:clamp(38px,4.2vw,58px); font-weight:800; }
+.small { font-size:clamp(12px,1.15vw,15px); color:#6b7280; line-height:1.7; }
+.foot { position:absolute; bottom:4vh; left:8vw; right:8vw; display:flex; justify-content:space-between;
         font-size:clamp(11px,1.05vw,14px); color:#9ca3af; align-items:center; gap:2vw; }
 .pageno { position:absolute; bottom:4vh; right:3vw; font-size:14px; color:#9ca3af; z-index:5; }
 
-#prog { position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,#0075de,#1aae39); width:0%;
-        transition:width .4s ease; z-index:10; }
+#prog { position:fixed; top:0; left:0; height:3px; z-index:10; width:0%;
+        background:linear-gradient(90deg,#0075de,#1aae39,#0075de); background-size:200% 100%;
+        animation:shimmer 2.2s linear infinite; transition:width .4s ease; }
+@keyframes shimmer { 0%{background-position:0% 0} 100%{background-position:200% 0} }
 
-/* ── demo widgets (light theme cards) ── */
-.demo { display:flex; flex-direction:column; gap:2.2vh; max-width:1080px; }
-.dash { background:#ffffff; border:1px solid rgba(0,0,0,.10); border-radius:14px; padding:2.4vh 1.8vw;
+/* ── demo widgets (product replica) ── */
+.demo { display:flex; flex-direction:column; gap:2vh; max-width:1120px; }
+.dash { background:#ffffff; border:1px solid rgba(0,0,0,.10); border-radius:14px; padding:2.2vh 1.6vw;
         box-shadow:0 1px 2px rgba(0,0,0,.04), 0 10px 34px rgba(0,0,0,.06); }
-.fieldline { display:flex; justify-content:space-between; align-items:center; padding:1vh 0;
-             border-bottom:1px dashed #e5e7eb; font-size:clamp(14px,1.35vw,19px); }
-.fieldline:last-child { border-bottom:none; }
-.fieldline .k { color:#6b7280; }
-.caret { display:inline-block; width:9px; height:1.1em; background:#0075de; vertical-align:text-bottom;
-         animation:blink .7s steps(1) infinite; border-radius:1px; }
-@keyframes blink { 50% { opacity:0; } }
-.typing { min-height:1.3em; font-weight:600; color:#0f1115; }
-
-/* product-replica controls */
 .ctr { display:grid; grid-template-columns:repeat(4,1fr); gap:1.4vw; }
-.ctl { display:flex; flex-direction:column; gap:.7vh; }
+.ctl { display:flex; flex-direction:column; gap:.8vh; }
 .ctl label { font-size:clamp(11px,1vw,13px); color:#6b7280; font-weight:600; letter-spacing:.02em; }
-.selbox, .inpbox { background:#f9fafb; border:1px solid #d1d5db; border-radius:8px; padding:.9vh .8vw;
-                   font-size:clamp(13px,1.2vw,17px); font-weight:600; color:#0f1115; min-height:2.6em;
-                   display:flex; align-items:center; position:relative; }
+.selbox, .inpbox { background:#f9fafb; border:1px solid #d1d5db; border-radius:8px; padding:1vh .8vw;
+                   font-size:clamp(12px,1.15vw,16px); font-weight:600; color:#0f1115; min-height:2.7em;
+                   display:flex; align-items:center; position:relative; white-space:nowrap; overflow:hidden; }
 .selbox::after { content:'▾'; position:absolute; right:.7vw; color:#9ca3af; }
 .inpbox.hl { outline:2px solid #0075de; outline-offset:-1px; background:#f2f8ff; }
-.inpbox.flash { animation:flashbg .5s ease; }
-@keyframes flashbg { 30% { background:#dbeafe; } }
-.hotline { font-size:clamp(12px,1.15vw,16px); line-height:1.5; min-height:3em; color:#374151; }
-.kpibar { display:flex; gap:1.2vw; margin-top:0; }
-.kpi { flex:1; background:#f3f4f6; border-radius:12px; padding:1.5vh 1vw; text-align:center; }
-.kpi .small { margin-bottom:.6vh; }
-.kpi .n { font-size:clamp(20px,2.3vw,34px); font-weight:800; transition:color .3s; }
+.inpbox.flash, .selbox.flash { animation:flashbg .55s ease; }
+@keyframes flashbg { 30% { background:#dbeafe; border-color:#0075de; } }
+.hotline { font-size:clamp(12px,1.1vw,15px); line-height:1.7; min-height:3.2em; color:#374151; }
+.kpibar { display:flex; gap:1.1vw; }
+.kpi { flex:1; background:#f3f4f6; border-radius:12px; padding:1.6vh 1vw; text-align:center;
+       transition:transform .3s; }
+.kpi.lit { background:#fff; border:1px solid rgba(0,117,222,.35); transform:translateY(-3px);
+           box-shadow:0 6px 20px rgba(0,117,222,.12); }
+.kpi .small { margin-bottom:.6vh; font-size:clamp(10px,1vw,13px); color:#6b7280; }
+.kpi .n { font-size:clamp(19px,2.2vw,32px); font-weight:800; color:#0f1115; }
 .btnsim { display:inline-block; background:#0075de; color:#fff; font-weight:700;
-          font-size:clamp(12px,1.15vw,16px); padding:1.2vh 1.4vw; border-radius:10px; text-align:center;
+          font-size:clamp(12px,1.1vw,15px); padding:1.2vh 1.2vw; border-radius:10px; text-align:center;
           box-shadow:0 2px 14px rgba(0,117,222,.28); opacity:0; transform:translateY(10px); transition:.4s; }
 .slide.active.sim-on .btnsim { opacity:1; transform:none; transition-delay:.2s; }
-.aibox { border-left:3px solid #1aae39; background:#f0fdf4; padding:1.6vh 1.2vw; margin-top:1vh;
-         font-size:clamp(14px,1.3vw,19px); color:#1f2937; line-height:1.65; white-space:pre-line;
-         border-radius:0 10px 10px 0; min-height:9em; }
+.aibox { border-left:3px solid #1aae39; background:#f0fdf4; padding:1.8vh 1.3vw; margin-top:1vh;
+         font-size:clamp(13px,1.25vw,18px); color:#1f2937; line-height:1.75; white-space:pre-line;
+         border-radius:0 12px 12px 0; min-height:10em; }
+.aibox .ln { display:block; opacity:0; transform:translateX(-10px); transition:.4s; }
+.aibox .ln.in { opacity:1; transform:none; }
 .tag { display:inline-block; font-size:clamp(10px,1vw,13px); color:#0075de; font-weight:700; letter-spacing:.08em; margin-bottom:1vh; }
+.hint { position:absolute; bottom:4vh; left:50%; transform:translateX(-50%); font-size:13px; color:#c4c9d4; }
 </style>
 </head>
 <body>
 <div id="prog"></div>
 
+<!-- S0 BLANK -->
+<section class="slide blank active">
+  <div class="mark">Eco<span>Forge</span></div>
+  <div class="sub">กด → เพื่อเริ่ม</div>
+</section>
+
 <!-- S1 HOOK -->
-<section class="slide active">
+<section class="slide">
   <div class="kicker">The Problem · Sriracha Hackathon 2026</div>
   <h1>วันหนึ่ง ลูกค้า EU โทรมาว่า<br>"เราซื้อของคุณต่อไม่ได้แล้ว"</h1>
   <p>เพราะคุณ<b>ตอบไม่ได้</b>ว่าชิ้นงานนี้ปล่อยคาร์บอนกี่กิโลกรัม</p>
@@ -107,7 +127,7 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
     <div class="card"><h3>โรงงานไทยที่ CBAM กระทบ</h3><div class="big bad" data-count="1100">0</div><p>แห่ง — เกิดขึ้นจริงตอนนี้</p></div>
     <div class="card"><h3>ค่าที่ปรึกษาคาร์บอน</h3><div class="big bad" data-count="370000" data-prefix="฿">0</div><p>ต่อผลิตภัณฑ์ · SME แบกไม่ไหว</p></div>
   </div>
-  <div class="foot"><span>EcoForge · KMUTT BlackPearl</span><span>Sriracha Hackathon 2026</span></div>
+  <div class="foot"><span>EcoForge</span><span>Sriracha Hackathon 2026</span></div>
   <div class="pageno">1 / 8</div>
 </section>
 
@@ -137,39 +157,34 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
   <div class="pageno">3 / 8</div>
 </section>
 
-<!-- S4 LIVE SIM — replica of real product UI -->
+<!-- S4 LIVE SIM — product replica -->
 <section class="slide sim-on">
   <div class="kicker">Live Simulation · จำลองการใช้จริง</div>
   <h2 style="margin-bottom:2vh">ยัดไฟล์ → ระบบคำนวณทันที</h2>
   <div class="demo">
-    <!-- KPI strip — same as real app -->
     <div class="kpibar">
-      <div class="kpi"><div class="small">Carbon Score</div><div class="n accent" id="k-score">—</div></div>
-      <div class="kpi"><div class="small">CO₂ / ปี</div><div class="n bad" id="k-co2">—</div></div>
-      <div class="kpi"><div class="small">ต้นทุน / ปี</div><div class="n" id="k-cost">—</div></div>
-      <div class="kpi"><div class="small">CBAM Tax 2028</div><div class="n bad" id="k-cbam">—</div></div>
-      <div class="kpi"><div class="small">Credit Revenue</div><div class="n ok" id="k-cred">—</div></div>
+      <div class="kpi" id="kp-score"><div class="small">Carbon Score</div><div class="n" id="k-score">30</div></div>
+      <div class="kpi" id="kp-co2"><div class="small">CO₂ / ปี</div><div class="n" id="k-co2">4.23 t</div></div>
+      <div class="kpi" id="kp-cost"><div class="small">ต้นทุน / ปี</div><div class="n" id="k-cost">฿524K</div></div>
+      <div class="kpi" id="kp-cbam"><div class="small">CBAM Tax 2028</div><div class="n" id="k-cbam">€294</div></div>
+      <div class="kpi" id="kp-cred"><div class="small">Credit Revenue</div><div class="n" id="k-cred">฿0/yr</div></div>
     </div>
-    <!-- controls row — same layout as real app -->
     <div class="dash ctr">
       <div class="ctl">
-        <label>วัสดุ</label>
-        <div class="selbox" id="c-mat"></div>
-        <label>กระบวนการ</label>
-        <div class="selbox" id="c-proc"></div>
+        <label>วัสดุ</label><div class="selbox" id="c-mat">Al 6061-T6 Virgin</div>
+        <label>กระบวนการ</label><div class="selbox" id="c-proc">CNC from Billet</div>
       </div>
       <div class="ctl">
-        <label>Net Mass (kg)</label><div class="inpbox" id="c-mass"></div>
-        <label>% Recycled</label><div class="inpbox hl" id="c-rec"></div>
+        <label>Net Mass (kg)</label><div class="inpbox" id="c-mass">3.7</div>
+        <label>% Recycled</label><div class="inpbox hl" id="c-rec">0</div>
       </div>
       <div class="ctl">
-        <label>Batch (pcs/mo)</label><div class="inpbox" id="c-batch"></div>
-        <label>Transport (km)</label><div class="inpbox" id="c-trans"></div>
+        <label>Batch (pcs/mo)</label><div class="inpbox" id="c-batch">500</div>
+        <label>Transport (km)</label><div class="inpbox" id="c-trans">120</div>
       </div>
-      <div class="ctl hot">
-        <label>Hotspot</label>
-        <div class="hotline" id="c-hot"></div>
-        <div class="btnsim" style="margin-top:auto">✓ AI วิเคราะห์เสร็จ — engine EU-accurate</div>
+      <div class="ctl">
+        <label>Hotspot</label><div class="hotline" id="c-hot">Material 62% · Process 31% · Transport 7%</div>
+        <div class="btnsim">✓ AI วิเคราะห์เสร็จ — engine EU-accurate</div>
       </div>
     </div>
   </div>
@@ -183,7 +198,7 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
   <div class="demo">
     <div class="dash">
       <div class="tag">● POWERED BY NOUS AI (LIVE)</div>
-      <div class="aibox typing" id="ai-text"></div>
+      <div class="aibox" id="ai-text"></div>
     </div>
   </div>
   <div class="foot"><span>ตัวอย่างคำตอบจริงจากระบบ — model stealth/ox-alpha via OpenRouter</span></div>
@@ -226,15 +241,16 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
   <h1>SME ไทย 1,100 ราย<br>กำลังนับถอยหลัง</h1>
   <p style="font-size:clamp(19px,2.1vw,31px);margin-bottom:3vh;color:#111827">ไม่ใช่เพราะของไม่ดี — แต่เพราะ<b class="accent">ตอบไม่ได้ว่าปล่อยคาร์บอนเท่าไหร่</b></p>
   <p style="font-size:clamp(17px,1.9vw,27px);color:#374151">เราไม่ได้สร้างแค่ซอฟต์แวร์ครับ<br>เราช่วยให้ <b class="ok">Made in Thailand</b> ยืนอยู่บนเวทีโลกต่อไป</p>
-  <div class="foot"><span>eco-forge.vercel.app</span><span>X4N3Z · KMUTT BlackPearl · Sriracha Hackathon 2026</span></div>
+  <div class="foot"><span>eco-forge.vercel.app</span><span>Sriracha Hackathon 2026</span></div>
   <div class="pageno">8 / 8</div>
 </section>
 
-<div class="hint" style="position:absolute;bottom:4vh;left:50%;transform:translateX(-50%);font-size:13px;color:#c4c9d4">→ / Space ถัดไป · ← กลับ</div>
+<div class="hint">→ / Space ถัดไป · ← กลับ</div>
 
 <script>
 const slides=[...document.querySelectorAll('.slide')];
 let i=0;
+const done=new Set(); // plain Set (WeakSet rejects strings)
 
 function countUp(el){
   const target=+el.dataset.count, prefix=el.dataset.prefix||'';
@@ -247,75 +263,80 @@ function countUp(el){
   requestAnimationFrame(tick);
 }
 
-// fast typewriter — speed param in ms/char
-async function type(el,text,speed){
-  el.textContent='';
-  el.insertAdjacentHTML('beforeend','<span class="caret"></span>');
-  const caret=el.querySelector('.caret');
-  for(let c=1;c<=text.length;c++){
-    caret.before(document.createTextNode(text[c-1]));
-    await new Promise(r=>setTimeout(r,speed));
-  }
-  setTimeout(()=>caret.remove(),400);
+async function fill(id,text,delay){
+  await new Promise(r=>setTimeout(r,delay));
+  const el=document.getElementById(id);
+  el.classList.add('flash');
+  el.textContent=text;
+  setTimeout(()=>el.classList.remove('flash'),600);
 }
 
-// fill value instantly + brief blue flash (like the product receiving data)
-async function fill(id, text, delay = 260) {
-  const el = document.getElementById(id)
-  await new Promise(r => setTimeout(r, delay))
-  el.classList.add('flash')
-  el.textContent = text
-  setTimeout(() => el.classList.remove('flash'), 550)
-}
-
-// animated number count for KPI
-function kpiCount(id, from, to, fmt) {
-  const el = document.getElementById(id)
-  const dur = 700, t0 = performance.now()
-  function tick(t) {
-    const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3)
-    el.textContent = fmt(from + (to - from) * e)
-    if (k < 1) requestAnimationFrame(tick)
+function kpiCount(kpId,id,from,to,fmt,cls){
+  const el=document.getElementById(id), card=document.getElementById(kpId);
+  card.classList.add('lit');
+  if(cls) el.className='n '+cls;
+  const dur=900, t0=performance.now();
+  function tick(t){
+    const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
+    el.textContent=fmt(from+(to-from)*e);
+    if(k<1) requestAnimationFrame(tick);
   }
-  requestAnimationFrame(tick)
+  requestAnimationFrame(tick);
 }
 
 async function runDemo(){
-  // values stream in instantly (pre-typed), like AI filling fields
-  await fill('c-mat','Al 6061-T6 (Recycled 50%)',300)
-  await fill('c-proc','Gravity Die Casting',200)
-  await fill('c-mass','2.4',180)
-  await fill('c-rec','50',180)
-  await fill('c-batch','500',180)
-  await fill('c-trans','120',180)
-  await fill('c-hot','Material 62% · Process 31% · Transport 7%',150)
-
-  // KPIs animate from current-state numbers → optimized result
-  kpiCount('k-score',30,82,v=>Math.round(v))
-  kpiCount('k-co2',4.23,0.88,v=>v.toFixed(2)+' t')
-  kpiCount('k-cost',524000,388000,v=>'฿'+(v/1000).toFixed(0)+'K')
-  kpiCount('k-cbam',294,0,v=>'€'+Math.round(v))
-  kpiCount('k-cred',0,737,v=>'+'+'฿'+Math.round(v)+'/yr')
+  await fill('c-mat','Al 6061-T6 (Recycled 50%)',350);
+  await fill('c-proc','Gravity Die Casting',220);
+  await fill('c-mass','2.4',200);
+  await fill('c-rec','50',200);
+  await fill('c-batch','500',200);
+  await fill('c-trans','120',180);
+  await fill('c-hot','Material 34% · Process 52% · Transport 14% (หลังปรับ)',180);
+  // KPIs animate current → optimized, cards light up one by one
+  kpiCount('kp-score','k-score',30,82,v=>Math.round(v),'accent');
+  await new Promise(r=>setTimeout(r,140));
+  kpiCount('kp-co2','k-co2',4.23,0.88,v=>v.toFixed(2)+' t','ok');
+  await new Promise(r=>setTimeout(r,140));
+  kpiCount('kp-cost','k-cost',524000,388000,v=>'฿'+Math.round(v/1000)+'K','');
+  await new Promise(r=>setTimeout(r,140));
+  kpiCount('kp-cbam','k-cbam',294,0,v=>'€'+Math.round(v),'ok');
+  await new Promise(r=>setTimeout(r,140));
+  kpiCount('kp-cred','k-cred',0,737,v=>'+฿'+Math.round(v)+'/yr','ok');
 }
 
-const aiText='จุดร้อนอยู่ที่วัสดุตั้งต้น — Al6061 virgin มี embodied CO₂ 8.24 kg/kg สูงกว่า recycled ~16 เท่า\n'+
-'แนะนำเปลี่ยนเป็น Al 6061 Recycled 50% + Gravity Die Casting (scrap 70%→12%)\n'+
-'ผลลัพธ์: CO₂ ลด 79% · CBAM €294 → €0 · ประหยัด ฿136K/yr · ขาย T-VER credit ~฿740/yr';
+const aiLines=[
+  'จุดร้อนอยู่ที่วัสดุตั้งต้น — Al6061 virgin มี embodied CO₂ 8.24 kg/kg สูงกว่า recycled ~16 เท่า',
+  'แนะนำเปลี่ยนเป็น Al 6061 Recycled 50% + Gravity Die Casting (scrap 70% → 12%)',
+  'ผลลัพธ์: CO₂ ลด 79% · CBAM €294 → €0 · ประหยัด ฿136K/yr · ขาย T-VER credit ~฿740/yr'
+];
+async function runAI(){
+  const box=document.getElementById('ai-text');
+  for(const line of aiLines){
+    const span=document.createElement('span');
+    span.className='ln';
+    box.appendChild(span);
+    for(let c=1;c<=line.length;c++){
+      span.textContent=line.slice(0,c);
+      await new Promise(r=>setTimeout(r,9));
+    }
+    span.classList.add('in');
+    await new Promise(r=>setTimeout(r,150));
+  }
+}
 
-let ran=new WeakSet();
 async function onEnter(idx){
   slides[idx].querySelectorAll('[data-count]').forEach(el=>{
-    if(el.dataset.done!=='1'){el.dataset.done='1';countUp(el);}
+    if(!done.has(el)){done.add(el);countUp(el);}
   });
-  if(idx===3&&!ran.has('sim')){ran.add('sim');await new Promise(r=>setTimeout(r,500));runDemo();}
-  if(idx===4&&!ran.has('ai')){ran.add('ai');await new Promise(r=>setTimeout(r,500));
-    await type(document.getElementById('ai-text'),aiText,10);}
+  if(idx===4&&!done.has('sim')){done.add('sim');await new Promise(r=>setTimeout(r,600));runDemo();}
+  if(idx===5&&!done.has('ai')){done.add('ai');await new Promise(r=>setTimeout(r,500));runAI();}
 }
 
 function show(n){
-  n=(n+slides.length)%slides.length;
+  n=Math.max(0,Math.min(slides.length-1,n));
+  if(n===i) { onEnter(i); return; }
   slides[i].classList.remove('active'); i=n; slides[i].classList.add('active');
-  document.getElementById('prog').style.width=((i+1)/slides.length*100)+'%';
+  document.getElementById('prog').style.width=((i)/(slides.length-1)*100)+'%';
   onEnter(i);
 }
 
