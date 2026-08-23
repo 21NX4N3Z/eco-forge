@@ -46,9 +46,12 @@ const LOCAL_FALLBACK: Record<string, Omit<WhyResponse, 'source'>> = {
 }
 
 const SYS =
-  'You are a carbon engineering assistant for Thai SME parts manufacturers facing EU CBAM. ' +
-  'Reply ONLY with strict JSON: {"explanation": string, "suggestion": string, "severity": "high"|"med"|"low"}. ' +
-  'Be concise and engineering-focused. No markdown, no prose outside the JSON.'
+  'คุณคือผู้ช่วยวิศวกรรมคาร์บอนสำหรับโรงงาน SME ไทยที่ต้องเจอ EU CBAM ตอบเป็นภาษาไทยเท่านั้น ' +
+  'ตอบ ONLY strict JSON: {"explanation": string, "suggestion": string, "severity": "high"|"med"|"low"} — ' +
+  'explanation = อธิบายอย่างละเอียด 3-5 ประโยคภาษาไทย (สาเหตุ ตัวเลข benchmark ผลกระทบ) ' +
+  'suggestion = คำแนะนำแก้ไข 2-4 ประโยคภาษาไทย (ขั้นตอนปฏิบัติจริง ทางเลือกวัสดุ/กระบวนการ) ' +
+  'severity = "high" ถ้าเกินเกณฑ์มาก, "med" ใกล้เคียง, "low" ถ้าผ่าน ' +
+  'ห้ามใช้อีโมจิเด็ดขาด ห้าม markdown ห้ามมีข้อความนอก JSON'
 
 async function callOpenRouter(req: WhyRequest, key: string): Promise<WhyResponse> {
   const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -56,7 +59,7 @@ async function callOpenRouter(req: WhyRequest, key: string): Promise<WhyResponse
     headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
     body: JSON.stringify({
       model: 'stealth/ox-alpha',
-      max_tokens: 400,
+      max_tokens: 1200,
       messages: [
         { role: 'system', content: SYS },
         { role: 'user', content: JSON.stringify(req) },
@@ -66,7 +69,7 @@ async function callOpenRouter(req: WhyRequest, key: string): Promise<WhyResponse
   if (!upstream.ok) throw new Error('openrouter ' + upstream.status)
   const j = await upstream.json()
   const content = j?.choices?.[0]?.message?.content ?? ''
-  const parsed = JSON.parse(content) as Omit<WhyResponse, 'source'>
+  const parsed = JSON.parse(content.replace(/```json|```/g, '').trim()) as Omit<WhyResponse, 'source'>
   return { ...parsed, source: 'ai' }
 }
 

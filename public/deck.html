@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>EcoForge — Pitch Deck</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter','Sarabun',sans-serif; background:#0b0e14; color:#f6f7f9; overflow:hidden; }
+  .slide { position:absolute; inset:0; display:none; flex-direction:column; justify-content:center;
+           padding:8vh 10vw; }
+  .slide.active { display:flex; }
+  .kicker { color:#4da3ff; font-size:20px; letter-spacing:.2em; text-transform:uppercase; margin-bottom:24px; font-weight:600; }
+  h1 { font-size:64px; line-height:1.15; margin-bottom:28px; }
+  h2 { font-size:52px; line-height:1.2; margin-bottom:32px; }
+  p, li { font-size:28px; line-height:1.65; color:#c9cfdb; }
+  .big { font-size:96px; font-weight:800; color:#4da3ff; }
+  .accent { color:#4da3ff; }
+  .ok { color:#35d07f; }
+  .bad { color:#ff5d5d; }
+  ul { list-style:none; }
+  li { margin-bottom:18px; padding-left:36px; position:relative; }
+  li::before { content:'—'; position:absolute; left:0; color:#4da3ff; }
+  .row { display:flex; gap:40px; margin-top:40px; }
+  .card { background:#141926; border:1px solid #232a3a; border-radius:14px; padding:28px 32px; flex:1; }
+  .card h3 { font-size:22px; color:#4da3ff; margin-bottom:12px; }
+  .card p { font-size:20px; line-height:1.55; }
+  .foot { position:absolute; bottom:32px; left:10vw; right:10vw; display:flex; justify-content:space-between;
+          font-size:15px; color:#5a6377; }
+  .pageno { position:absolute; bottom:32px; right:40px; font-size:15px; color:#5a6377; }
+</style>
+</head>
+<body>
+
+<!-- S1 HOOK -->
+<section class="slide active">
+  <div class="kicker">The Problem · Sriracha Hackathon 2026</div>
+  <h1>วันหนึ่ง ลูกค้า EU โทรมาบอกว่า<br>"เราซื้อของคุณต่อไม่ได้แล้ว"</h1>
+  <p>เพราะคุณ<b>ตอบไม่ได้</b>ว่า ชิ้นงานนี้ปล่อยคาร์บอนกี่กิโลกรัม</p>
+  <div class="row">
+    <div class="card"><h3>โรงงานไทยที่ CBAM กระทบ</h3><p class="big">1,100+</p><p>แห่ง — กำลังเผชิญตอนนี้</p></div>
+    <div class="card"><h3>ค่าที่ปรึกษาคำนวณคาร์บอน</h3><p class="big">฿370,000</p><p>ต่อผลิตภัณฑ์ — SME แบกไม่ไหว</p></div>
+  </div>
+  <div class="pageno">1 / 8</div>
+</section>
+
+<!-- S2 PROBLEM -->
+<section class="slide">
+  <div class="kicker">Why it hurts</div>
+  <h2>ทุกสินค้าต้องมี<span class="accent">"ป้ายราคาคาร์บอน"</span></h2>
+  <ul>
+    <li>ไม่มีป้าย = EU แปะราคาแพงสุดให้ (CBAM Tax)</li>
+    <li>จ้างที่ปรึกษา = แพง + รอนาน + ผิดพลาดโดนปรับย้อนหลัง</li>
+    <li>แย่กว่านั้น — <b>โรงงานไม่รู้ว่า "จุดไหน" ปล่อยคาร์บอนมากสุด</b><br>เหมือนป่วยแต่ไม่รู้ว่าป่วยตรงไหน</li>
+  </ul>
+  <div class="pageno">2 / 8</div>
+</section>
+
+<!-- S3 SOLUTION -->
+<section class="slide">
+  <div class="kicker">Our Solution</div>
+  <h1>EcoForge<br><span style="font-size:44px;color:#c9cfdb">"หมอตรวจคาร์บอน" อัตโนมัติของโรงงานไทย</span></h1>
+  <ul>
+    <li><b>ยัดไฟล์ Excel หน้างาน</b> → AI อ่าน กรอก คำนวณ ตามมาตรฐาน EU ทันที</li>
+    <li><b>AI บอกวิธีลดหน้างาน</b> — ไม่ใช่แค่ตัวเลข แต่เป็นภาษาไทยที่ช่างอ่านรู้เรื่อง</li>
+    <li><b>แปลงเป็นเงิน</b> — ภาษี CBAM, Payback, Carbon Credit ขายได้จริง</li>
+  </ul>
+  <div class="pageno">3 / 8</div>
+</section>
+
+<!-- S4 DEMO NUMBERS -->
+<section class="slide">
+  <div class="kicker">Verified with real EU data</div>
+  <h2>Case จริง: Bracket Al6061 + CNC</h2>
+  <div class="row">
+    <div class="card"><h3>ปัจจุบัน</h3><p class="big bad">4.23 t</p><p>CO₂/ปี · CBAM €294/yr</p></div>
+    <div class="card"><h3>AI แนะนำ (Option A)</h3><p class="big ok">0.88 t</p><p>CBAM <span class="ok">€0</span> · ประหยัด ฿136K/yr</p></div>
+    <div class="card"><h3>Payback</h3><p class="big">8.5<span style="font-size:40px"> เดือน</span></p><p>+ Credit revenue ~฿740/yr</p></div>
+  </div>
+  <p style="margin-top:32px;font-size:20px;color:#5a6377">Benchmark จาก EU Commission (Feb 2026) จริง per CN code · DV Thailand 1.73 tCO₂e/t · Guidance No.1–5e</p>
+  <div class="pageno">4 / 8</div>
+</section>
+
+<!-- S5 REGULATORY -->
+<section class="slide">
+  <div class="kicker">Not a toy — regulatory grade</div>
+  <h2>ทุกตัวเลข<span class="accent">ย้อนกลับถึงเอกสารทางการ</span></h2>
+  <ul>
+    <li>EU Benchmarks &amp; Default Values Acts (Feb/Aug 2026) — benchmark per CN code, route L</li>
+    <li>Guidance No.3 — EEInpMat = Σ Mi·SEEi · No.4 — CBAM factor 2.5%→100% · No.5e — Annex II direct-only</li>
+    <li>De minimis 50 t/yr check · TGO คู่มือ CBAM อะลูมิเนียม (ไทย)</li>
+    <li>ISO 14040:2006 · ISO 14044:2006 · ISO 14067:2018 · ASTM E155</li>
+  </ul>
+  <div class="pageno">5 / 8</div>
+</section>
+
+<!-- S6 BUSINESS -->
+<section class="slide">
+  <div class="kicker">Business Model</div>
+  <h2>รายได้ 3 ทาง</h2>
+  <div class="row">
+    <div class="card"><h3>Consulting</h3><p>สอนโรงงานใช้งานจริง วางระบบข้อมูล baseline</p></div>
+    <div class="card"><h3>SaaS Subscription</h3><p>ค่าสมาชิกรายเดือน ขยายข้ามอุตสาหกรรม (ซีเมนต์/ปุ๋ย/H₂)</p></div>
+    <div class="card"><h3>Verification Prep</h3><p>เตรียมเอกสารก่อนถูกตรวจสอบจริง — พร้อม dSURE roadmap</p></div>
+  </div>
+  <div class="pageno">6 / 8</div>
+</section>
+
+<!-- S7 ROADMAP -->
+<section class="slide">
+  <div class="kicker">Roadmap</div>
+  <h2>3 ระยะ ตามกฎหมาย EU</h2>
+  <ul>
+    <li><b>ระยะ 1 (ตอนนี้)</b> — เหล็ก+อะลูมิเนียม ยานยนต์ · Excel auto-ingest · EU-accurate engine</li>
+    <li><b>ระยะ 2</b> — AI reduction advisor ภาษาไทยหน้างาน · carbon credit marketplace (T-VER)</li>
+    <li><b>ระยะ 3 (2571)</b> — ขยาย 6 → 180 product groups ตามกฎหมาย EU — รากฐานพร้อมแล้ววันนี้</li>
+  </ul>
+  <div class="pageno">7 / 8</div>
+</section>
+
+<!-- S8 CLOSE -->
+<section class="slide">
+  <div class="kicker">Final</div>
+  <h1>SME ไทย 1,100 ราย<br>กำลังนับถอยหลัง</h1>
+  <p style="font-size:34px;margin-bottom:24px">ไม่ใช่เพราะของไม่ดี — แต่เพราะ<b class="accent">ตอบไม่ได้ว่าปล่อยคาร์บอนเท่าไหร่</b></p>
+  <p style="font-size:30px">เราไม่ได้สร้างแค่ซอฟต์แวร์ครับ<br>เรากำลังช่วยให้ <b class="ok">"Made in Thailand"</b> ยืนอยู่บนเวทีโลกต่อไป</p>
+  <p style="margin-top:48px;font-size:24px;color:#5a6377">eco-forge.vercel.app · X4N3Z · KMUTT BlackPearl · Sriracha Hackathon 2026</p>
+  <div class="pageno">8 / 8</div>
+</section>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let i = 0;
+  function show(n){ slides[i].classList.remove('active'); i=(n+slides.length)%slides.length; slides[i].classList.add('active'); }
+  addEventListener('keydown', e => {
+    if (['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)) show(i+1);
+    if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) show(i-1);
+  });
+  addEventListener('click', () => show(i+1));
+</script>
+</body>
+</html>
