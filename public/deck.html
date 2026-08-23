@@ -7,80 +7,79 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Sarabun:wght@400;600;700&display=swap');
 * { margin:0; padding:0; box-sizing:border-box; }
 html,body { height:100%; }
-body { font-family:'Inter','Sarabun',sans-serif; background:#070a12; color:#f6f7f9; overflow:hidden; cursor:default; }
-
-/* ambient background glow */
+/* ── EcoForge light theme (Notion/Linear) ── */
+body { font-family:'Inter','Sarabun',sans-serif; background:#fafafa; color:#0f1115; overflow:hidden; cursor:default; }
 body::before { content:''; position:fixed; inset:0;
-  background: radial-gradient(60% 50% at 20% 10%, rgba(0,117,222,.14), transparent),
-              radial-gradient(50% 40% at 85% 90%, rgba(26,174,57,.10), transparent);
+  background: radial-gradient(55% 45% at 18% 8%, rgba(0,117,222,.07), transparent),
+              radial-gradient(45% 38% at 85% 92%, rgba(26,174,57,.06), transparent);
   pointer-events:none; }
 
 .slide { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center;
          padding:9vh 9vw; opacity:0; transform:translateY(30px) scale(.985); pointer-events:none;
-         transition:opacity .55s cubic-bezier(.2,.7,.2,1), transform .55s cubic-bezier(.2,.7,.2,1); }
+         transition:opacity .5s cubic-bezier(.2,.7,.2,1), transform .5s cubic-bezier(.2,.7,.2,1); }
 .slide.active { opacity:1; transform:none; pointer-events:auto; }
 
-.kicker { color:#4da3ff; font-size:clamp(14px,1.4vw,19px); letter-spacing:.22em; text-transform:uppercase;
-          margin-bottom:2.6vh; font-weight:700; opacity:0; transform:translateY(18px); transition:.5s .15s; }
-h1 { font-size:clamp(40px,5.6vw,74px); line-height:1.12; margin-bottom:3vh; font-weight:800;
-     opacity:0; transform:translateY(24px); transition:.6s .25s; }
-h2 { font-size:clamp(34px,4.4vw,58px); line-height:1.16; margin-bottom:3.4vh; font-weight:800;
-     opacity:0; transform:translateY(24px); transition:.6s .25s; }
-p,li { font-size:clamp(17px,1.75vw,25px); line-height:1.65; color:#c9cfdb; }
-.big { font-size:clamp(44px,5vw,72px); font-weight:800; }
+.kicker { color:#0075de; font-size:clamp(13px,1.3vw,18px); letter-spacing:.22em; text-transform:uppercase;
+          margin-bottom:2.4vh; font-weight:700; opacity:0; transform:translateY(18px); transition:.45s .12s; }
+h1 { font-size:clamp(38px,5.4vw,70px); line-height:1.14; margin-bottom:3vh; font-weight:800; color:#0f1115;
+     opacity:0; transform:translateY(24px); transition:.55s .22s; }
+h2 { font-size:clamp(32px,4.2vw,54px); line-height:1.18; margin-bottom:3.2vh; font-weight:800; color:#0f1115;
+     opacity:0; transform:translateY(24px); transition:.55s .22s; }
+p,li { font-size:clamp(16px,1.7vw,24px); line-height:1.65; color:#374151; }
+.big { font-size:clamp(42px,4.6vw,66px); font-weight:800; color:#0f1115; }
 .slide.active .kicker, .slide.active h1, .slide.active h2, .slide.active p, .slide.active li,
-.slide.active .row, .slide.active .card, .slide.active .bar, .slide.active .foot { opacity:1; transform:none; }
-.row, li, .card, .bar, p, .foot { opacity:0; transform:translateY(16px); transition:.5s; }
-.slide.active li:nth-child(1){transition-delay:.35s}.slide.active li:nth-child(2){transition-delay:.48s}
-.slide.active li:nth-child(3){transition-delay:.61s}.slide.active li:nth-child(4){transition-delay:.74s}
-.slide.active .row{transition-delay:.45s}
-.slide.active .card:nth-child(1){transition-delay:.55s}.slide.active .card:nth-child(2){transition-delay:.68s}
-.slide.active .card:nth-child(3){transition-delay:.81s}
-.slide.active .foot{transition-delay:.9s}
+.slide.active .row, .slide.active .card, .slide.active .foot, .slide.active .demo { opacity:1; transform:none; }
+.row, li, .card, p, .foot, .demo { opacity:0; transform:translateY(14px); transition:.45s; }
+.slide.active li:nth-child(1){transition-delay:.32s}.slide.active li:nth-child(2){transition-delay:.44s}
+.slide.active li:nth-child(3){transition-delay:.56s}.slide.active li:nth-child(4){transition-delay:.68s}
+.slide.active .row{transition-delay:.42s}
+.slide.active .card:nth-child(1){transition-delay:.52s}.slide.active .card:nth-child(2){transition-delay:.64s}
+.slide.active .card:nth-child(3){transition-delay:.76s}.slide.active .demo{transition-delay:.5s}
+.slide.active .foot{transition-delay:.85s}
 
-.accent { color:#4da3ff; } .ok { color:#35d07f; } .bad { color:#ff5d5d; }
+.accent { color:#0075de; } .ok { color:#157a2c; } .bad { color:#d43a3a; }
 ul { list-style:none; }
 li { margin-bottom:2vh; padding-left:2.2vw; position:relative; }
-li::before { content:'▸'; position:absolute; left:0; color:#4da3ff; }
+li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
 
-.row { display:flex; gap:2vw; margin-top:3.5vh; }
-.card { background:#10141f; border:1px solid #222a3c; border-radius:16px; padding:3vh 2.2vw; flex:1;
-        box-shadow:0 8px 40px rgba(0,0,0,.35); }
-.card h3 { font-size:clamp(15px,1.4vw,19px); color:#4da3ff; margin-bottom:1.4vh; letter-spacing:.04em; }
-.card p, .card .big { font-size:clamp(16px,1.5vw,21px); line-height:1.5; }
-.big { font-size:clamp(42px,4.6vw,66px); font-weight:800; }
-.small { font-size:clamp(13px,1.2vw,16px); color:#5a6377; }
+.row { display:flex; gap:2vw; margin-top:3.4vh; }
+.card { background:#ffffff; border:1px solid rgba(0,0,0,.10); border-radius:14px; padding:3vh 2.2vw; flex:1;
+        box-shadow:0 1px 2px rgba(0,0,0,.04), 0 10px 34px rgba(0,0,0,.06); }
+.card h3 { font-size:clamp(14px,1.35vw,18px); color:#0075de; margin-bottom:1.3vh; letter-spacing:.04em; font-weight:700; }
+.card p, .card .big { font-size:clamp(15px,1.5vw,21px); line-height:1.5; color:#374151; }
+.big { font-size:clamp(40px,4.4vw,62px); font-weight:800; }
+.small { font-size:clamp(12px,1.15vw,15px); color:#6b7280; }
 .foot { position:absolute; bottom:4vh; left:9vw; right:9vw; display:flex; justify-content:space-between;
-        font-size:clamp(12px,1.1vw,15px); color:#57607a; align-items:center; gap:2vw; }
-.pageno { position:absolute; bottom:4vh; right:3vw; font-size:15px; color:#57607a; z-index:5; }
-.hint { position:absolute; bottom:4vh; left:50%; transform:translateX(-50%); font-size:13px; color:#3d4658; }
+        font-size:clamp(11px,1.05vw,14px); color:#9ca3af; align-items:center; gap:2vw; }
+.pageno { position:absolute; bottom:4vh; right:3vw; font-size:14px; color:#9ca3af; z-index:5; }
 
-/* progress bar */
-#prog { position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,#0075de,#35d07f); width:0%;
+#prog { position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,#0075de,#1aae39); width:0%;
         transition:width .4s ease; z-index:10; }
 
-/* ── animated demo widgets (slide 5) ── */
-.demo { display:flex; flex-direction:column; gap:2.4vh; max-width:900px; }
-.dash { background:#10141f; border:1px solid #222a3c; border-radius:16px; padding:2.6vh 2vw;
-        box-shadow:0 10px 46px rgba(0,0,0,.4); }
+/* ── demo widgets (light theme cards) ── */
+.demo { display:flex; flex-direction:column; gap:2.2vh; max-width:920px; }
+.dash { background:#ffffff; border:1px solid rgba(0,0,0,.10); border-radius:14px; padding:2.4vh 1.8vw;
+        box-shadow:0 1px 2px rgba(0,0,0,.04), 0 10px 34px rgba(0,0,0,.06); }
 .fieldline { display:flex; justify-content:space-between; align-items:center; padding:1vh 0;
-             border-bottom:1px dashed #232a3c; font-size:clamp(15px,1.4vw,20px); }
+             border-bottom:1px dashed #e5e7eb; font-size:clamp(14px,1.35vw,19px); }
 .fieldline:last-child { border-bottom:none; }
-.fieldline .k { color:#8b94ab; }
-.caret { display:inline-block; width:10px; height:1.2em; background:#4da3ff; vertical-align:text-bottom;
-         animation:blink .8s steps(1) infinite; }
+.fieldline .k { color:#6b7280; }
+.caret { display:inline-block; width:9px; height:1.1em; background:#0075de; vertical-align:text-bottom;
+         animation:blink .7s steps(1) infinite; border-radius:1px; }
 @keyframes blink { 50% { opacity:0; } }
-.kpibar { display:flex; gap:1.4vw; margin-top:2vh; }
-.kpi { flex:1; background:#161c2a; border-radius:12px; padding:1.6vh 1.2vw; text-align:center; }
-.kpi .n { font-size:clamp(24px,2.6vw,38px); font-weight:800; }
-.btnsim { display:inline-block; margin-top:2.2vh; background:linear-gradient(90deg,#0075de,#005bb8); color:#fff;
-          font-weight:700; font-size:clamp(15px,1.4vw,19px); padding:1.4vh 2vw; border-radius:10px;
-          box-shadow:0 4px 24px rgba(0,117,222,.4); opacity:0; transform:translateY(10px); transition:.4s; }
-.slide.active.sim-on .btnsim { opacity:1; transform:none; }
-.typing { min-height:1.4em; }
-.aibox { border-left:3px solid #35d07f; padding-left:1.2vw; margin-top:2vh; font-size:clamp(14px,1.35vw,19px);
-         color:#d7dde8; line-height:1.6; white-space:pre-line; }
-.tag { display:inline-block; margin-top:1vh; font-size:clamp(11px,1vw,13px); color:#4da3ff; font-weight:700; letter-spacing:.08em; }
+.typing { min-height:1.3em; font-weight:600; color:#0f1115; }
+.kpibar { display:flex; gap:1.2vw; margin-top:1.8vh; }
+.kpi { flex:1; background:#f3f4f6; border-radius:12px; padding:1.5vh 1vw; text-align:center; }
+.kpi .small { margin-bottom:.6vh; }
+.kpi .n { font-size:clamp(22px,2.5vw,36px); font-weight:800; }
+.btnsim { display:inline-block; margin-top:2vh; background:#0075de; color:#fff; font-weight:700;
+          font-size:clamp(14px,1.35vw,18px); padding:1.3vh 1.8vw; border-radius:10px;
+          box-shadow:0 2px 14px rgba(0,117,222,.28); opacity:0; transform:translateY(10px); transition:.4s; }
+.slide.active.sim-on .btnsim { opacity:1; transform:none; transition-delay:.2s; }
+.aibox { border-left:3px solid #1aae39; background:#f0fdf4; padding:1.6vh 1.2vw; margin-top:1vh;
+         font-size:clamp(14px,1.3vw,19px); color:#1f2937; line-height:1.65; white-space:pre-line;
+         border-radius:0 10px 10px 0; min-height:9em; }
+.tag { display:inline-block; font-size:clamp(10px,1vw,13px); color:#0075de; font-weight:700; letter-spacing:.08em; margin-bottom:1vh; }
 </style>
 </head>
 <body>
@@ -115,7 +114,7 @@ li::before { content:'▸'; position:absolute; left:0; color:#4da3ff; }
 <!-- S3 SOLUTION -->
 <section class="slide">
   <div class="kicker">Our Solution</div>
-  <h1>EcoForge<br><span style="font-size:.55em;color:#c9cfdb;font-weight:600">"หมอตรวจคาร์บอน" อัตโนมัติของโรงงานไทย</span></h1>
+  <h1>EcoForge<br><span style="font-size:.55em;color:#374151;font-weight:600">"หมอตรวจคาร์บอน" อัตโนมัติของโรงงานไทย</span></h1>
   <ul>
     <li><b>ยัดไฟล์ Excel หน้างาน</b> → AI อ่าน กรอก คำนวณ ตามมาตรฐาน EU ทันที</li>
     <li><b>AI บอกวิธีลดหน้างาน</b> — ภาษาไทยที่ช่างอ่านรู้เรื่อง พร้อมแปลงเป็นเงิน</li>
@@ -131,7 +130,7 @@ li::before { content:'▸'; position:absolute; left:0; color:#4da3ff; }
   <h2>ยัดไฟล์ → ระบบคำนวณทันที</h2>
   <div class="demo">
     <div class="dash">
-      <div class="fieldline"><span class="k">📄 production_log.csv</span><span id="filestat" class="typing"></span></div>
+      <div class="fieldline"><span class="k">production_log.csv</span><span id="filestat" class="typing"></span></div>
       <div class="fieldline"><span class="k">Part type</span><span id="f-part" class="typing"></span></div>
       <div class="fieldline"><span class="k">Material</span><span id="f-mat" class="typing"></span></div>
       <div class="fieldline"><span class="k">Net mass</span><span id="f-mass" class="typing"></span></div>
@@ -143,7 +142,7 @@ li::before { content:'▸'; position:absolute; left:0; color:#4da3ff; }
       <div class="kpi"><div class="small">Credit Revenue</div><div class="n ok" id="k-cred">—</div></div>
       <div class="kpi"><div class="small">Payback</div><div class="n accent" id="k-pay">—</div></div>
     </div>
-    <span class="btnsim">✓ AI วิเคราะห์ด้วยข้อมูลจริงเสร็จสิ้น — ผลลัพธ์ด้านบนคำนวณจาก engine EU-accurate</span>
+    <span class="btnsim">✓ AI วิเคราะห์ด้วยข้อมูลจริงเสร็จสิ้น — ผลลัพธ์คำนวณจาก engine มาตรฐาน EU</span>
   </div>
   <div class="pageno">4 / 8</div>
 </section>
@@ -167,9 +166,9 @@ li::before { content:'▸'; position:absolute; left:0; color:#4da3ff; }
   <div class="kicker">Verified with real EU data</div>
   <h2>Case จริง: Bracket Al6061 + CNC → GDC</h2>
   <div class="row">
-    <div class="card"><h3>CO₂ / ปี</h3><div class="big"><span class="bad">4.23</span> → <span class="ok">0.88</span><span style="font-size:.45em;color:#8b94ab"> t</span></div><p>ลด 79%</p></div>
+    <div class="card"><h3>CO₂ / ปี</h3><div class="big"><span class="bad">4.23</span> → <span class="ok">0.88</span><span style="font-size:.45em;color:#9ca3af"> t</span></div><p>ลด 79%</p></div>
     <div class="card"><h3>CBAM Tax 2028</h3><div class="big"><span class="bad">€294</span> → <span class="ok">€0</span></div><p>below benchmark ✓</p></div>
-    <div class="card"><h3>Payback</h3><div class="big accent">8.5<span style="font-size:.45em;color:#8b94ab"> เดือน</span></div><p>+ Credit ~฿740/yr (T-VER)</p></div>
+    <div class="card"><h3>Payback</h3><div class="big accent">8.5<span style="font-size:.45em;color:#9ca3af"> เดือน</span></div><p>+ Credit ~฿740/yr (T-VER)</p></div>
   </div>
   <p class="small" style="margin-top:3vh">Benchmark per CN code (route L) จาก EU Commission Feb 2026 · DV Thailand 1.73 tCO₂e/t · Guidance No.1–5e · ISO 14040/14044/14067</p>
   <div class="pageno">6 / 8</div>
@@ -196,22 +195,21 @@ li::before { content:'▸'; position:absolute; left:0; color:#4da3ff; }
 <section class="slide">
   <div class="kicker">Final</div>
   <h1>SME ไทย 1,100 ราย<br>กำลังนับถอยหลัง</h1>
-  <p style="font-size:clamp(20px,2.2vw,32px);margin-bottom:3vh">ไม่ใช่เพราะของไม่ดี — แต่เพราะ<b class="accent">ตอบไม่ได้ว่าปล่อยคาร์บอนเท่าไหร่</b></p>
-  <p style="font-size:clamp(18px,2vw,28px)">เราไม่ได้สร้างแค่ซอฟต์แวร์ครับ<br>เราช่วยให้ <b class="ok">Made in Thailand</b> ยืนอยู่บนเวทีโลกต่อไป</p>
+  <p style="font-size:clamp(19px,2.1vw,31px);margin-bottom:3vh;color:#111827">ไม่ใช่เพราะของไม่ดี — แต่เพราะ<b class="accent">ตอบไม่ได้ว่าปล่อยคาร์บอนเท่าไหร่</b></p>
+  <p style="font-size:clamp(17px,1.9vw,27px);color:#374151">เราไม่ได้สร้างแค่ซอฟต์แวร์ครับ<br>เราช่วยให้ <b class="ok">Made in Thailand</b> ยืนอยู่บนเวทีโลกต่อไป</p>
   <div class="foot"><span>eco-forge.vercel.app</span><span>X4N3Z · KMUTT BlackPearl · Sriracha Hackathon 2026</span></div>
   <div class="pageno">8 / 8</div>
 </section>
 
-<div class="hint">→ / Space ถัดไป · ← กลับ</div>
+<div class="hint" style="position:absolute;bottom:4vh;left:50%;transform:translateX(-50%);font-size:13px;color:#c4c9d4">→ / Space ถัดไป · ← กลับ</div>
 
 <script>
 const slides=[...document.querySelectorAll('.slide')];
 let i=0;
 
-// count-up numbers
 function countUp(el){
   const target=+el.dataset.count, prefix=el.dataset.prefix||'';
-  const dur=1400, t0=performance.now();
+  const dur=1100, t0=performance.now();
   function tick(t){
     const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
     el.textContent=prefix+Math.round(target*e).toLocaleString('en-US');
@@ -220,45 +218,44 @@ function countUp(el){
   requestAnimationFrame(tick);
 }
 
-// typewriter
-function type(el,text,speed=34){
+// fast typewriter — speed param in ms/char
+async function type(el,text,speed){
   el.textContent='';
-  return new Promise(res=>{
-    let c=0;
-    const iv=setInterval(()=>{
-      el.textContent=text.slice(0,++c);
-      if(c>=text.length){clearInterval(iv);setTimeout(res,120);}
-    },speed);
-  });
+  el.insertAdjacentHTML('beforeend','<span class="caret"></span>');
+  const caret=el.querySelector('.caret');
+  for(let c=1;c<=text.length;c++){
+    caret.before(document.createTextNode(text[c-1]));
+    await new Promise(r=>setTimeout(r,speed));
+  }
+  setTimeout(()=>caret.remove(),400);
 }
 
 async function runDemo(){
-  await type(document.getElementById('filestat'),'✓ parsed 24 rows',28);
-  await type(document.getElementById('f-part'),'Housing');
-  await type(document.getElementById('f-mat'),'Al 6061-T6 (Recycled 50%)');
-  await type(document.getElementById('f-mass'),'2.4 kg');
-  await type(document.getElementById('f-rec'),'50 %');
-  // KPIs animate in
+  // fast: 12ms/char for fields, values appear as short pops
+  await type(document.getElementById('filestat'),'parsed 24 rows',10);
+  await type(document.getElementById('f-part'),'Housing',12);
+  await type(document.getElementById('f-mat'),'Al 6061-T6 (Recycled 50%)',12);
+  await type(document.getElementById('f-mass'),'2.4 kg',12);
+  await type(document.getElementById('f-rec'),'50 %',12);
   const seq=[['k-co2','0.88 t'],['k-cbam','€0'],['k-cred','+฿737/yr'],['k-pay','8.5 เดือน']];
   for(const [id,v] of seq){
     document.getElementById(id).textContent=v;
-    await new Promise(r=>setTimeout(r,260));
+    await new Promise(r=>setTimeout(r,180));
   }
 }
 
 const aiText='จุดร้อนอยู่ที่วัสดุตั้งต้น — Al6061 virgin มี embodied CO₂ 8.24 kg/kg สูงกว่า recycled ~16 เท่า\n'+
 'แนะนำเปลี่ยนเป็น Al 6061 Recycled 50% + Gravity Die Casting (scrap 70%→12%)\n'+
-'ผลลัพธ์: CO₂ ลด 79% · CBAM €294 → €0 · ประหยัด ฿136K/yr · ขาย T-VER credit ได้ ~฿740/yr';
+'ผลลัพธ์: CO₂ ลด 79% · CBAM €294 → €0 · ประหยัด ฿136K/yr · ขาย T-VER credit ~฿740/yr';
 
-let demoRan=new WeakSet();
+let ran=new WeakSet();
 async function onEnter(idx){
   slides[idx].querySelectorAll('[data-count]').forEach(el=>{
     if(el.dataset.done!=='1'){el.dataset.done='1';countUp(el);}
   });
-  if(slides[idx].id===''||true){}
-  if(idx===3&&!demoRan.has('sim')){demoRan.add('sim');await new Promise(r=>setTimeout(r,700));runDemo();}
-  if(idx===4&&!demoRan.has('ai')){demoRan.add('ai');await new Promise(r=>setTimeout(r,700));
-    await type(document.getElementById('ai-text'),aiText,18);}
+  if(idx===3&&!ran.has('sim')){ran.add('sim');await new Promise(r=>setTimeout(r,500));runDemo();}
+  if(idx===4&&!ran.has('ai')){ran.add('ai');await new Promise(r=>setTimeout(r,500));
+    await type(document.getElementById('ai-text'),aiText,10);}
 }
 
 function show(n){
