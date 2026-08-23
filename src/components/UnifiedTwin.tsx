@@ -15,6 +15,7 @@ import ViewToggle from './ViewToggle'
 import { paybackMonths, paybackLabel } from '../utils/payback'
 import { ManualMaterialForm, HistoryPanel, SupplierPanel } from './InputSources'
 import FileAnalyzer from './FileAnalyzer'
+import ComparisonDeep from './ComparisonDeep'
 
 const COLORS = ['#0075de', '#dd5b00', '#1aae39', '#a39e98']
 
@@ -214,7 +215,7 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
       )}
 
       {/* KPI strip — numbers auto-shrink when long, never overflow */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         <div className="card min-w-0"><div className="label">Carbon Score</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-accent tabular-nums break-all">{cur.score}<span className="text-ink-mute text-xl">/100</span></div></div>
         <div className="card min-w-0"><div className="label">CO₂ / ปี</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-ink tabular-nums break-all">{(cur.annualCo2/1000).toFixed(2)}<span className="text-ink-mute text-xl"> t</span></div></div>
         <div className="card min-w-0"><div className="label">ต้นทุน / ปี</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ink tabular-nums break-all">{money(cur.annualCost)}</div>
@@ -222,15 +223,23 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
             {Object.keys(RATES).map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
-        <div className="card min-w-0"><div className="label">CBAM 2028</div><div className={`text-[clamp(24px,3vw,34px)] leading-none font-bold tabular-nums break-all ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>€{cbam2028}<span className="text-ink-mute text-xl">/yr</span></div></div>
+        <div className="card min-w-0"><div className="label">CBAM Tax 2028</div><div className={`text-[clamp(24px,3vw,34px)] leading-none font-bold tabular-nums break-all ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>€{cbam2028}<span className="text-ink-mute text-xl">/yr</span></div></div>
+        <div className="card min-w-0"><div className="label">Credit Revenue (T-VER)</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ok tabular-nums break-all">{bestRes && cur.annualCo2 > bestRes.annualCo2 ? `+${money((cur.annualCo2 - bestRes.annualCo2) / 1000 * 220)}` : '—'}<span className="text-ink-mute text-xl">/yr</span></div></div>
       </div>
 
-      {/* Controls */}
-      <div className="card grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="lg:col-span-4 mb-1">
-          <PartTypeSelector spec={spec} setSpec={setSpec} />
-          <div className="border-t border-line my-3" />
-          <div className="label mb-2">แหล่งข้อมูลนำเข้า (Input Source)</div>
+      {/* ── SECTION 1: INPUT ───────────────────────────── */}
+      <div className="card space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">1</span>
+          <span className="text-[15px] font-bold text-ink">ข้อมูลนำเข้า</span>
+        </div>
+
+        {/* Part type */}
+        <PartTypeSelector spec={spec} setSpec={setSpec} />
+
+        {/* Input source buttons + panel */}
+        <div>
+          <div className="label mb-2">แหล่งข้อมูล</div>
           <div className="flex flex-wrap gap-2">
             {(['standard', 'manual', 'history', 'supplier'] as const).map((s) => (
               <button key={s} onClick={() => { set({ inputSource: s }); setSrcPanel(s) }}
@@ -250,37 +259,49 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
             <SupplierPanel data={data} onPick={(mid) => set({ materialId: mid, inputSource: 'supplier' })} source={source} />
           )}
         </div>
+
+        {/* File upload — full width, own row */}
         <FileAnalyzer data={data} onApply={(patch) => set(patch)} />
-        <div>
-          <div className="label mb-1">วัสดุ</div>
-          <select className="w-full card-inset" value={spec.materialId} onChange={(e) => set({ materialId: Number(e.target.value) })}>
-            {data.materials.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
-          </select>
-          <div className="label mt-3 mb-1">กระบวนการ</div>
-          <select className="w-full card-inset" value={spec.processId} onChange={(e) => set({ processId: Number(e.target.value) })}>
-            {data.processes.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
-          </select>
+      </div>
+
+      {/* ── SECTION 2: PARAMETERS ──────────────────────── */}
+      <div className="card space-y-4">
+        <div className="flex items-center gap-2">
+          <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">2</span>
+          <span className="text-[15px] font-bold text-ink">พารามิเตอร์การผลิต</span>
+          <span className="ml-auto"><WhyButton req={{ hotspot: 'material', part: spec.partType, co2: cur.annualCo2, score: cur.score, cbam2028 }} /></span>
         </div>
-        <div className="space-y-3">
-          <NumField label="Net Mass (kg)" value={spec.netMass} step={0.1} min={0.1} onChange={(v) => set({ netMass: v })} />
-          <NumField label="% Recycled" value={spec.recycledPercent} step={1} min={0} max={100} onChange={(v) => set({ recycledPercent: v })} />
-        </div>
-        <div className="space-y-3">
-          <NumField label="Batch (pcs/mo)" value={spec.batchSize} step={100} min={1} onChange={(v) => set({ batchSize: v })} />
-          <NumField label="Transport (km)" value={spec.transportDist} step={10} min={0} onChange={(v) => set({ transportDist: v })} />
-        </div>
-        <div className="flex flex-col justify-between">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <div className="label mb-1">วัสดุ</div>
+            <select className="w-full card-inset" value={spec.materialId} onChange={(e) => set({ materialId: Number(e.target.value) })}>
+              {data.materials.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
+            </select>
+            <div className="label mt-3 mb-1">กระบวนการ</div>
+            <select className="w-full card-inset" value={spec.processId} onChange={(e) => set({ processId: Number(e.target.value) })}>
+              {data.processes.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+            </select>
+          </div>
+          <div className="space-y-3">
+            <NumField label="Net Mass (kg)" value={spec.netMass} step={0.1} min={0.1} onChange={(v) => set({ netMass: v })} />
+            <NumField label="% Recycled" value={spec.recycledPercent} step={1} min={0} max={100} onChange={(v) => set({ recycledPercent: v })} />
+          </div>
+          <div className="space-y-3">
+            <NumField label="Batch (pcs/mo)" value={spec.batchSize} step={100} min={1} onChange={(v) => set({ batchSize: v })} />
+            <NumField label="Transport (km)" value={spec.transportDist} step={10} min={0} onChange={(v) => set({ transportDist: v })} />
+          </div>
           <div>
             <div className="label mb-1">Hotspot</div>
-            <div className="text-sm">Material {((beforeData[0].value / beforeData.reduce((a, b) => a + b.value, 0)) * 100).toFixed(0)}% · Process {((beforeData[1].value / beforeData.reduce((a, b) => a + b.value, 0)) * 100).toFixed(0)}%</div>
+            <div className="text-sm leading-relaxed">Material {((beforeData[0].value / beforeData.reduce((a, b) => a + b.value, 0)) * 100).toFixed(0)}%<br />Process {((beforeData[1].value / beforeData.reduce((a, b) => a + b.value, 0)) * 100).toFixed(0)}%</div>
           </div>
-          <WhyButton req={{ hotspot: 'material', part: spec.partType, co2: cur.annualCo2, score: cur.score, cbam2028 }} />
         </div>
       </div>
 
-      {/* Legend for chart interactions */}
-      <div className="card flex flex-wrap items-center gap-3 text-xs text-ink-mute">
-        <span>💡 คลิกชื่อกราฟ = เปลี่ยนรูปแบบ · ⤢ = ขยายเต็มจอ · – = ย่อ/ซ่อน</span>
+      {/* ── SECTION 3: ANALYTICS ───────────────────────── */}
+      <div className="flex items-center gap-2 px-1 flex-wrap">
+        <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">3</span>
+        <span className="text-[15px] font-bold text-ink">ผลวิเคราะห์ &amp; กราฟ</span>
+        <span className="text-xs text-ink-mute">(คลิกชื่อกราฟเปลี่ยนรูปแบบ · ⤢ ขยาย · – ซ่อน)</span>
         <span className="ml-auto"><SdgBadges /></span>
       </div>
 
@@ -308,7 +329,14 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
       </div>
 
       {/* AI Comparison A/B/C — full table + radar (brief §3.5) */}
+      <div className="flex items-center gap-2 px-1 mt-6">
+        <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">4</span>
+        <span className="text-[15px] font-bold text-ink">AI เปรียบเทียบทางเลือก &amp; เจาะลึก</span>
+      </div>
       <AiComparison spec={spec} data={data} cur={cur} />
+
+      {/* Deep comparison — pick an alternative to dissect vs current */}
+      {best && <ComparisonDeep spec={spec} cur={cur} alt={best} data={data} />}
 
       {/* Material science detail grid */}
       <div className="card">
