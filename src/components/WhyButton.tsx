@@ -28,20 +28,23 @@ export default function WhyButton({ req, label = 'วิเคราะห์ด
   const Icon = res ? sevIcon[res.severity] : IconSpark
 
   return (
-    <div className="inline-block">
+    <div className="inline-block relative">
       <button className="btn text-xs flex items-center gap-1" onClick={onClick}>
         <IconSpark className="w-4 h-4" /> {label}
       </button>
       {open && (
-        <div className={`mt-2 card max-w-sm border ${res ? sevStyle[res.severity] : ''}`}>
-          <div className="flex items-center gap-2 mb-1 font-semibold text-sm">
-            <Icon className="w-4 h-4" /> {loading ? 'AI กำลังวิเคราะห์…' : res?.explanation}
+        <div className={`absolute right-0 z-40 mt-2 w-[340px] max-w-[85vw] card border ${res ? sevStyle[res.severity] : ''} shadow-lg`}>
+          <div className="flex items-start gap-2 mb-1.5 font-semibold text-sm">
+            <Icon className="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{loading ? 'AI กำลังวิเคราะห์…' : res?.explanation}</span>
           </div>
-          {res && <p className="text-xs text-ink-soft">{res.suggestion}</p>}
           {res && (
-            <div className={`mt-2 text-[10px] font-semibold uppercase tracking-wide ${res.source === 'ai' ? 'text-accent' : 'text-ink-mute'}`}>
-              {res.source === 'ai' ? '● Powered by Nous AI (live)' : '○ Offline rule-based (no network)'}
-            </div>
+            <>
+              <p className="text-xs text-ink-soft leading-relaxed whitespace-pre-line">{res.suggestion}</p>
+              <div className={`mt-2 text-[10px] font-semibold uppercase tracking-wide ${res.source === 'ai' ? 'text-accent' : 'text-ink-mute'}`}>
+                {res.source === 'ai' ? '● Powered by Nous AI (live)' : '○ Offline rule-based (no network)'}
+              </div>
+            </>
           )}
         </div>
       )}

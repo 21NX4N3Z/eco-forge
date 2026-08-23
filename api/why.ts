@@ -35,16 +35,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const isExtract = body.mode === 'extract'
 
   const sys = isExtract
-    ? 'You are a fast JSON API that extracts part specifications from factory documents (production logs, utility bills, supplier certificates) for a CBAM carbon calculator. ' +
-      'Output ONLY minified strict JSON: {"summary": string, "fields": object, "insights": string[]} — ' +
-      '"fields" may contain: partType ("Bracket"|"Housing"|"Shaft"|"Flange"|"Mount"|"Custom"), netMass (kg), materialName, co2PerKg, recycledPercent, batchSize (per month), transportDist (km). ' +
-      'Omit fields not found in the document. summary = 1 short Thai sentence. insights = max 3 short Thai sentences. No markdown, no prose outside the JSON.'
-    : 'You are a fast JSON API — a carbon engineering assistant for Thai SME parts manufacturers facing EU CBAM. ' +
-      'Output ONLY minified strict JSON: {"explanation": string, "suggestion": string, "severity": "high"|"med"|"low"} — ' +
-      'max 12 words per field. No reasoning, no markdown, no prose outside the JSON.'
+    ? 'คุณคือ API วิเคราะห์เอกสารโรงงาน (production log, utility bill, supplier certificate) สำหรับโปรแกรมคำนวณ CBAM ของ SME ไทย ' +
+      'ตอบ ONLY strict JSON: {"summary": string, "fields": object, "insights": string[]} — ' +
+      '"fields" มีได้: partType ("Bracket"|"Housing"|"Shaft"|"Flange"|"Mount"|"Custom"), netMass (kg), materialName, co2PerKg, recycledPercent, batchSize (ชิ้น/เดือน), transportDist (km). ' +
+      'ถ้าไม่พบ field ไหนในเอกสารให้ละไว้ summary = 1-2 ประโยคภาษาไทย insights = สูงสุด 3 ประโยคภาษาไทย ' +
+      'ห้ามใช้อีโมจิเด็ดขาด ห้าม markdown ห้ามมีข้อความนอก JSON'
+    : 'คุณคือผู้ช่วยวิศวกรรมคาร์บอนสำหรับโรงงาน SME ไทยที่ต้องเจอ EU CBAM ตอบเป็นภาษาไทยเท่านั้น ' +
+      'ตอบ ONLY strict JSON: {"explanation": string, "suggestion": string, "severity": "high"|"med"|"low"} — ' +
+      'explanation = อธิบายอย่างละเอียด 3-5 ประโยคภาษาไทย (สาเหตุ ตัวเลขที่เกี่ยวข้อง benchmark ผลกระทบ) ' +
+      'suggestion = คำแนะนำแก้ไข 2-4 ประโยคภาษาไทย (ขั้นตอนปฏิบัติจริง ทางเลือกวัสดุ/กระบวนการ ผลที่คาดว่าจะได้) ' +
+      'severity = "high" ถ้าต้นทุน/CO2 เกินเกณฑ์มาก, "med" ถ้าใกล้เคียง, "low" ถ้าผ่าน ' +
+      'ห้ามใช้อีโมจิเด็ดขาด ห้าม markdown ห้ามมีข้อความนอก JSON'
 
   const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), 20000)
+  const timer = setTimeout(() => controller.abort(), 60000)
 
   try {
     const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -53,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
       body: JSON.stringify({
         model: 'stealth/ox-alpha',
-        max_tokens: isExtract ? 800 : 400,
+        max_tokens: isExtract ? 800 : 1200,
         reasoning_effort: 'low',
         messages: [
           { role: 'system', content: sys },

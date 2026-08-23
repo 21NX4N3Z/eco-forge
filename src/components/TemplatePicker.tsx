@@ -1,8 +1,9 @@
-import { IconDatabase, IconPencil, IconFactory, IconHandshake } from './icons'
+import { IconDatabase, IconPencil, IconFactory, IconHandshake, IconLayers } from './icons'
 
-export type TemplateId = 'cbam' | 'exec' | 'tech' | 'biz'
+export type TemplateId = 'cbam' | 'exec' | 'tech' | 'biz' | 'all'
 
 const TEMPLATES: { id: TemplateId; label: string; note: string; icon: typeof IconDatabase }[] = [
+  { id: 'all', label: 'All-in-One', note: 'รวมทุกส่วนครบ — ส่งครั้งเดียวจบ', icon: IconLayers },
   { id: 'cbam', label: 'EU CBAM Standard', note: 'โครงสร้างตามที่ EU กำหนด + MRV scopes', icon: IconDatabase },
   { id: 'exec', label: 'Executive Summary', note: 'สรุปตัวเลขสำหรับผู้บริหาร 1 หน้า', icon: IconFactory },
   { id: 'tech', label: 'Technical Report', note: 'สมการ, porosity, มาตรฐาน ASTM/ISO', icon: IconPencil },
