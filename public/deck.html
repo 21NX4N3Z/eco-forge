@@ -57,7 +57,7 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
         transition:width .4s ease; z-index:10; }
 
 /* ── demo widgets (light theme cards) ── */
-.demo { display:flex; flex-direction:column; gap:2.2vh; max-width:920px; }
+.demo { display:flex; flex-direction:column; gap:2.2vh; max-width:1080px; }
 .dash { background:#ffffff; border:1px solid rgba(0,0,0,.10); border-radius:14px; padding:2.4vh 1.8vw;
         box-shadow:0 1px 2px rgba(0,0,0,.04), 0 10px 34px rgba(0,0,0,.06); }
 .fieldline { display:flex; justify-content:space-between; align-items:center; padding:1vh 0;
@@ -68,12 +68,25 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
          animation:blink .7s steps(1) infinite; border-radius:1px; }
 @keyframes blink { 50% { opacity:0; } }
 .typing { min-height:1.3em; font-weight:600; color:#0f1115; }
-.kpibar { display:flex; gap:1.2vw; margin-top:1.8vh; }
+
+/* product-replica controls */
+.ctr { display:grid; grid-template-columns:repeat(4,1fr); gap:1.4vw; }
+.ctl { display:flex; flex-direction:column; gap:.7vh; }
+.ctl label { font-size:clamp(11px,1vw,13px); color:#6b7280; font-weight:600; letter-spacing:.02em; }
+.selbox, .inpbox { background:#f9fafb; border:1px solid #d1d5db; border-radius:8px; padding:.9vh .8vw;
+                   font-size:clamp(13px,1.2vw,17px); font-weight:600; color:#0f1115; min-height:2.6em;
+                   display:flex; align-items:center; position:relative; }
+.selbox::after { content:'▾'; position:absolute; right:.7vw; color:#9ca3af; }
+.inpbox.hl { outline:2px solid #0075de; outline-offset:-1px; background:#f2f8ff; }
+.inpbox.flash { animation:flashbg .5s ease; }
+@keyframes flashbg { 30% { background:#dbeafe; } }
+.hotline { font-size:clamp(12px,1.15vw,16px); line-height:1.5; min-height:3em; color:#374151; }
+.kpibar { display:flex; gap:1.2vw; margin-top:0; }
 .kpi { flex:1; background:#f3f4f6; border-radius:12px; padding:1.5vh 1vw; text-align:center; }
 .kpi .small { margin-bottom:.6vh; }
-.kpi .n { font-size:clamp(22px,2.5vw,36px); font-weight:800; }
-.btnsim { display:inline-block; margin-top:2vh; background:#0075de; color:#fff; font-weight:700;
-          font-size:clamp(14px,1.35vw,18px); padding:1.3vh 1.8vw; border-radius:10px;
+.kpi .n { font-size:clamp(20px,2.3vw,34px); font-weight:800; transition:color .3s; }
+.btnsim { display:inline-block; background:#0075de; color:#fff; font-weight:700;
+          font-size:clamp(12px,1.15vw,16px); padding:1.2vh 1.4vw; border-radius:10px; text-align:center;
           box-shadow:0 2px 14px rgba(0,117,222,.28); opacity:0; transform:translateY(10px); transition:.4s; }
 .slide.active.sim-on .btnsim { opacity:1; transform:none; transition-delay:.2s; }
 .aibox { border-left:3px solid #1aae39; background:#f0fdf4; padding:1.6vh 1.2vw; margin-top:1vh;
@@ -124,25 +137,41 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
   <div class="pageno">3 / 8</div>
 </section>
 
-<!-- S4 LIVE SIM -->
+<!-- S4 LIVE SIM — replica of real product UI -->
 <section class="slide sim-on">
   <div class="kicker">Live Simulation · จำลองการใช้จริง</div>
-  <h2>ยัดไฟล์ → ระบบคำนวณทันที</h2>
+  <h2 style="margin-bottom:2vh">ยัดไฟล์ → ระบบคำนวณทันที</h2>
   <div class="demo">
-    <div class="dash">
-      <div class="fieldline"><span class="k">production_log.csv</span><span id="filestat" class="typing"></span></div>
-      <div class="fieldline"><span class="k">Part type</span><span id="f-part" class="typing"></span></div>
-      <div class="fieldline"><span class="k">Material</span><span id="f-mat" class="typing"></span></div>
-      <div class="fieldline"><span class="k">Net mass</span><span id="f-mass" class="typing"></span></div>
-      <div class="fieldline"><span class="k">% Recycled</span><span id="f-rec" class="typing"></span></div>
-    </div>
+    <!-- KPI strip — same as real app -->
     <div class="kpibar">
+      <div class="kpi"><div class="small">Carbon Score</div><div class="n accent" id="k-score">—</div></div>
       <div class="kpi"><div class="small">CO₂ / ปี</div><div class="n bad" id="k-co2">—</div></div>
+      <div class="kpi"><div class="small">ต้นทุน / ปี</div><div class="n" id="k-cost">—</div></div>
       <div class="kpi"><div class="small">CBAM Tax 2028</div><div class="n bad" id="k-cbam">—</div></div>
       <div class="kpi"><div class="small">Credit Revenue</div><div class="n ok" id="k-cred">—</div></div>
-      <div class="kpi"><div class="small">Payback</div><div class="n accent" id="k-pay">—</div></div>
     </div>
-    <span class="btnsim">✓ AI วิเคราะห์ด้วยข้อมูลจริงเสร็จสิ้น — ผลลัพธ์คำนวณจาก engine มาตรฐาน EU</span>
+    <!-- controls row — same layout as real app -->
+    <div class="dash ctr">
+      <div class="ctl">
+        <label>วัสดุ</label>
+        <div class="selbox" id="c-mat"></div>
+        <label>กระบวนการ</label>
+        <div class="selbox" id="c-proc"></div>
+      </div>
+      <div class="ctl">
+        <label>Net Mass (kg)</label><div class="inpbox" id="c-mass"></div>
+        <label>% Recycled</label><div class="inpbox hl" id="c-rec"></div>
+      </div>
+      <div class="ctl">
+        <label>Batch (pcs/mo)</label><div class="inpbox" id="c-batch"></div>
+        <label>Transport (km)</label><div class="inpbox" id="c-trans"></div>
+      </div>
+      <div class="ctl hot">
+        <label>Hotspot</label>
+        <div class="hotline" id="c-hot"></div>
+        <div class="btnsim" style="margin-top:auto">✓ AI วิเคราะห์เสร็จ — engine EU-accurate</div>
+      </div>
+    </div>
   </div>
   <div class="pageno">4 / 8</div>
 </section>
@@ -230,18 +259,43 @@ async function type(el,text,speed){
   setTimeout(()=>caret.remove(),400);
 }
 
-async function runDemo(){
-  // fast: 12ms/char for fields, values appear as short pops
-  await type(document.getElementById('filestat'),'parsed 24 rows',10);
-  await type(document.getElementById('f-part'),'Housing',12);
-  await type(document.getElementById('f-mat'),'Al 6061-T6 (Recycled 50%)',12);
-  await type(document.getElementById('f-mass'),'2.4 kg',12);
-  await type(document.getElementById('f-rec'),'50 %',12);
-  const seq=[['k-co2','0.88 t'],['k-cbam','€0'],['k-cred','+฿737/yr'],['k-pay','8.5 เดือน']];
-  for(const [id,v] of seq){
-    document.getElementById(id).textContent=v;
-    await new Promise(r=>setTimeout(r,180));
+// fill value instantly + brief blue flash (like the product receiving data)
+async function fill(id, text, delay = 260) {
+  const el = document.getElementById(id)
+  await new Promise(r => setTimeout(r, delay))
+  el.classList.add('flash')
+  el.textContent = text
+  setTimeout(() => el.classList.remove('flash'), 550)
+}
+
+// animated number count for KPI
+function kpiCount(id, from, to, fmt) {
+  const el = document.getElementById(id)
+  const dur = 700, t0 = performance.now()
+  function tick(t) {
+    const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3)
+    el.textContent = fmt(from + (to - from) * e)
+    if (k < 1) requestAnimationFrame(tick)
   }
+  requestAnimationFrame(tick)
+}
+
+async function runDemo(){
+  // values stream in instantly (pre-typed), like AI filling fields
+  await fill('c-mat','Al 6061-T6 (Recycled 50%)',300)
+  await fill('c-proc','Gravity Die Casting',200)
+  await fill('c-mass','2.4',180)
+  await fill('c-rec','50',180)
+  await fill('c-batch','500',180)
+  await fill('c-trans','120',180)
+  await fill('c-hot','Material 62% · Process 31% · Transport 7%',150)
+
+  // KPIs animate from current-state numbers → optimized result
+  kpiCount('k-score',30,82,v=>Math.round(v))
+  kpiCount('k-co2',4.23,0.88,v=>v.toFixed(2)+' t')
+  kpiCount('k-cost',524000,388000,v=>'฿'+(v/1000).toFixed(0)+'K')
+  kpiCount('k-cbam',294,0,v=>'€'+Math.round(v))
+  kpiCount('k-cred',0,737,v=>'+'+'฿'+Math.round(v)+'/yr')
 }
 
 const aiText='จุดร้อนอยู่ที่วัสดุตั้งต้น — Al6061 virgin มี embodied CO₂ 8.24 kg/kg สูงกว่า recycled ~16 เท่า\n'+
