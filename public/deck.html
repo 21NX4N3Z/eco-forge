@@ -96,6 +96,10 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
            box-shadow:0 6px 20px rgba(0,117,222,.12); }
 .kpi .small { margin-bottom:.6vh; font-size:clamp(10px,1vw,13px); color:#6b7280; }
 .kpi .n { font-size:clamp(19px,2.2vw,32px); font-weight:800; color:#0f1115; }
+.dchip { margin-top:.7vh; font-size:clamp(10px,.95vw,13px); font-weight:700; color:#0075de;
+         background:#e8f2ff; border-radius:999px; padding:.3vh .8vw; display:inline-block;
+         opacity:0; transform:translateY(6px); transition:.35s; }
+.dchip.in { opacity:1; transform:none; }
 .btnsim { display:inline-block; background:#0075de; color:#fff; font-weight:700;
           font-size:clamp(12px,1.1vw,15px); padding:1.2vh 1.2vw; border-radius:10px; text-align:center;
           box-shadow:0 2px 14px rgba(0,117,222,.28); opacity:0; transform:translateY(10px); transition:.4s; }
@@ -191,17 +195,18 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
   <div class="pageno">4 / 8</div>
 </section>
 
-<!-- S5 AI VOICE -->
+<!-- S5 AI VOICE — real AI response -->
 <section class="slide sim-on">
   <div class="kicker">AI Advisor · real response</div>
   <h2>AI บอกวิธีลด<span class="accent">เป็นภาษาไทยหน้างาน</span></h2>
-  <div class="demo">
+  <div class="demo" style="position:relative">
+    <div style="position:absolute; top:-1.5vh; right:0;"><img src="/sdg/TGG_Icon_Color_09.png" alt="SDG9" style="height:5.2vh; border-radius:4px; box-shadow:0 2px 10px rgba(0,0,0,.12);"><img src="/sdg/TGG_Icon_Color_12.png" alt="SDG12" style="height:5.2vh; margin-left:.3vw; border-radius:4px; box-shadow:0 2px 10px rgba(0,0,0,.12);"><img src="/sdg/TGG_Icon_Color_13.png" alt="SDG13" style="height:5.2vh; margin-left:.3vw; border-radius:4px; box-shadow:0 2px 10px rgba(0,0,0,.12);"></div>
     <div class="dash">
-      <div class="tag">● POWERED BY NOUS AI (LIVE)</div>
+      <div class="tag">● POWERED BY NOUS AI (LIVE) — คำตอบจริงจากระบบ</div>
       <div class="aibox" id="ai-text"></div>
     </div>
   </div>
-  <div class="foot"><span>ตัวอย่างคำตอบจริงจากระบบ — model stealth/ox-alpha via OpenRouter</span></div>
+  <div class="foot"><span>model stealth/ox-alpha via OpenRouter · ตรงกับ engine EU-accurate</span></div>
   <div class="pageno">5 / 8</div>
 </section>
 
@@ -280,6 +285,16 @@ function kpiCount(kpId,id,from,to,fmt,cls){
     const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
     el.textContent=fmt(from+(to-from)*e);
     if(k<1) requestAnimationFrame(tick);
+    else {
+      // delta chip pops in after count finishes
+      const chip=document.createElement('div');
+      chip.className='dchip';
+      const d=to-from;
+      chip.textContent=(to>from?'+':'')+fmt(d).replace(/^0(?=[a-zA-Z฿€])/,'');
+      chip.textContent = to===0 ? '− เกณฑ์ผ่าน' : (to>from ? '▲ ' : '▼ ') + fmt(Math.abs(d));
+      card.appendChild(chip);
+      requestAnimationFrame(()=>chip.classList.add('in'));
+    }
   }
   requestAnimationFrame(tick);
 }
@@ -305,9 +320,11 @@ async function runDemo(){
 }
 
 const aiLines=[
-  'จุดร้อนอยู่ที่วัสดุตั้งต้น — Al6061 virgin มี embodied CO₂ 8.24 kg/kg สูงกว่า recycled ~16 เท่า',
-  'แนะนำเปลี่ยนเป็น Al 6061 Recycled 50% + Gravity Die Casting (scrap 70% → 12%)',
-  'ผลลัพธ์: CO₂ ลด 79% · CBAM €294 → €0 · ประหยัด ฿136K/yr · ขาย T-VER credit ~฿740/yr'
+  'ฮอตสปอตหลักอยู่ที่วัสดุ — CO₂ รวม 4,230 kgCO₂e สูงกว่าเกณฑ์ CBAM 2028 (€294) หลายเท่า',
+  'สาเหตุ: อะลูมิเนียมหลอมใหม่มี embedded emission สูงกว่า benchmark EU ETS ชัดเจน',
+  'แนะนำ: เปลี่ยนเป็นอะลูมิเนียมรีไซเคิล/EAF — carbon intensity ต่ำลง 50-70%',
+  'ขอใบรับรอง EPD + actual emissions จากซัพพลายเออร์ แทน default value ที่สูงกว่า',
+  'ผลคาดหวัง: embedded emission ต่ำกว่า benchmark · ลดภาระภาษี CBAM ได้มาก'
 ];
 async function runAI(){
   const box=document.getElementById('ai-text');
