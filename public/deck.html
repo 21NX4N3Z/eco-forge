@@ -111,6 +111,30 @@ li::before { content:'▸'; position:absolute; left:0; color:#0075de; }
 .aibox .ln.in { opacity:1; transform:none; }
 .tag { display:inline-block; font-size:clamp(10px,1vw,13px); color:#0075de; font-weight:700; letter-spacing:.08em; margin-bottom:1vh; }
 .hint { position:absolute; bottom:4vh; left:50%; transform:translateX(-50%); font-size:13px; color:#c4c9d4; }
+
+/* ── mobile / iPad ── */
+@media (max-width: 900px) {
+  .slide { padding:6vh 6vw; justify-content:flex-start; overflow-y:auto; }
+  h1 { font-size:clamp(30px,7vw,44px); }
+  h2 { font-size:clamp(26px,6vw,38px); }
+  p,li { font-size:clamp(15px,3.4vw,19px); }
+  li { margin-bottom:1.8vh; }
+  .row { flex-direction:column; gap:12px; margin-top:2.5vh; }
+  .card { padding:2vh 5vw; }
+  .big { font-size:clamp(32px,9vw,48px); }
+  .kpibar { flex-wrap:wrap; gap:8px; }
+  .kpi { min-width:29%; padding:1.2vh .8vw; }
+  .kpi .n { font-size:clamp(18px,5vw,28px); }
+  .ctr { grid-template-columns:repeat(2,1fr); gap:10px; }
+  .selbox,.inpbox { font-size:clamp(13px,3.2vw,16px); }
+  .aibox { font-size:clamp(13px,3.2vw,17px); min-height:11em; }
+  .foot { display:none; }
+  .hint { display:none; }
+}
+@media (max-width: 520px) {
+  .ctr { grid-template-columns:1fr; }
+  .kpi { min-width:46%; }
+}
 </style>
 </head>
 <body>
@@ -362,7 +386,24 @@ addEventListener('keydown',e=>{
   if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();show(i+1);}
   if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();show(i-1);}
 });
-addEventListener('click',()=>show(i+1));
+// touch swipe (phone / iPad)
+let tx=0, ty=0;
+addEventListener('touchstart',e=>{ tx=e.changedTouches[0].clientX; ty=e.changedTouches[0].clientY; },{passive:true});
+addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)) show(i+(dx<0?1:-1)); // swipe left = next
+},{passive:true});
+
+// on-screen nav buttons for touch devices
+const nav=document.createElement('div');
+nav.style.cssText='position:fixed;bottom:2vh;right:3vw;z-index:20;display:flex;gap:10px';
+nav.innerHTML='<button id="pv" style="width:46px;height:46px;border-radius:50%;border:1px solid #d1d5db;background:#fff;font-size:20px;color:#374151;box-shadow:0 2px 10px rgba(0,0,0,.12);cursor:pointer">‹</button>'+
+              '<button id="nx" style="width:46px;height:46px;border-radius:50%;border:none;background:#0075de;font-size:20px;color:#fff;box-shadow:0 2px 14px rgba(0,117,222,.35);cursor:pointer">›</button>';
+document.body.appendChild(nav);
+document.getElementById('nx').addEventListener('click',()=>show(i+1));
+document.getElementById('pv').addEventListener('click',()=>show(i-1));
+// hide keyboard hint on touch devices
+if('ontouchstart' in window) document.querySelector('.hint').style.display='none';
 </script>
 </body>
 </html>
