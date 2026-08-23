@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>EcoForge — Overlay Assets (for video editing)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Sarabun:wght@400;600;700&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter','Sarabun',sans-serif; background:#111418; color:#e8eaef; min-height:100vh; padding:24px; }
+
+/* ── stage controls ── */
+.bar { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; gap:10px; align-items:center;
+       padding:10px 16px; background:rgba(17,20,24,.92); backdrop-filter:blur(8px); border-bottom:1px solid #262c38; flex-wrap:wrap;}
+.bar b { font-size:14px; margin-right:6px; }
+.bgb { padding:7px 14px; border-radius:8px; border:1px solid #333c4d; background:#1a1f29; color:#aab3c5;
+      font-size:13px; cursor:pointer; font-weight:600; }
+.bgb.on { background:#0075de; border-color:#0075de; color:#fff; }
+.note { font-size:12px; color:#6b7589; margin-left:auto; }
+
+/* the recording stage */
+#stage { margin-top:64px; position:relative; width:100%; height:calc(100vh - 88px); border-radius:12px; overflow:hidden;
+         transition:background .3s; }
+body[data-bg=check] #stage { background:repeating-conic-gradient(#1a1e26 0% 25%, #14181f 0% 50%) 0 0/28px 28px; }
+body[data-bg=green] #stage { background:#00b140; }
+body[data-bg=white] #stage { background:#ffffff; }
+body[data-bg=black] #stage { background:#000000; }
+
+/* ── generic pop-up asset ── */
+.asset { position:absolute; opacity:0; }
+/* loop timeline: 0-15% fly in · 15-85% hold (with float) · 85-100% fly out. total var --T */
+@keyframes pop {
+  0%   { opacity:0; transform:translateY(40px) scale(.85); filter:blur(6px); }
+  12%  { opacity:1; transform:translateY(0) scale(1); filter:blur(0);
+         animation-timing-function:cubic-bezier(.34,1.56,.64,1); }
+  82%  { opacity:1; transform:translateY(-8px) scale(1); }
+  90%  { opacity:1; transform:translateY(-10px) scale(.98); }
+  100% { opacity:0; transform:translateY(-46px) scale(.9); filter:blur(4px); }
+}
+@keyframes slideL {
+  0%   { opacity:0; transform:translateX(60px); }
+  12%  { opacity:1; transform:translateX(0); }
+  86%  { opacity:1; transform:translateX(-6px); }
+  100% { opacity:0; transform:translateX(-70px); }
+}
+@keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+
+.pu { background:#ffffff; color:#0f1115; border-radius:16px;
+      box-shadow:0 12px 44px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.18);
+      animation-name:pop; animation-duration:var(--T,6s); animation-iteration-count:infinite;
+      animation-timing-function:cubic-bezier(.22,.9,.3,1); will-change:transform,opacity; }
+.pu.sl { animation-name:slideL; }
+.pu .lbl { font-size:13px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#0075de; margin-bottom:4px; }
+.pu .val { font-size:34px; font-weight:800; line-height:1.1; white-space:nowrap; }
+.pu .sub { font-size:14px; color:#6b7280; margin-top:4px; }
+.chiprow { display:flex; gap:8px; margin-top:8px; }
+.chip { font-size:12px; font-weight:700; padding:3px 10px; border-radius:999px; }
+.chip.ok { background:#e7f5ea; color:#157a2c; }
+.chip.bad { background:#fdeaea; color:#b02a2a; }
+.chip.bl { background:#e8f2ff; color:#0075de; }
+
+/* specific assets */
+.a-co2 { left:8%; top:20%; --T:7s; padding:20px 26px; }
+.a-co2 .val span.ok { color:#157a2c; } .a-co2 .val span.bad { color:#d43a3a; }
+.a-badge { right:8%; top:16%; --T:7s; animation-delay:1.2s; padding:16px 22px; display:flex; align-items:center; gap:12px; }
+.a-badge .dot { width:38px; height:38px; border-radius:50%; background:#e7f5ea; color:#157a2c; display:grid; place-items:center; font-size:20px; font-weight:800; }
+.a-badge.warn .dot { background:#fdeaea; color:#b02a2a; }
+.a-badge .t1 { font-size:18px; font-weight:800; }
+.a-badge .t2 { font-size:13px; color:#6b7280; }
+.a-pay { left:12%; bottom:18%; --T:7s; animation-delay:2.4s; padding:18px 24px; }
+.a-pay .val em { font-style:normal; font-size:18px; color:#0075de; }
+.a-tag { right:14%; bottom:24%; --T:7s; animation-delay:3.6s; padding:18px 24px; transform-origin:right center; }
+.a-tag .val { font-size:24px; }
+.a-tag .strike { text-decoration:line-through; color:#9ca3af; font-size:20px; margin-right:10px; }
+.a-count { left:50%; top:12%; transform:translateX(-50%); --T:7s; animation-delay:.6s; padding:16px 30px; text-align:center; }
+.a-count .val { color:#d43a3a; }
+.a-ai { left:50%; bottom:10%; transform:translateX(-50%); --T:9s; animation-delay:1s; padding:18px 24px; max-width:520px; }
+.a-ai .who { font-size:11px; font-weight:800; letter-spacing:.1em; color:#0075de; margin-bottom:6px; }
+.a-ai p { font-size:15px; line-height:1.6; color:#1f2937; }
+.sdgstrip { display:flex; gap:6px; }
+.sdgstrip img { height:44px; border-radius:4px; box-shadow:0 2px 8px rgba(0,0,0,.15); }
+.a-sdg { right:6%; top:42%; --T:8s; animation-delay:2s; padding:14px 18px; }
+
+/* click to solo: hide others, center & enlarge chosen */
+#stage.solo .asset { display:none; }
+#stage.solo .asset.pick { display:block !important; position:absolute; left:50% !important; top:50% !important;
+  transform:translate(-50%,-50%) scale(1.35); }
+.hint { position:fixed; bottom:12px; left:50%; transform:translateX(-50%); font-size:12px; color:#6b7589; z-index:100; }
+</style>
+</head>
+<body data-bg="check">
+
+<div class="bar">
+  <b>Background:</b>
+  <button class="bgb" data-b="check">Checkerboard</button>
+  <button class="bgb on" data-b="green">Green screen</button>
+  <button class="bgb" data-b="white">White</button>
+  <button class="bgb" data-b="black">Black</button>
+  <span class="note">คลิกที่ asset = โซโล่ขยายกลางจอ (ง่ายต่อการ record) · กดซ้ำ = กลับ grid</span>
+</div>
+
+<div id="stage">
+
+  <!-- 1. CO2 before/after -->
+  <div class="asset pu a-co2" title="คลิกโซโล่">
+    <div class="lbl">Carbon Twin · Real Result</div>
+    <div class="val"><span class="bad">4.23 t</span> → <span class="ok">0.88 t</span></div>
+    <div class="sub">CO₂ ต่อปี · ลดลง 79%</div>
+    <div class="chiprow"><span class="chip ok">▼ 3.35 tCO₂/yr</span><span class="chip bl">EU Benchmark verified</span></div>
+  </div>
+
+  <!-- 2. CBAM badge -->
+  <div class="asset pu a-badge" title="คลิกโซโล่">
+    <div class="dot">✓</div>
+    <div>
+      <div class="t1">CBAM Compliance: PASS</div>
+      <div class="t2">below EU benchmark · ผ่านเกณฑ์ 2028</div>
+    </div>
+  </div>
+
+  <!-- 3. Payback -->
+  <div class="asset pu a-pay" title="คลิกโซโล่">
+    <div class="lbl">Payback Period</div>
+    <div class="val">8.5 <em>เดือน</em></div>
+    <div class="sub">ประหยัด ฿136K/ปี · ขาย Credit ~฿740/yr</div>
+    <div class="chiprow"><span class="chip ok">+ T-VER Revenue</span></div>
+  </div>
+
+  <!-- 4. Carbon price tag -->
+  <div class="asset pu a-tag sl" title="คลิกโซโล่">
+    <div class="lbl">ป้ายราคาคาร์บอน</div>
+    <div class="val"><span class="strike">ไม่มีป้าย</span> <span class="bad">€294/yr</span> → <span class="ok">€0</span></div>
+    <div class="sub">EU CBAM 2026–2034 · ตรงตาม Guidance No.4</div>
+  </div>
+
+  <!-- 5. Counter -->
+  <div class="asset pu a-count" title="คลิกโซโล่">
+    <div class="lbl">โรงงานไทยที่กระทบ</div>
+    <div class="val">1,000+ แห่ง</div>
+    <div class="sub">ขยาย 6 → 180 product groups ปี 2571</div>
+  </div>
+
+  <!-- 6. AI bubble -->
+  <div class="asset pu a-ai sl" title="คลิกโซโล่">
+    <div class="who">● POWERED BY NOUS AI (LIVE)</div>
+    <p>"ฮอตสปอตหลักอยู่ที่วัสดุ — CO₂ รวม 4,230 kgCO₂e สูงกว่าเกณฑ์ CBAM หลายเท่า<br>
+    แนะนำ: เปลี่ยนเป็นอะลูมิเนียมรีไซเคิล/EAF — carbon intensity ต่ำลง 50-70%"</p>
+    <div class="chiprow"><span class="chip bl">ภาษาไทยหน้างาน</span><span class="chip ok">ตอบจริง ไม่ใช่ mockup</span></div>
+  </div>
+
+  <!-- 7. SDG strip -->
+  <div class="asset pu a-sdg" title="คลิกโซโล่">
+    <div class="lbl">Sustainable Development Goals</div>
+    <div class="sdgstrip">
+      <img src="/sdg/TGG_Icon_Color_07.png" alt="">
+      <img src="/sdg/TGG_Icon_Color_08.png" alt="">
+      <img src="/sdg/TGG_Icon_Color_09.png" alt="">
+      <img src="/sdg/TGG_Icon_Color_12.png" alt="">
+      <img src="/sdg/TGG_Icon_Color_13.png" alt="">
+      <img src="/sdg/TGG_Icon_Color_17.png" alt="">
+    </div>
+  </div>
+
+</div>
+
+<div class="hint">Record หน้านี้ด้วย OBS/screen recorder → ใช้ chroma key (#00b140) ตัดพื้นหลัง → วางทับคลิป</div>
+
+<script>
+// background switcher
+document.querySelectorAll('.bgb').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.bgb').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.body.dataset.bg=b.dataset.b;
+  });
+});
+// solo toggle
+const stage=document.getElementById('stage');
+document.querySelectorAll('.asset').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.stopPropagation();
+    const was=a.classList.contains('pick');
+    document.querySelectorAll('.asset').forEach(x=>x.classList.remove('pick'));
+    if(!was){ a.classList.add('pick'); stage.classList.add('solo'); }
+    else stage.classList.remove('solo');
+  });
+});
+</script>
+</body>
+</html>
