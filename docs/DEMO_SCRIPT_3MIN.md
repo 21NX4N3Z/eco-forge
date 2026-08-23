@@ -1,7 +1,7 @@
 # EcoForge — สคริปต์คลิป Demo 3 นาที (Sriracha Hackathon 2026)
 
 > Flow: Input 4 ทาง → Part type → CBAM Tax + Trend → AI Compare A/B/C + Payback → Template Picker + Export PDF
-> ตัวเลข verified ที่ต้องโชว์: **4.23 tCO₂/ปี · €124.78 · payback ~7.8 เดือน**
+> ตัวเลข verified ที่ต้องโชว์: **4.23 tCO₂/ปี · €31/ปี (2028) · payback ~7.8 เดือน**
 > URL demo: https://eco-forge.vercel.app · ถ่ายที่ viewport ≥1280px, zoom 100%
 
 ---
@@ -15,7 +15,7 @@
 EcoForge คือเครื่องมือที่บอกโรงงานภายในไม่กี่วินาทีว่า จะโดนภาษีเท่าไหร่ และลดมันลงยังไง"
 
 **คลิก:** ชี้ KPI strip บนซ้าย → ให้กล้องเห็น 4 การ์ด: Carbon Score / CO₂ / ต้นทุน / CBAM 2028
-**จุดโชว์:** การ์ด CBAM 2028 = **€124.78/yr สีแดง** ("ต้องจ่ายภาษี")
+**จุดโชว์:** การ์ด CBAM 2028 = **€31/yr สีแดง** ("ต้องจ่ายภาษี")
 
 ## [0:20–0:50] Input Layer — 4 ช่องทาง (brief §1)
 
@@ -40,7 +40,7 @@ EcoForge คือเครื่องมือที่บอกโรงง�
 
 **ชี้:** การ์ด CBAM 2028 อีกครั้ง → พูดสูตร:
 "CBAM Tax = (Embodied CO₂ − EU Benchmark) × ETS Price × Obligation%
-Bracket นี้ปี 2028 โดน **€124.78/ปี**"
+Bracket นี้ปี 2028 โดน **€31/ปี**"
 
 **คลิก:** กราฟ "CBAM Obligation Trend 2026→2033" (คลิกที่ชื่อกราฟ = สลับ bar→line→area)
 พูด: "ถ้าไม่ปรับปรุง ภาษีโตทุกปีตาม obligation — ปี 2031 ขึ้นไปเต็ม 100%"
@@ -76,6 +76,6 @@ Bracket นี้ปี 2028 โดน **€124.78/ปี**"
 ## Checklist ก่อนถ่าย
 - [ ] `npm run dev` สด หรือใช้ vercel.app (แนะนำ prod — เสถียรกว่า)
 - [ ] Factory History มีอย่างน้อย 1 scenario ฝั่ง localStorage ไว้โชว์ข้อ ③
-- [ ] ตัวเลข anchor: **4.23 t · €124.78 · 0.88 t · €0 · 7.8 เดือน** — ถ้าไม่ตรง = engine เปลี่ยน ห้ามถ่าย
+- [ ] ตัวเลข anchor: **4.23 t · €31 · 0.88 t · €0 · 7.8 เดือน** — ถ้าไม่ตรง = engine เปลี่ยน ห้ามถ่าย
 - [ ] NOUS_API_KEY บน Vercel ยังไม่หมดอายุ (ถ้าจะโชว์ Why button) — ไม่งั้นข้ามจุดนี้ได้
 - [ ] ปิด notification/แชททุกอย่าง, browser profile สะอาด, dark cursor ใหญ่ๆ
