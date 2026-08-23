@@ -9,7 +9,7 @@
 body { font-family:'Inter','Sarabun',sans-serif; background:#111418; color:#e8eaef; min-height:100vh; padding:24px;
        --spd:1; }
 
-/* ── stage controls ── */
+/* ── top controls ── */
 .bar { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; gap:8px; align-items:center;
        padding:10px 16px; background:rgba(17,20,24,.92); backdrop-filter:blur(8px); border-bottom:1px solid #262c38; flex-wrap:wrap;}
 .bar b { font-size:14px; margin-right:6px; }
@@ -19,7 +19,30 @@ body { font-family:'Inter','Sarabun',sans-serif; background:#111418; color:#e8ea
 .sep { width:1px; height:22px; background:#333c4d; margin:0 4px; }
 .note { font-size:12px; color:#6b7589; margin-left:auto; }
 
-#stage { margin-top:64px; position:relative; width:100%; height:calc(100vh - 88px); border-radius:12px; overflow:hidden;
+/* ── picker bar (asset chooser) ── */
+#picker { position:fixed; top:54px; left:0; right:0; z-index:99; display:flex; gap:7px; align-items:center;
+          padding:8px 14px; background:rgba(17,20,24,.93); backdrop-filter:blur(8px);
+          border-bottom:1px solid #262c38; flex-wrap:wrap; }
+#chips { display:flex; gap:7px; flex-wrap:wrap; }
+.plbl { font-size:12px; color:#6b7589; font-weight:700; white-space:nowrap; }
+.chipbtn { font-size:12px; font-weight:600; padding:5px 11px; border-radius:999px; border:1px solid #333c4d;
+           background:#1a1f29; color:#aab3c5; cursor:pointer; white-space:nowrap; }
+.chipbtn:hover { border-color:#0075de; color:#fff; }
+.chipbtn.on { background:#0075de; border-color:#0075de; color:#fff; }
+.chipbtn.wide { border-style:dashed; margin-left:auto; font-weight:700; }
+
+/* ── solo HUD ── */
+#hud { position:fixed; left:50%; bottom:44px; transform:translateX(-50%); z-index:101; display:none; gap:12px;
+       align-items:center; background:rgba(17,20,24,.95); border:1px solid #262c38; padding:8px 14px;
+       border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,.4); }
+#hud.on { display:flex; }
+#hud b { font-size:14px; color:#e8eaef; min-width:210px; text-align:center; }
+.hbtn { padding:4px 12px; border-radius:8px; border:1px solid #333c4d; background:#1a1f29; color:#aab3c5;
+        cursor:pointer; font-size:14px; font-weight:700; }
+.hbtn:hover { border-color:#0075de; color:#fff; }
+.hbtn.x:hover { border-color:#d43a3a; color:#ff8a8a; }
+
+#stage { margin-top:120px; position:relative; width:100%; height:calc(100vh - 144px); border-radius:12px; overflow:hidden;
          transition:background .3s; }
 body[data-bg=check] #stage { background:repeating-conic-gradient(#1a1e26 0% 25%, #14181f 0% 50%) 0 0/28px 28px; }
 body[data-bg=green] #stage { background:#00b140; }
@@ -31,6 +54,7 @@ body[data-bg=black] #stage { background:#000000; }
    Durations/delays multiplied by --spd (speed control). */
 
 .asset { position:absolute; opacity:0; }
+#stage.pickmode .asset { display:none; }
 
 /* shared card look */
 .pu { background:#ffffff; color:#0f1115; border-radius:16px;
@@ -52,7 +76,7 @@ body[data-bg=black] #stage { background:#000000; }
 .ok-t { color:#157a2c; } .bad-t { color:#d43a3a; } .bl-t { color:#0075de; } .wr-t { color:#c05a00; }
 .strike { text-decoration:line-through; color:#9ca3af; }
 
-/* ── E1 · soft rise (default pop, gentle unblur) ── */
+/* ── E1 · soft rise ── */
 @keyframes pop {
   0%   { opacity:0; transform:translateY(56px) scale(.92); filter:blur(4px); }
   16%  { opacity:1; transform:translateY(0) scale(1); filter:blur(0);
@@ -61,7 +85,6 @@ body[data-bg=black] #stage { background:#000000; }
   84%  { opacity:1; transform:translateY(-8px) scale(1); filter:blur(0); }
   100% { opacity:0; transform:translateY(-40px) scale(.96); filter:blur(3px); }
 }
-/* centered variant (assets pinned with translateX(-50%)) */
 @keyframes popC {
   0%   { opacity:0; transform:translate(-50%,56px) scale(.92); filter:blur(4px); }
   16%  { opacity:1; transform:translate(-50%,0) scale(1); filter:blur(0);
@@ -71,7 +94,7 @@ body[data-bg=black] #stage { background:#000000; }
   100% { opacity:0; transform:translate(-50%,-40px) scale(.96); filter:blur(3px); }
 }
 
-/* ── E2 · zoom focus (slow scale-up out of blur) ── */
+/* ── E2 · zoom focus ── */
 @keyframes zoomIn {
   0%   { opacity:0; transform:scale(.72); filter:blur(6px); }
   18%  { opacity:1; transform:scale(1); filter:blur(0);
@@ -81,7 +104,7 @@ body[data-bg=black] #stage { background:#000000; }
   100% { opacity:0; transform:scale(1.08); filter:blur(4px); }
 }
 
-/* ── E3 · slide from right ── */
+/* ── E3/E4 · slides ── */
 @keyframes slideL {
   0%   { opacity:0; transform:translateX(110px); filter:blur(2px); }
   16%  { opacity:1; transform:translateX(0); filter:blur(0);
@@ -90,7 +113,6 @@ body[data-bg=black] #stage { background:#000000; }
   84%  { opacity:1; transform:translateX(-6px); filter:blur(0); }
   100% { opacity:0; transform:translateX(-90px); filter:blur(3px); }
 }
-/* ── E4 · slide from left ── */
 @keyframes slideR {
   0%   { opacity:0; transform:translateX(-110px); filter:blur(2px); }
   16%  { opacity:1; transform:translateX(0); filter:blur(0);
@@ -100,7 +122,7 @@ body[data-bg=black] #stage { background:#000000; }
   100% { opacity:0; transform:translateX(90px); filter:blur(3px); }
 }
 
-/* ── E5 · rubber stamp (big → settle with rotation) ── */
+/* ── E5 · rubber stamp ── */
 @keyframes stamp {
   0%   { opacity:0; transform:scale(1.9) rotate(-7deg); filter:blur(3px); }
   14%  { opacity:1; transform:scale(.96) rotate(1.5deg); filter:blur(0);
@@ -110,7 +132,7 @@ body[data-bg=black] #stage { background:#000000; }
   100% { opacity:0; transform:scale(.92) rotate(-2deg); filter:blur(3px); }
 }
 
-/* ── E6 · drop bounce (falls from top, bounces once) ── */
+/* ── E6 · drop bounce ── */
 @keyframes dropTop {
   0%   { opacity:0; transform:translateY(-90px); filter:blur(2px); }
   15%  { opacity:1; transform:translateY(0); animation-timing-function:cubic-bezier(.3,.7,.4,1); }
@@ -122,7 +144,7 @@ body[data-bg=black] #stage { background:#000000; }
   100% { opacity:0; transform:translateY(50px); filter:blur(3px); }
 }
 
-/* ── E7 · 3D tilt settle (leans back, sits down) ── */
+/* ── E7 · 3D tilt settle ── */
 @keyframes tiltIn {
   0%   { opacity:0; transform:perspective(900px) rotateX(38deg) translateY(48px); filter:blur(3px); }
   18%  { opacity:1; transform:perspective(900px) rotateX(0deg) translateY(0); filter:blur(0);
@@ -132,7 +154,7 @@ body[data-bg=black] #stage { background:#000000; }
   100% { opacity:0; transform:perspective(900px) rotateX(14deg) translateY(-36px); filter:blur(3px); }
 }
 
-/* ── E8 · 3D flip around vertical axis ── */
+/* ── E8 · 3D flip Y ── */
 @keyframes flipY {
   0%   { opacity:0; transform:perspective(1000px) rotateY(75deg) scale(.9); filter:blur(3px); }
   18%  { opacity:1; transform:perspective(1000px) rotateY(0deg) scale(1); filter:blur(0);
@@ -141,7 +163,7 @@ body[data-bg=black] #stage { background:#000000; }
   100% { opacity:0; transform:perspective(1000px) rotateY(-28deg) scale(.94); filter:blur(3px); }
 }
 
-/* ── E9 · wipe reveal upward (clip-path, no movement) ── */
+/* ── E9 · wipe reveal upward ── */
 @keyframes wipeUp {
   0%,2%  { opacity:1; clip-path:inset(100% 0 0 0); filter:blur(0); }
   20%    { clip-path:inset(0% 0 0 0); }
@@ -149,14 +171,7 @@ body[data-bg=black] #stage { background:#000000; }
   100%   { opacity:0; clip-path:inset(0% 0 0 0); filter:blur(3px); }
 }
 
-/* ── E10 · horizontal unfold (for wide/timeline cards) ── */
-@keyframes wideOpen {
-  0%,2%  { opacity:0; clip-path:inset(0 50% 0 50%); filter:blur(0); }
-  8%     { opacity:1; }
-  24%    { clip-path:inset(0 0% 0 0%); }
-  84%    { opacity:1; clip-path:inset(0 0% 0 0%); filter:blur(0); }
-  100%   { opacity:0; clip-path:inset(0 0% 0 0%); filter:blur(3px); }
-}
+/* ── E10 · horizontal unfold ── */
 @keyframes wideOpenC {
   0%,2%  { opacity:0; clip-path:inset(0 50% 0 50%); transform:translate(-50%,0); filter:blur(0); }
   8%     { opacity:1; }
@@ -165,7 +180,7 @@ body[data-bg=black] #stage { background:#000000; }
   100%   { opacity:0; clip-path:inset(0 0% 0 0%); transform:translate(-50%,0); filter:blur(3px); }
 }
 
-/* ── E11 · bouncy counter (overshoot scale) ── */
+/* ── E11 · bouncy counter ── */
 @keyframes countUp {
   0%   { opacity:0; transform:scale(.4); filter:blur(3px); }
   14%  { opacity:1; transform:scale(1.08); filter:blur(0);
@@ -185,14 +200,7 @@ body[data-bg=black] #stage { background:#000000; }
   100% { opacity:0; transform:translate(-50%,0) scale(1.12); filter:blur(4px); }
 }
 
-/* ── E12 · title sting (small dark glow grows into logo) ── */
-@keyframes sting {
-  0%   { opacity:0; transform:scale(.55); filter:blur(10px) brightness(1.6); }
-  20%  { opacity:1; transform:scale(1); filter:blur(0) brightness(1);
-         animation-timing-function:cubic-bezier(.22,1.2,.36,1); }
-  84%  { opacity:1; transform:scale(1); filter:blur(0) brightness(1); }
-  100% { opacity:0; transform:scale(1.06); filter:blur(6px) brightness(1.2); }
-}
+/* ── E12 · title sting ── */
 @keyframes stingC {
   0%   { opacity:0; transform:translate(-50%,0) scale(.55); filter:blur(10px) brightness(1.6); }
   20%  { opacity:1; transform:translate(-50%,0) scale(1); filter:blur(0) brightness(1);
@@ -201,7 +209,7 @@ body[data-bg=black] #stage { background:#000000; }
   100% { opacity:0; transform:translate(-50%,0) scale(1.06); filter:blur(6px) brightness(1.2); }
 }
 
-/* ── E13 · heartbeat pulse in ── */
+/* ── E13 · heartbeat pulse ── */
 @keyframes pulseIn {
   0%   { opacity:0; transform:scale(.85); }
   10%  { opacity:1; transform:scale(1.05); }
@@ -212,13 +220,7 @@ body[data-bg=black] #stage { background:#000000; }
   100% { opacity:0; transform:scale(1.1); filter:blur(3px); }
 }
 
-/* ── E14 · grow + fade (certs cascade host) ── */
-@keyframes fadeGrow {
-  0%   { opacity:0; transform:scale(.88); filter:blur(2px); }
-  18%  { opacity:1; transform:scale(1); filter:blur(0); }
-  84%  { opacity:1; transform:scale(1); filter:blur(0); }
-  100% { opacity:0; transform:scale(1.07); filter:blur(3px); }
-}
+/* ── E14 · grow + fade ── */
 @keyframes fadeGrowC {
   0%   { opacity:0; transform:translate(-50%,0) scale(.88); filter:blur(2px); }
   18%  { opacity:1; transform:translate(-50%,0) scale(1); filter:blur(0); }
@@ -228,7 +230,6 @@ body[data-bg=black] #stage { background:#000000; }
 
 /* ═══ ASSET PLACEMENT + EFFECT ASSIGNMENT ═══ */
 
-/* A01 title sting */
 .a-title { left:50%; top:8%; transform:translateX(-50%); --T:14s; --d:0s; padding:26px 42px; text-align:center; }
 .pu.pc.a-title { animation-name:stingC; }
 .a-title .logo { display:flex; align-items:center; justify-content:center; gap:14px; }
@@ -236,7 +237,6 @@ body[data-bg=black] #stage { background:#000000; }
 .a-title .nm { font-size:44px; font-weight:800; letter-spacing:-.01em; color:#0f1115; }
 .a-title .tg { font-size:15px; color:#6b7280; margin-top:8px; }
 
-/* A02 KPI strip — soft rise */
 .a-kpi { left:50%; top:24%; transform:translateX(-50%); --T:16s; --d:1s; padding:20px 24px; }
 .pu.pc.a-kpi { animation-name:popC; }
 .kpirow { display:flex; gap:14px; align-items:stretch; }
@@ -246,16 +246,13 @@ body[data-bg=black] #stage { background:#000000; }
 .kpi .v small { font-size:14px; color:#6b7280; font-weight:700; }
 .kpisep { width:1px; background:#e5e7eb; }
 
-/* A03 co2 twin — zoom focus */
 .a-co2 { left:4%; top:14%; --T:13s; --d:.5s; padding:20px 26px; animation-name:zoomIn; }
 
-/* A04 compliance badge — stamp */
 .a-badge { right:5%; top:12%; --T:13s; --d:2s; padding:16px 22px; display:flex; align-items:center; gap:12px; animation-name:stamp; transform-origin:center; }
 .a-badge .dot { width:38px; height:38px; border-radius:50%; background:#e7f5ea; color:#157a2c; display:grid; place-items:center; font-size:20px; font-weight:800; }
 .a-badge .t1 { font-size:18px; font-weight:800; }
 .a-badge .t2 { font-size:13px; color:#6b7280; }
 
-/* A05 donut — slide from left */
 .a-donut { left:4%; top:42%; --T:15s; --d:1.2s; padding:18px 24px; animation-name:slideR; }
 .donutwrap { display:flex; align-items:center; gap:18px; }
 .donut { transform:rotate(-90deg); }
@@ -269,7 +266,6 @@ body[data-bg=black] #stage { background:#000000; }
 .dleg { font-size:13px; color:#374151; line-height:2; white-space:nowrap; }
 .dleg i { display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:8px; }
 
-/* A06 hotspot reticle — heartbeat */
 .a-hot { left:22%; top:47%; --T:13s; --d:3.2s; padding:12px 18px; display:flex; align-items:center; gap:10px; animation-name:pulseIn; }
 .a-hot .ret { width:30px; height:30px; border:3px solid #d43a3a; border-radius:50%; position:relative; }
 .a-hot .ret::after { content:''; position:absolute; inset:-8px; border:1.5px dashed #d43a3a; border-radius:50%;
@@ -278,7 +274,6 @@ body[data-bg=black] #stage { background:#000000; }
 .a-hot .t1 { font-size:17px; font-weight:800; color:#d43a3a; white-space:nowrap; }
 .a-hot .t2 { font-size:12px; color:#6b7280; }
 
-/* A07 CBAM trend — soft rise */
 .a-trend { left:32%; top:36%; --T:16s; --d:2.2s; padding:18px 24px; animation-name:pop; }
 .trendbox { display:flex; align-items:flex-end; gap:9px; height:130px; margin-top:10px; }
 .tbar { width:30px; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:4px; height:100%; }
@@ -296,7 +291,6 @@ body[data-bg=black] #stage { background:#000000; }
 .tbar:nth-child(7) .col { animation-delay:calc(1.05s * var(--spd)); height:77%; }
 .tbar:nth-child(8) .col { animation-delay:calc(1.20s * var(--spd)); height:100%; background:#dd5b00; }
 
-/* A08 MRV — slide from right */
 .a-mrv { right:5%; top:34%; --T:15s; --d:4.2s; padding:18px 24px; animation-name:slideL; }
 .mrvrow { display:flex; align-items:center; gap:10px; margin-top:9px; font-size:13px; }
 .mrvrow .sc { width:74px; font-weight:700; color:#374151; white-space:nowrap; }
@@ -308,7 +302,6 @@ body[data-bg=black] #stage { background:#000000; }
 .mrvrow:nth-of-type(2) .fill { animation-delay:calc(.25s * var(--spd)); }
 .mrvrow:nth-of-type(3) .fill { animation-delay:calc(.5s * var(--spd)); }
 
-/* A09 radar — zoom focus */
 .a-radar { left:3%; top:66%; --T:16s; --d:2.6s; padding:16px 22px; animation-name:zoomIn; }
 .radarwrap { display:flex; gap:14px; align-items:center; }
 .rlegend { font-size:12.5px; color:#374151; line-height:2; white-space:nowrap; }
@@ -316,7 +309,6 @@ body[data-bg=black] #stage { background:#000000; }
 .radar-poly { stroke-dasharray:520; stroke-dashoffset:520; animation:draw calc(16s * var(--spd)) ease infinite; }
 @keyframes draw { 0%{stroke-dashoffset:520} 32%,88%{stroke-dashoffset:0} 100%{stroke-dashoffset:520} }
 
-/* A10 strength bars — drop bounce */
 .a-str { left:30%; top:66%; --T:15s; --d:3.6s; padding:18px 24px; animation-name:dropTop; }
 .strbox { display:flex; gap:16px; align-items:flex-end; height:110px; margin-top:10px; }
 .sgrp { display:flex; gap:4px; align-items:flex-end; height:100%; }
@@ -329,7 +321,6 @@ body[data-bg=black] #stage { background:#000000; }
 .sgrp:nth-child(3) .col { animation-delay:calc(.6s * var(--spd)); } .sgrp:nth-child(4) .col { animation-delay:calc(.8s * var(--spd)); }
 .sgrp:nth-child(5) .col { animation-delay:calc(1s * var(--spd)); }
 
-/* A11 AI compare — 3D tilt settle */
 .a-cmp { right:4%; top:56%; --T:16s; --d:2s; padding:18px 22px; max-width:560px; animation-name:tiltIn; }
 .cmp { width:100%; border-collapse:collapse; font-size:13.5px; }
 .cmp th { text-align:right; color:#6b7280; font-size:11px; text-transform:uppercase; letter-spacing:.05em; padding:4px 8px; }
@@ -344,31 +335,25 @@ body[data-bg=black] #stage { background:#000000; }
 .cmp tbody tr:nth-child(3){animation-delay:calc(1.4s * var(--spd))}.cmp tbody tr:nth-child(4){animation-delay:calc(1.9s * var(--spd))}
 @keyframes rowin { 0%{opacity:0; transform:translateX(26px)} 12%{opacity:1; transform:none} 88%{opacity:1} 100%{opacity:0} }
 
-/* A12 spec sheet — 3D flip */
 .a-spec { right:26%; top:10%; --T:15s; --d:5s; padding:18px 24px; min-width:330px; animation-name:flipY; }
 .specgrid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px 18px; margin-top:8px; }
 .specgrid .sg .sk { font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:#6b7280; font-weight:700; }
 .specgrid .sg .sv { font-size:14.5px; font-weight:600; white-space:nowrap; }
 
-/* A13 payback — bouncy counter */
 .a-pay { left:11%; bottom:22%; --T:13s; --d:4.6s; padding:18px 24px; animation-name:countUp; }
 .a-pay .val em { font-style:normal; font-size:18px; color:#0075de; }
 
-/* A14 price tag — slide from right */
 .a-tag { right:12%; bottom:30%; --T:13s; --d:6s; padding:18px 24px; animation-name:slideL; }
 .a-tag .val { font-size:24px; }
 
-/* A15 market counter — bouncy counter (centered) */
 .a-count { left:50%; top:6%; transform:translateX(-50%); --T:13s; --d:1.4s; padding:16px 30px; text-align:center; }
 .pu.a-count { animation-name:countUpC; }
 .a-count .val { color:#d43a3a; }
 
-/* A16 AI bubble — wipe reveal upward */
 .a-ai { left:38%; bottom:6%; --T:16s; --d:2s; padding:18px 24px; max-width:500px; animation-name:wipeUp; }
 .a-ai .who { font-size:11px; font-weight:800; letter-spacing:.1em; color:#0075de; margin-bottom:6px; }
 .a-ai p { font-size:15px; line-height:1.6; color:#1f2937; }
 
-/* A17 activity feed — slide from left */
 .a-feed { right:24%; bottom:52%; --T:16s; --d:3s; padding:16px 22px; min-width:360px; animation-name:slideR; }
 .feed { margin-top:6px; }
 .fev { display:flex; gap:10px; padding:5px 0; font-size:13.5px; color:#1f2937; align-items:flex-start; opacity:0;
@@ -384,7 +369,6 @@ body[data-bg=black] #stage { background:#000000; }
 .fev:nth-child(5){animation-delay:calc(2.5s * var(--spd))}
 @keyframes fevin { 0%{opacity:0; transform:translateY(14px)} 10%{opacity:1; transform:none} 88%{opacity:1} 100%{opacity:0} }
 
-/* A18 CBAM timeline — horizontal unfold (centered) */
 .a-tml { left:50%; bottom:20%; transform:translateX(-50%); --T:16s; --d:2.4s; padding:20px 30px; min-width:640px; }
 .pu.pc.a-tml { animation-name:wideOpenC; }
 .tmline { position:relative; height:74px; margin-top:14px; }
@@ -401,7 +385,6 @@ body[data-bg=black] #stage { background:#000000; }
 .tlnode .l { font-size:11.5px; color:#6b7280; line-height:1.35; margin-top:2px; }
 .tlnode:nth-child(3){left:0}.tlnode:nth-child(4){left:28%}.tlnode:nth-child(5){left:56%}.tlnode:nth-child(6){left:84%;margin-left:-40px}
 
-/* A19 certs — grow + fade (centered) */
 .a-cert { left:50%; bottom:8%; transform:translateX(-50%); --T:14s; --d:5.2s; padding:16px 24px; }
 .pu.pc.a-cert { animation-name:fadeGrowC; }
 .certrow { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; justify-content:center; }
@@ -416,14 +399,12 @@ body[data-bg=black] #stage { background:#000000; }
 .cpill.bl { background:#e8f2ff; color:#0075de; }
 .cpill.ol { border:1.5px solid #c9d4e4; color:#5b6878; }
 
-/* A20 input form — wipe reveal upward */
 .a-input { left:24%; bottom:4%; --T:14s; --d:.8s; padding:16px 22px; min-width:430px; animation-name:wipeUp; }
 .inpgrid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px 16px; margin-top:8px; }
 .inp .ik { font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:#6b7280; font-weight:700; }
 .inp .iv { font-size:14px; font-weight:600; border-bottom:2px solid #0075de; padding-bottom:2px; margin-top:2px; white-space:nowrap; }
 .stepno { display:inline-grid; place-items:center; width:22px; height:22px; border-radius:50%; background:#0075de; color:#fff; font-size:12px; font-weight:800; margin-right:7px; vertical-align:-4px; }
 
-/* A21 view flipper — 3D flip */
 .a-view { right:30%; bottom:6%; --T:16s; --d:2.8s; padding:16px 24px; min-width:420px; animation-name:flipY; }
 .vtabs { display:flex; gap:8px; margin-bottom:10px; }
 .vtab { font-size:12px; font-weight:800; padding:4px 14px; border-radius:999px; border:1.5px solid #dde3ec; color:#6b7280; }
@@ -436,7 +417,6 @@ body[data-bg=black] #stage { background:#000000; }
 .vtabs .t-on { animation:vtech calc(16s * var(--spd)) steps(1) infinite; }
 .vtabs .b-on { animation:vbiz calc(16s * var(--spd)) steps(1) infinite; }
 
-/* A22 SDG strip — drop bounce */
 .a-sdg { right:3%; bottom:8%; --T:14s; --d:4.4s; padding:14px 18px; animation-name:dropTop; }
 .sdgstrip { display:flex; gap:6px; }
 .sdgstrip img { height:44px; border-radius:4px; box-shadow:0 2px 8px rgba(0,0,0,.15); }
@@ -444,7 +424,7 @@ body[data-bg=black] #stage { background:#000000; }
 /* solo mode */
 #stage.solo .asset { display:none; }
 #stage.solo .asset.pick { display:block !important; position:absolute; left:50% !important; top:50% !important;
-  transform:translate(-50%,-50%) scale(1.35); animation-play-state:running; }
+  transform:translate(-50%,-50%) scale(1.3); animation-play-state:running; }
 .hint { position:fixed; bottom:12px; left:50%; transform:translateX(-50%); font-size:12px; color:#6b7589; z-index:100; }
 </style>
 </head>
@@ -462,7 +442,13 @@ body[data-bg=black] #stage { background:#000000; }
   <button class="bgb spd on" data-spd="1">1×</button>
   <button class="bgb spd" data-spd="0.66">1.5×</button>
   <button class="bgb spd" data-spd="0.5">2×</button>
-  <span class="note">คลิก asset = โซโล่ขยายกลางจอ · กดซ้ำ = กลับ grid</span>
+  <span class="note">คลิก chip = โซโล่ · ←/→ เปลี่ยนตัว · Esc กลับเมนู</span>
+</div>
+
+<div id="picker">
+  <span class="plbl">เลือก asset:</span>
+  <div id="chips"></div>
+  <button class="chipbtn wide" id="playall">▶ Play all</button>
 </div>
 
 <div id="stage">
@@ -473,7 +459,7 @@ body[data-bg=black] #stage { background:#000000; }
     <div class="tg">Carbon Engineering for SME · EU CBAM · Sriracha Hackathon 2026</div>
   </div>
 
-  <!-- A02 · KPI strip (5 cards) -->
+  <!-- A02 · KPI strip -->
   <div class="asset pu pc a-kpi">
     <div class="lbl">KPI — ก่อน → หลัง (AI Option A)</div>
     <div class="kpirow">
@@ -489,7 +475,7 @@ body[data-bg=black] #stage { background:#000000; }
     </div>
   </div>
 
-  <!-- A03 · CO2 twin — zoom focus -->
+  <!-- A03 · CO2 twin -->
   <div class="asset pu a-co2">
     <div class="lbl">Carbon Twin · Real Result</div>
     <div class="val"><span class="bad-t">4.23 t</span> → <span class="ok-t">0.88 t</span></div>
@@ -497,7 +483,7 @@ body[data-bg=black] #stage { background:#000000; }
     <div class="chiprow"><span class="chip ok">▼ 3.35 tCO₂/yr</span><span class="chip bl">EU Benchmark verified</span></div>
   </div>
 
-  <!-- A04 · Compliance badge — stamp -->
+  <!-- A04 · Compliance badge -->
   <div class="asset pu a-badge">
     <div class="dot">✓</div>
     <div>
@@ -506,7 +492,7 @@ body[data-bg=black] #stage { background:#000000; }
     </div>
   </div>
 
-  <!-- A05 · Carbon Breakdown donut -->
+  <!-- A05 · Donut breakdown -->
   <div class="asset pu a-donut">
     <div class="lbl">Carbon Breakdown (Before)</div>
     <div class="donutwrap">
@@ -533,7 +519,7 @@ body[data-bg=black] #stage { background:#000000; }
     </div>
   </div>
 
-  <!-- A07 · CBAM obligation trend -->
+  <!-- A07 · CBAM trend -->
   <div class="asset pu a-trend">
     <div class="lbl">CBAM Obligation Trend 2026→2033 (ไม่ปรับปรุง)</div>
     <div class="trendbox">
@@ -559,7 +545,7 @@ body[data-bg=black] #stage { background:#000000; }
     <div class="sub">Embedded emissions คือฐานภาษี CBAM</div>
   </div>
 
-  <!-- A09 · Mechanical profile radar -->
+  <!-- A09 · Radar -->
   <div class="asset pu a-radar">
     <div class="lbl">วัสดุศาสตร์ — Mechanical Profile</div>
     <div class="radarwrap">
@@ -582,7 +568,7 @@ body[data-bg=black] #stage { background:#000000; }
     </div>
   </div>
 
-  <!-- A10 · Strength & hardness bars -->
+  <!-- A10 · Strength bars -->
   <div class="asset pu a-str">
     <div class="lbl">Strength &amp; Hardness — 5 วัสดุ (MPa / HB)</div>
     <div class="strbox">
@@ -596,7 +582,7 @@ body[data-bg=black] #stage { background:#000000; }
     <div class="sub" style="font-size:11.5px">■ UTS ■ YS ■ HB — ข้อมูล ICE v3.0 / ASM</div>
   </div>
 
-  <!-- A11 · AI comparison table — tilt -->
+  <!-- A11 · AI compare table -->
   <div class="asset pu a-cmp">
     <div class="lbl">AI Recommendation — เปรียบเทียบทางเลือก A / B / C</div>
     <table class="cmp">
@@ -610,7 +596,7 @@ body[data-bg=black] #stage { background:#000000; }
     </table>
   </div>
 
-  <!-- A12 · Material spec sheet — flip -->
+  <!-- A12 · Spec sheet -->
   <div class="asset pu a-spec">
     <div class="lbl">Spec Sheet — Al 6061-T6 (Virgin)</div>
     <div class="specgrid">
@@ -629,7 +615,7 @@ body[data-bg=black] #stage { background:#000000; }
     </div>
   </div>
 
-  <!-- A13 · Payback — bouncy counter -->
+  <!-- A13 · Payback -->
   <div class="asset pu a-pay">
     <div class="lbl">Payback Period</div>
     <div class="val">7.8 <em>เดือน</em></div>
@@ -637,7 +623,7 @@ body[data-bg=black] #stage { background:#000000; }
     <div class="chiprow"><span class="chip ok">+ T-VER Revenue</span></div>
   </div>
 
-  <!-- A14 · Carbon price tag -->
+  <!-- A14 · Price tag -->
   <div class="asset pu a-tag">
     <div class="lbl">ป้ายราคาคาร์บอน</div>
     <div class="val"><span class="strike">ไม่มีป้าย</span> <span class="bad-t">€242/yr</span> → <span class="ok-t">€0</span></div>
@@ -651,7 +637,7 @@ body[data-bg=black] #stage { background:#000000; }
     <div class="sub">ขยาย 6 → 180 product groups ปี 2571</div>
   </div>
 
-  <!-- A16 · AI bubble — wipe -->
+  <!-- A16 · AI bubble -->
   <div class="asset pu a-ai">
     <div class="who">● POWERED BY NOUS AI (LIVE)</div>
     <p>"ฮอตสปอตหลักอยู่ที่วัสดุ — CO₂ รวม 4,230 kgCO₂e สูงกว่าเกณฑ์ CBAM หลายเท่า<br>
@@ -671,7 +657,7 @@ body[data-bg=black] #stage { background:#000000; }
     </div>
   </div>
 
-  <!-- A18 · CBAM timeline — unfold -->
+  <!-- A18 · Timeline -->
   <div class="asset pu pc a-tml">
     <div class="lbl">ไทม์ไลน์ CBAM (ตามกฎจริง EU/TGO)</div>
     <div class="tmline">
@@ -683,7 +669,7 @@ body[data-bg=black] #stage { background:#000000; }
     </div>
   </div>
 
-  <!-- A19 · Certifications — cascade -->
+  <!-- A19 · Certs -->
   <div class="asset pu pc a-cert">
     <div class="lbl" style="text-align:center">การรับรอง &amp; มาตรฐาน</div>
     <div class="certrow">
@@ -696,7 +682,7 @@ body[data-bg=black] #stage { background:#000000; }
     </div>
   </div>
 
-  <!-- A20 · Input section — wipe -->
+  <!-- A20 · Input form -->
   <div class="asset pu a-input">
     <div class="lbl"><span class="stepno">1</span>ข้อมูลนำเข้า — ④ แหล่งข้อมูล + Upload</div>
     <div class="inpgrid">
@@ -711,7 +697,7 @@ body[data-bg=black] #stage { background:#000000; }
     </div>
   </div>
 
-  <!-- A21 · Technical / Business flip -->
+  <!-- A21 · View flipper -->
   <div class="asset pu a-view">
     <div class="vtabs">
       <span class="vtab t-on on">Technical</span><span class="vtab b-on">Business</span>
@@ -729,7 +715,7 @@ body[data-bg=black] #stage { background:#000000; }
     </div>
   </div>
 
-  <!-- A22 · SDG strip — drop bounce -->
+  <!-- A22 · SDG -->
   <div class="asset pu a-sdg">
     <div class="lbl">Sustainable Development Goals</div>
     <div class="sdgstrip">
@@ -744,36 +730,98 @@ body[data-bg=black] #stage { background:#000000; }
 
 </div>
 
-<div class="hint">Record หน้านี้ด้วย OBS/screen recorder → chroma key #00b140 → วางทับคลิป · Speed ปรับได้จากแถบด้านบน</div>
+<div id="hud">
+  <button class="hbtn" id="prev">◀</button>
+  <b id="hudname">—</b>
+  <button class="hbtn" id="next">▶</button>
+  <button class="hbtn x" id="exithud">✕ ออก</button>
+</div>
+
+<div class="hint">Record ด้วย OBS/screen recorder → chroma key #00b140 → วางทับคลิป · เลือก asset จากแถบด้านบน</div>
 
 <script>
+// ── modes: PICKER (default) / SOLO / COLLAGE ──
+const stage = document.getElementById('stage');
+const assets = [...document.querySelectorAll('.asset')];
+const NAMES = ['โลโก้เปิดคลิป','KPI Strip','CO₂ Twin','Badge PASS','Donut Breakdown','Hotspot','CBAM Trend',
+  'MRV Scopes','Radar วัสดุ','Strength Bars','AI Compare','Spec Sheet','Payback','ป้ายราคาคาร์บอน',
+  'Counter โรงงาน','AI Bubble','Activity Feed','Timeline CBAM','Certs','ฟอร์ม Input','Tech/Biz Flip','SDG'];
+const chipsBox = document.getElementById('chips');
+const hud = document.getElementById('hud');
+const hudName = document.getElementById('hudname');
+const playBtn = document.getElementById('playall');
+let cur = -1;
+
+assets.forEach((a,i)=>{
+  const b=document.createElement('button');
+  b.className='chipbtn';
+  b.textContent=`A${String(i+1).padStart(2,'0')} ${NAMES[i]||''}`;
+  b.onclick=()=>show(cur===i?-1:i);
+  chipsBox.appendChild(b);
+});
+const chipEls=[...chipsBox.children];
+
+// force-restart every animation inside the chosen asset so solo starts from frame 0
+function restartAnim(root){
+  [root,...root.querySelectorAll('*')].forEach(n=>{
+    const saved=n.style.animation;
+    n.style.animation='none'; void n.offsetWidth; n.style.animation=saved;
+  });
+}
+function syncUI(){
+  chipEls.forEach((c,i)=>c.classList.toggle('on',i===cur));
+  playBtn.textContent = (cur>=0||stage.classList.contains('allmode')) ? '☰ Picker' : '▶ Play all';
+}
+function show(i){
+  if(i<0){
+    cur=-1;
+    stage.classList.remove('solo'); stage.classList.remove('allmode'); stage.classList.add('pickmode');
+    assets.forEach(a=>a.classList.remove('pick'));
+    hud.classList.remove('on');
+  }else{
+    if(cur!==i||!stage.classList.contains('solo')) restartAnim(assets[i]);
+    cur=i;
+    stage.classList.add('solo'); stage.classList.remove('pickmode'); stage.classList.remove('allmode');
+    assets.forEach((a,j)=>a.classList.toggle('pick',j===i));
+    hudName.textContent=`A${String(i+1).padStart(2,'0')} · ${NAMES[i]}`;
+    hud.classList.add('on');
+  }
+  syncUI();
+}
+function playAll(){
+  cur=-1;
+  stage.classList.remove('solo'); stage.classList.remove('pickmode'); stage.classList.add('allmode');
+  assets.forEach(a=>a.classList.remove('pick'));
+  hud.classList.remove('on'); syncUI();
+}
+document.getElementById('prev').onclick=()=>show(cur<=0?assets.length-1:cur-1);
+document.getElementById('next').onclick=()=>show((cur+1)%assets.length);
+document.getElementById('exithud').onclick=()=>show(-1);
+playBtn.onclick=()=>{ (cur>=0||stage.classList.contains('allmode')) ? show(-1) : playAll(); };
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') show(-1);
+  else if(e.key==='ArrowRight'&&cur>=0) show((cur+1)%assets.length);
+  else if(e.key==='ArrowLeft'&&cur>=0) show((cur-1+assets.length)%assets.length);
+});
+// click an asset directly = solo it
+assets.forEach((a,i)=>a.addEventListener('click',e=>{ e.stopPropagation(); show(i); }));
+
 // background switcher
 document.querySelectorAll('.bgb[data-b]').forEach(b=>{
   b.addEventListener('click',()=>{
     document.querySelectorAll('.bgb[data-b]').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    document.body.dataset.bg=b.dataset.b;
+    b.classList.add('on'); document.body.dataset.bg=b.dataset.b;
   });
 });
-// speed control: --spd multiplies every duration/delay (higher = slower)
+// speed control (--spd multiplies every duration/delay)
 document.querySelectorAll('.bgb.spd').forEach(b=>{
   b.addEventListener('click',()=>{
     document.querySelectorAll('.bgb.spd').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    document.body.style.setProperty('--spd', b.dataset.spd);
+    b.classList.add('on'); document.body.style.setProperty('--spd',b.dataset.spd);
   });
 });
-// solo toggle
-const stage=document.getElementById('stage');
-document.querySelectorAll('.asset').forEach(a=>{
-  a.addEventListener('click',e=>{
-    e.stopPropagation();
-    const was=a.classList.contains('pick');
-    document.querySelectorAll('.asset').forEach(x=>x.classList.remove('pick'));
-    if(!was){ a.classList.add('pick'); stage.classList.add('solo'); }
-    else stage.classList.remove('solo');
-  });
-});
+
+show(-1); // start in picker mode
 </script>
 </body>
 </html>
