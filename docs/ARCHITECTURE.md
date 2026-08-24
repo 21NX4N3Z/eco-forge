@@ -100,7 +100,7 @@ EU CBAM needs 3 scopes:
 Show as Comparison Table + Radar Chart. Hermes `WhyButton` explains each row.
 
 ## 5. OUTPUT LAYER — 3 views
-- **EU CBAM Template + SDG**: structure per EU CBAM Reporting Template; cite SDG 9/12/13; include Verification & Data Source.
+- **EU CBAM Template + SDG**: structure per EU CBAM Reporting Template; cite SDG 8/9/12/13; include Verification & Data Source.
 - **Technical View**: detailed equations, engineering risk (Porosity/Tolerance/Strength), standards (ASTM E155, ISO 14040), detailed charts.
 - **Business View**: cost / savings / payback / CBAM tax; lost-profit-if-no-action; executive summary chart.
 
@@ -125,7 +125,7 @@ Local `seed.json` mirrors these as demo source of truth.
 ## 8. Demo Case (video)
 Aerospace Bracket from supplier input:
 - Current: Al6061-T6 Virgin + CNC Billet, scrap 70%, 4.2 t/yr, ฿520K, CBAM €122 (2028) / €612 (2034)
-- Alt A: 50% Recycled + Gravity Die Casting, scrap 12%, 1.8 t/yr, ฿380K, CBAM €0, payback 8 mo, SDG 9/12/13
+- Alt A: 50% Recycled + Gravity Die Casting, scrap 12%, 1.8 t/yr, ฿380K, CBAM €0, payback 8 mo, SDG 8/9/12/13
 
 ## 9. Tech stack
 - Vite + React + TS + Tailwind **v3**

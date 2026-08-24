@@ -166,7 +166,7 @@ AI เสนอพร้อมตัวเลขเปรียบเทีย�
 
 ### 4.1 เอกสารตาม Template EU CBAM + SDGs
 - PDF โครงสร้างตาม EU CBAM Reporting Template
-- ระบุชัดเจนว่าสอดคล้อง SDG 9 (Industry), SDG 12 (Responsible Consumption), SDG 13 (Climate Action)
+- ระบุชัดเจนว่าสอดคล้อง SDG 8 (Decent Work & Economic Growth), SDG 9 (Industry), SDG 12 (Responsible Consumption), SDG 13 (Climate Action)
 - มีส่วน Verification & Data Source
 
 ### 4.2 ข้อมูลสำหรับวิศวกร (Technical View)
@@ -341,7 +341,7 @@ AI เสนอพร้อมตัวเลขเปรียบเทีย�
 | **CBAM Tax 2028** | €122/ปี 🔴 | €0/ปี ✅ |
 | **CBAM Tax 2034** | €612/ปี 🔴 | €0/ปี ✅ |
 | **Payback** | — | 8 เดือน |
-| **SDG** | — | SDG 9, 12, 13 |
+| **SDG** | — | SDG 8, 9, 12, 13 |
 
 ---
 
