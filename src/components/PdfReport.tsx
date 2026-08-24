@@ -10,9 +10,6 @@ import TemplatePicker, { TemplateId } from './TemplatePicker'
 import ReportBody from './ReportBody'
 import { complianceItems, BadgeList } from './ComplianceBadge'
 import { IconExport } from './icons'
-import sdg9 from '../assets/sdg/TGG_Icon_Color_09.png'
-import sdg12 from '../assets/sdg/TGG_Icon_Color_12.png'
-import sdg13 from '../assets/sdg/TGG_Icon_Color_13.png'
 
 /**
  * One-Click PDF Export with Template Picker (brief หน้า 4):
