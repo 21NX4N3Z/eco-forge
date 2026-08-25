@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { PartSpec, SeedData } from './types'
 import { useSeed } from './dataLayer'
 import UnifiedTwin from './components/UnifiedTwin'
-import PdfReport from './components/PdfReport'
 import OfflineToggle from './components/OfflineToggle'
 import { LoadingSkeleton, ErrorCard } from './components/StatusCards'
 import SdgBadges from './components/SdgBadges'
@@ -11,7 +10,7 @@ import Milestones from './components/Milestones'
 import ViewToggle from './components/ViewToggle'
 import SourcesPanel from './components/SourcesPanel'
 import { badgeLine } from './data/certs'
-import { IconTwin, IconDownload, IconSpark, IconDatabase } from './components/icons'
+import { IconTwin, IconSpark, IconDatabase } from './components/icons'
 
 const DEFAULT_SPEC: PartSpec = {
   inputSource: 'standard',
@@ -24,11 +23,10 @@ const DEFAULT_SPEC: PartSpec = {
   transportDist: 120,
 }
 
-type Tab = 'twin' | 'export' | 'sources'
+type Tab = 'twin' | 'sources'
 
 const TABS: { id: Tab; label: string; icon: typeof IconTwin }[] = [
   { id: 'twin', label: 'Carbon Twin', icon: IconTwin },
-  { id: 'export', label: 'Export', icon: IconDownload },
   { id: 'sources', label: 'แหล่งอ้างอิง', icon: IconDatabase },
 ]
 
@@ -92,7 +90,6 @@ export default function App() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 space-y-4">
           {!loading && tab === 'twin' && <UnifiedTwin spec={spec} setSpec={setSpec} data={data} addMaterial={addMaterial} view={view} setView={setView} source={source} />}
-          {!loading && tab === 'export' && <PdfReport spec={spec} data={data} />}
         </div>
         <aside className="space-y-4">
           <ActivityFeed />

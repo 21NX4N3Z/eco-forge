@@ -16,6 +16,7 @@ import { paybackMonths, paybackLabel } from '../utils/payback'
 import { ManualMaterialForm, HistoryPanel, SupplierPanel } from './InputSources'
 import FileAnalyzer from './FileAnalyzer'
 import ComparisonDeep from './ComparisonDeep'
+import PdfReport from './PdfReport'
 
 const COLORS = ['#0075de', '#dd5b00', '#1aae39', '#a39e98']
 
@@ -214,19 +215,6 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         </div>
       )}
 
-      {/* KPI strip — numbers auto-shrink when long, never overflow */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <div className="card min-w-0"><div className="label">Carbon Score</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-accent tabular-nums break-all">{cur.score}<span className="text-ink-mute text-xl">/100</span></div></div>
-        <div className="card min-w-0"><div className="label">CO₂ / ปี</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-ink tabular-nums break-all">{(cur.annualCo2/1000).toFixed(2)}<span className="text-ink-mute text-xl"> t</span></div></div>
-        <div className="card min-w-0"><div className="label">ต้นทุน / ปี</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ink tabular-nums break-all">{money(cur.annualCost)}</div>
-          <select className="mt-1 card-inset py-0.5 text-xs" value={curSym} onChange={(e) => setCurSym(e.target.value as any)}>
-            {Object.keys(RATES).map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
-        </div>
-        <div className="card min-w-0"><div className="label">CBAM Tax 2028</div><div className={`text-[clamp(24px,3vw,34px)] leading-none font-bold tabular-nums break-all ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>€{cbam2028}<span className="text-ink-mute text-xl">/yr</span></div></div>
-        <div className="card min-w-0"><div className="label">Credit Revenue (T-VER)</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ok tabular-nums break-all">{bestRes && cur.annualCo2 > bestRes.annualCo2 ? `+${money((cur.annualCo2 - bestRes.annualCo2) / 1000 * 220)}` : '—'}<span className="text-ink-mute text-xl">/yr</span></div></div>
-      </div>
-
       {/* ── SECTION 1: INPUT ───────────────────────────── */}
       <div className="card space-y-4">
         <div className="flex items-center gap-2">
@@ -264,12 +252,11 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         <FileAnalyzer data={data} onApply={(patch) => set(patch)} />
       </div>
 
-      {/* ── SECTION 2: PARAMETERS ──────────────────────── */}
+      {/* ── SECTION 1b: PARAMETERS ─────────────────────── */}
       <div className="card space-y-4">
         <div className="flex items-center gap-2">
-          <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">2</span>
+          <span className="w-6 h-6 rounded-full bg-line text-ink grid place-items-center text-xs font-bold">1</span>
           <span className="text-[15px] font-bold text-ink">พารามิเตอร์การผลิต</span>
-          <span className="ml-auto"><WhyButton req={{ hotspot: 'material', part: spec.partType, co2: cur.annualCo2, score: cur.score, cbam2028 }} /></span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
@@ -297,10 +284,43 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         </div>
       </div>
 
-      {/* ── SECTION 3: ANALYTICS ───────────────────────── */}
+      {/* ── SECTION 2: AI SUMMARY — KPI + best-option recommendation ── */}
+      <div className="flex items-center gap-2 px-1 flex-wrap">
+        <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">2</span>
+        <span className="text-[15px] font-bold text-ink">AI วิเคราะห์ &amp; ตัวเลขสำคัญ</span>
+        <WhyButton req={{ hotspot: 'material', part: spec.partType, co2: cur.annualCo2, score: cur.score, cbam2028 }} />
+      </div>
+
+      {/* KPI strip — numbers auto-shrink when long, never overflow */}
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="card min-w-0"><div className="label">Carbon Score</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-accent tabular-nums break-all">{cur.score}<span className="text-ink-mute text-xl">/100</span></div></div>
+        <div className="card min-w-0"><div className="label">CO₂ / ปี</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-ink tabular-nums break-all">{(cur.annualCo2/1000).toFixed(2)}<span className="text-ink-mute text-xl"> t</span></div></div>
+        <div className="card min-w-0"><div className="label">ต้นทุน / ปี</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ink tabular-nums break-all">{money(cur.annualCost)}</div>
+          <select className="mt-1 card-inset py-0.5 text-xs" value={curSym} onChange={(e) => setCurSym(e.target.value as any)}>
+            {Object.keys(RATES).map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </div>
+        <div className="card min-w-0"><div className="label">CBAM Tax 2028</div><div className={`text-[clamp(24px,3vw,34px)] leading-none font-bold tabular-nums break-all ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>€{cbam2028}<span className="text-ink-mute text-xl">/yr</span></div></div>
+        <div className="card min-w-0"><div className="label">Credit Revenue (T-VER)</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ok tabular-nums break-all">{bestRes && cur.annualCo2 > bestRes.annualCo2 ? `+${money((cur.annualCo2 - bestRes.annualCo2) / 1000 * 220)}` : '—'}<span className="text-ink-mute text-xl">/yr</span></div></div>
+      </div>
+
+      {/* AI verdict card — one-line recommendation from engine */}
+      {bestRes && (
+        <div className="card space-y-1">
+          <div className="label">คำแนะนำ AI</div>
+          <div className="text-sm leading-relaxed break-words">
+            Option ที่ดีที่สุด: <b>Option {best?.label}</b> ({best?.note}) → ลด CO₂ <b className="text-ok">{((cur.annualCo2 - bestRes.annualCo2)/1000).toFixed(2)} t/yr</b>
+            {' · '}ประหยัด <b className="text-ok">{money(cur.annualCost - bestRes.annualCost)}/yr</b>
+            {' · '}CBAM 2028 เหลือ <b className={cbam2028 > 0 ? 'text-bad' : 'text-ok'}>€{bestRes.cbam.find((c) => c.year === 2028)?.taxEur ?? 0}/yr</b>
+          </div>
+          <div className="text-xs text-ink-mute">ดูรายละเอียดเปรียบเทียบ A/B/C ทั้งหมดได้ในชั้น ④ ด้านล่าง</div>
+        </div>
+      )}
+
+      {/* ── SECTION 3: DASHBOARD / ANALYTICS ──────────── */}
       <div className="flex items-center gap-2 px-1 flex-wrap">
         <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">3</span>
-        <span className="text-[15px] font-bold text-ink">ผลวิเคราะห์ &amp; กราฟ</span>
+        <span className="text-[15px] font-bold text-ink">Dashboard &amp; กราฟ</span>
         <span className="text-xs text-ink-mute">(คลิกชื่อกราฟเปลี่ยนรูปแบบ · ⤢ ขยาย · – ซ่อน)</span>
         <span className="ml-auto"><SdgBadges /></span>
       </div>
@@ -328,7 +348,7 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         </ChartCard>
       </div>
 
-      {/* AI Comparison A/B/C — full table + radar (brief §3.5) */}
+      {/* ── SECTION 4: AI DEEP DETAIL — comparison A/B/C + material science (brief §3.5) */}
       <div className="flex items-center gap-2 px-1 mt-6">
         <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">4</span>
         <span className="text-[15px] font-bold text-ink">AI เปรียบเทียบทางเลือก &amp; เจาะลึก</span>
@@ -389,6 +409,14 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
           <div>Payback (Option {best?.label}): {paybackLabel(paybackMonths(cur.annualCost, bestRes.annualCost, cur.annualCo2 - bestRes.annualCo2, best?.toolingDeltaThb))} · CBAM เสียหายหากไม่ปรับปรุง: €{cbam2028}/yr</div>
         </div>
       )}
+
+      {/* ── SECTION 5: EXPORT — PDF report, bottom of page ── */}
+      <div className="flex items-center gap-2 px-1 mt-6">
+        <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">5</span>
+        <span className="text-[15px] font-bold text-ink">Export</span>
+        <span className="text-xs text-ink-mute">PDF ตาม EU CBAM Reporting Template + SDG 8/9/12/13</span>
+      </div>
+      <PdfReport spec={spec} data={data} />
     </div>
   )
 }
