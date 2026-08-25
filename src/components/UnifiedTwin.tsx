@@ -17,6 +17,7 @@ import { ManualMaterialForm, HistoryPanel, SupplierPanel } from './InputSources'
 import FileAnalyzer from './FileAnalyzer'
 import ComparisonDeep from './ComparisonDeep'
 import PdfReport from './PdfReport'
+import EngineeringVars from './EngineeringVars'
 
 const COLORS = ['#0075de', '#dd5b00', '#1aae39', '#a39e98']
 
@@ -283,6 +284,9 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
           </div>
         </div>
       </div>
+
+      {/* ── SECTION 1c: ENGINEERING VARIABLE SHEET — live equations + constants ── */}
+      <EngineeringVars spec={spec} data={data} cur={cur} />
 
       {/* ── SECTION 2: AI SUMMARY — KPI + best-option recommendation ── */}
       <div className="flex items-center gap-2 px-1 flex-wrap">
