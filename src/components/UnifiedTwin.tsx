@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PartSpec, SeedData } from '../types'
 import { evaluate } from '../engine/cbam'
 import { generateAlternatives } from '../engine/optimize'
@@ -18,6 +18,30 @@ import FileAnalyzer from './FileAnalyzer'
 import ComparisonDeep from './ComparisonDeep'
 import PdfReport from './PdfReport'
 import EngineeringVars from './EngineeringVars'
+
+/** Full-screen overlay hosting the engineering variable sheet, opened from any KPI card. */
+function VarsModal({ spec, data, cur, onClose }: { spec: PartSpec; data: SeedData; cur: ReturnType<typeof evaluate>; onClose: () => void }) {
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [onClose])
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-6" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/45" />
+      <div
+        className="relative card w-full max-w-4xl max-h-[88vh] overflow-auto space-y-2"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center gap-2">
+          <span className="label">ตัวแปรทั้งหมดเบื้องหลังตัวเลขนี้</span>
+          <button className="ml-auto btn text-[12px]" onClick={onClose}>✕ ปิด (Esc)</button>
+        </div>
+        <EngineeringVars spec={spec} data={data} cur={cur} />
+      </div>
+    </div>
+  )
+}
 
 const COLORS = ['#0075de', '#dd5b00', '#1aae39', '#a39e98']
 
@@ -51,6 +75,7 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
   })
   const toggleShow = (k: ChartKey) => setShow((s) => ({ ...s, [k]: !s[k] }))
   const [full, setFull] = useState<ChartKey | null>(null)
+  const [varsOpen, setVarsOpen] = useState(false)
 
   const cur = evaluate(spec, data)
   const best = generateAlternatives(spec, data)[0]
@@ -285,27 +310,34 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         </div>
       </div>
 
-      {/* ── SECTION 1c: ENGINEERING VARIABLE SHEET — live equations + constants ── */}
-      <EngineeringVars spec={spec} data={data} cur={cur} />
-
       {/* ── SECTION 2: AI SUMMARY — KPI + best-option recommendation ── */}
       <div className="flex items-center gap-2 px-1 flex-wrap">
         <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">2</span>
         <span className="text-[15px] font-bold text-ink">AI วิเคราะห์ &amp; ตัวเลขสำคัญ</span>
+        <span className="text-xs text-ink-mute">คลิกที่การ์ด = ดูตัวแปร + สมการเบื้องหลัง</span>
         <WhyButton req={{ hotspot: 'material', part: spec.partType, co2: cur.annualCo2, score: cur.score, cbam2028 }} />
       </div>
 
-      {/* KPI strip — numbers auto-shrink when long, never overflow */}
+      {/* KPI strip — click any card to open the engineering variable sheet */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-        <div className="card min-w-0"><div className="label">Carbon Score</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-accent tabular-nums break-all">{cur.score}<span className="text-ink-mute text-xl">/100</span></div></div>
-        <div className="card min-w-0"><div className="label">CO₂ / ปี</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-ink tabular-nums break-all">{(cur.annualCo2/1000).toFixed(2)}<span className="text-ink-mute text-xl"> t</span></div></div>
-        <div className="card min-w-0"><div className="label">ต้นทุน / ปี</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ink tabular-nums break-all">{money(cur.annualCost)}</div>
-          <select className="mt-1 card-inset py-0.5 text-xs" value={curSym} onChange={(e) => setCurSym(e.target.value as any)}>
+        <button className="card min-w-0 text-left cursor-pointer hover:border-accent transition-colors" onClick={() => setVarsOpen(true)} title="ดูตัวแปรและสมการเบื้องหลัง">
+          <div className="label">Carbon Score</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-accent tabular-nums break-all">{cur.score}<span className="text-ink-mute text-xl">/100</span></div>
+        </button>
+        <button className="card min-w-0 text-left cursor-pointer hover:border-accent transition-colors" onClick={() => setVarsOpen(true)} title="ดูตัวแปรและสมการเบื้องหลัง">
+          <div className="label">CO₂ / ปี</div><div className="text-[clamp(24px,3vw,34px)] leading-none font-bold text-ink tabular-nums break-all">{(cur.annualCo2/1000).toFixed(2)}<span className="text-ink-mute text-xl"> t</span></div>
+        </button>
+        <button className="card min-w-0 text-left cursor-pointer hover:border-accent transition-colors" onClick={() => setVarsOpen(true)} title="ดูตัวแปรและสมการเบื้องหลัง">
+          <div className="label">ต้นทุน / ปี</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ink tabular-nums break-all">{money(cur.annualCost)}</div>
+          <select className="mt-1 card-inset py-0.5 text-xs" value={curSym} onChange={(e) => { e.stopPropagation(); setCurSym(e.target.value as any) }} onClick={(e) => e.stopPropagation()}>
             {Object.keys(RATES).map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-        </div>
-        <div className="card min-w-0"><div className="label">CBAM Tax 2028</div><div className={`text-[clamp(24px,3vw,34px)] leading-none font-bold tabular-nums break-all ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>€{cbam2028}<span className="text-ink-mute text-xl">/yr</span></div></div>
-        <div className="card min-w-0"><div className="label">Credit Revenue (T-VER)</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ok tabular-nums break-all">{bestRes && cur.annualCo2 > bestRes.annualCo2 ? `+${money((cur.annualCo2 - bestRes.annualCo2) / 1000 * 220)}` : '—'}<span className="text-ink-mute text-xl">/yr</span></div></div>
+        </button>
+        <button className="card min-w-0 text-left cursor-pointer hover:border-accent transition-colors" onClick={() => setVarsOpen(true)} title="ดูตัวแปรและสมการเบื้องหลัง">
+          <div className="label">CBAM Tax 2028</div><div className={`text-[clamp(24px,3vw,34px)] leading-none font-bold tabular-nums break-all ${cbam2028 > 0 ? 'text-bad' : 'text-ok'}`}>€{cbam2028}<span className="text-ink-mute text-xl">/yr</span></div>
+        </button>
+        <button className="card min-w-0 text-left cursor-pointer hover:border-accent transition-colors" onClick={() => setVarsOpen(true)} title="ดูตัวแปรและสมการเบื้องหลัง">
+          <div className="label">Credit Revenue (T-VER)</div><div className="text-[clamp(20px,2.6vw,30px)] leading-none font-bold text-ok tabular-nums break-all">{bestRes && cur.annualCo2 > bestRes.annualCo2 ? `+${money((cur.annualCo2 - bestRes.annualCo2) / 1000 * 220)}` : '—'}<span className="text-ink-mute text-xl">/yr</span></div>
+        </button>
       </div>
 
       {/* AI verdict card — one-line recommendation from engine */}
@@ -421,6 +453,8 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         <span className="text-xs text-ink-mute">PDF ตาม EU CBAM Reporting Template + SDG 8/9/12/13</span>
       </div>
       <PdfReport spec={spec} data={data} />
+
+      {varsOpen && <VarsModal spec={spec} data={data} cur={cur} onClose={() => setVarsOpen(false)} />}
     </div>
   )
 }
