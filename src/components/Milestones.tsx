@@ -1,9 +1,9 @@
 // Real CBAM timeline per TGO CBAM Aluminium Manual (Aug 2024) + EU regulation.
 const MS = [
   { date: 'ต.ค. 2566 (2023)', label: 'Transitional Period เริ่ม', note: 'ผู้นำเข้ารายงาน embedded emissions — ยังไม่เสียค่าธรรมเนียม · ไม่บังคับทวนสอบ', state: 'done' },
-  { date: 'ธ.ค. 2568 (2025)', label: 'Transitional Period สิ้นสุด', note: 'เตรียมข้อมูล actual emissions + เอกสารทวนสอบให้พร้อม', state: 'active' },
-  { date: 'ม.ค. 2569 (2026)', label: 'Definitive Period เริ่ม', note: 'ซื้อ CBAM certificates ตามปริมาณคาร์บอนจริง — obligation ไล่ขึ้นถึง 100% ปี 2034', state: 'upcoming' },
-  { date: '2034', label: 'Phase-in เต็มรูปแบบ', note: 'CBAM แทนที่ใบอนุญาต ETS ฟรีโดยสมบูรณ์', state: 'upcoming' },
+  { date: 'ธ.ค. 2568 (2025)', label: 'Transitional Period สิ้นสุด', note: 'เตรียมข้อมูล actual emissions + เอกสารทวนสอบให้พร้อม', state: 'done' },
+  { date: '1 ม.ค. 2569 (2026)', label: 'Definitive Period — เก็บเงินจริงแล้ว', note: 'ซื้อ CBAM certificates ตามปริมาณคาร์บอนจริง · ไม่มี actual data → ถูกประเมินด้วย Default Values ซึ่งตั้งเรตสูงเพื่อลงโทษ', state: 'active' },
+  { date: '2034', label: 'Phase-in เต็มรูปแบบ', note: 'CBAM factor ถึง 100% · แทนที่ใบอนุญาต ETS ฟรีโดยสมบูรณ์', state: 'upcoming' },
 ]
 
 export default function Milestones() {

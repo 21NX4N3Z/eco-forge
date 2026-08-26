@@ -19,14 +19,15 @@
     { "id": 4, "name": "Additive Mfg", "energyIntensity": 8.5, "scrapRate": 0.05, "procEmission": 0.20, "extraCostPerKg": 4200, "toolingCostThb": 35000 }
   ],
   "cbamRates": [
-    { "year": 2026, "obligationPercent": 0.00, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
-    { "year": 2027, "obligationPercent": 0.22, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
-    { "year": 2028, "obligationPercent": 0.40, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
-    { "year": 2029, "obligationPercent": 0.60, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
-    { "year": 2030, "obligationPercent": 0.80, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
-    { "year": 2031, "obligationPercent": 1.00, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
-    { "year": 2032, "obligationPercent": 1.00, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
-    { "year": 2033, "obligationPercent": 1.00, "etsPriceEur": 180, "benchmarkCo2": 2.5 }
+    { "year": 2026, "obligationPercent": 0.025, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2027, "obligationPercent": 0.05, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2028, "obligationPercent": 0.10, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2029, "obligationPercent": 0.225, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2030, "obligationPercent": 0.35, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2031, "obligationPercent": 0.475, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2032, "obligationPercent": 0.60, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2033, "obligationPercent": 0.775, "etsPriceEur": 180, "benchmarkCo2": 2.5 },
+    { "year": 2034, "obligationPercent": 1.00, "etsPriceEur": 180, "benchmarkCo2": 2.5 }
   ],
   "suppliers": [
     { "id": 1, "name": "Thai Metal Supply Co.", "materialIds": [1, 2], "co2Certificate": "ISO 14040", "contact": "sales@tms.co.th" },

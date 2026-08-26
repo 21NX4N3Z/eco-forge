@@ -18,12 +18,12 @@ export function complianceItems(spec: PartSpec, cur: CalcResult) {
   if (allPass) {
     items.push({ ok: true, text: 'ผ่านเกณฑ์ CBAM 2026-2028 (ต่ำกว่า EU Benchmark)' })
   } else if (!anyTax) {
-    items.push({ ok: true, text: '2026-2028: Reporting only — ยังไม่ต้องจ่าย Certificate' })
+    items.push({ ok: true, text: 'ไม่มีภาระ CBAM ปี 2026-2028 — embedded ต่ำกว่า Benchmark' })
   } else {
     const first = w.find((c) => c.taxEur > 0)
     items.push({
       ok: false,
-      text: `ต้องจ่าย CBAM ตั้งแต่ปี ${first?.year} — €${w.reduce((a, b) => a + b.taxEur, 0).toFixed(0)} รวมถึงปี 2028`,
+      text: `Definitive Period: จ่าย CBAM จริงตั้งแต่ปี ${first?.year} — €${w.reduce((a, b) => a + b.taxEur, 0).toFixed(0)} รวมถึงปี 2028`,
     })
   }
 
