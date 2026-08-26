@@ -187,6 +187,7 @@ export default function EngineeringVars({ spec, data, cur, focus, bestAnnualCo2 
             <div><span className="text-ink-mute">De minimis (&lt;50 t/yr)</span><div className={`font-semibold ${cur.deMinimis ? 'text-ok' : ''}`}>{cur.deMinimis ? 'EXEMPT' : 'liable'}</div></div>
             <div><span className="text-ink-mute">DV Thailand fallback</span><div className="tabular-nums font-semibold">{cur.dvTh != null ? `${n(cur.dvTh, 3)} tCO₂e/t` : '—'}</div></div>
           </div>
+          <div className="text-[12px] text-warn leading-relaxed">บทลงโทษ: ส่งรายงานผิด / ไม่ตรง methodology → ปรับ €10–50/tCO₂ · ไม่มีข้อมูลจริง → ผู้นำเข้าถูกบังคับใช้ Default Values (เรตสูงเพื่อลงโทษ)</div>
           <table className="w-full text-[13px]">
             <thead className="text-ink-mute">
               <tr>

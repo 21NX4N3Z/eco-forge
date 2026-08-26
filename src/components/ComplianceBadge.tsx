@@ -39,6 +39,15 @@ export function complianceItems(spec: PartSpec, cur: CalcResult) {
   const mrvOk = cur.mrv.scope1 >= 0 && cur.mrv.scope2 >= 0 && cur.mrv.scope3 >= 0
   items.push({ ok: mrvOk, text: 'MRV ครบ 3 Scopes (Direct / Electricity / Embedded) — ISO 14040' })
 
+  // Penalty risk per brief §1.2: reporting without actual data → importer must use
+  // punitive Default Values; wrong numbers / off-methodology → fine €10-50 per tCO₂.
+  const primaryData = spec.inputSource !== 'standard'
+  items.push(
+    primaryData
+      ? { ok: true, text: 'ใช้ primary data — ลดความเสี่ยง Default Values และค่าปรับ €10-50/tCO₂' }
+      : { ok: false, text: 'ยังไม่ใช้ primary data หน้าสายการผลิต — เสี่ยงโดนประเมินด้วย Default Values + ปรับ €10-50/tCO₂ หากเลขไม่ตรง methodology' },
+  )
+
   return items
 }
 
