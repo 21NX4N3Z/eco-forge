@@ -56,7 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       signal: controller.signal,
       headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
       body: JSON.stringify({
-        model: 'poolside/laguna-s-2.1:free',
+        model: 'minimax/minimax-m3:free',
         max_tokens: isExtract ? 800 : 1200,
         reasoning_effort: 'low',
         messages: [
