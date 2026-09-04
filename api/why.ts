@@ -57,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
       body: JSON.stringify({
         model: 'minimax/minimax-m3:free',
-        max_tokens: isExtract ? 3200 : 2400,
+        max_tokens: isExtract ? 4800 : 4000,
         reasoning_effort: 'minimal',
         messages: [
           { role: 'system', content: sys },
