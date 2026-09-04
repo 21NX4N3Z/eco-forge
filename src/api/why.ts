@@ -3,6 +3,7 @@
 //   1. VITE_OPENROUTER_KEY set → call OpenRouter directly from the frontend (dev/demo)
 //   2. /api/why proxy           → Vercel serverless (key stays server-side, prod)
 //   3. offline rule-based        → only when no network/key; reported honestly
+// Model is `minimax/minimax-m3:free` on OpenRouter (free tier, JSON-clean, ~15s w/ reasoning).
 
 export interface WhyRequest {
   hotspot: string
@@ -58,8 +59,9 @@ async function callOpenRouter(req: WhyRequest, key: string): Promise<WhyResponse
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
     body: JSON.stringify({
-      model: 'stealth/ox-alpha',
-      max_tokens: 1200,
+      model: 'minimax/minimax-m3:free',
+            max_tokens: 2400,
+            reasoning_effort: 'minimal',
       messages: [
         { role: 'system', content: SYS },
         { role: 'user', content: JSON.stringify(req) },

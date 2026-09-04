@@ -42,7 +42,7 @@ export default function WhyButton({ req, label = 'วิเคราะห์ด
             <>
               <p className="text-xs text-ink-soft leading-relaxed whitespace-pre-line">{res.suggestion}</p>
               <div className={`mt-2 text-[10px] font-semibold uppercase tracking-wide ${res.source === 'ai' ? 'text-accent' : 'text-ink-mute'}`}>
-                {res.source === 'ai' ? '● Powered by Nous AI (live)' : '○ Offline rule-based (no network)'}
+                {res.source === 'ai' ? '● Powered by OpenRouter AI (live)' : '○ Offline rule-based (no network)'}
               </div>
             </>
           )}
