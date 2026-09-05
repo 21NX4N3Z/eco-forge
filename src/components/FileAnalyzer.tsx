@@ -110,7 +110,7 @@ export default function FileAnalyzer({ data, onApply }: { data: SeedData; onAppl
     <div className="card lg:col-span-4">
       <div className="label mb-2">📎 ยัดไฟล์ — AI วิเคราะห์และกรอกค่าให้อัตโนมัติ</div>
       <div
-        className={`card-inset border-2 border-dashed rounded-lg p-5 text-center cursor-pointer transition-colors ${drag ? 'border-accent bg-[#f2f9ff]' : 'border-line'}`}
+        className={`card-inset border-2 border-dashed rounded-lg p-5 text-center cursor-pointer transition-colors ${drag ? 'border-accent bg-[#d4eef4]' : 'border-line'}`}
         onDragOver={(e) => { e.preventDefault(); setDrag(true) }}
         onDragLeave={() => setDrag(false)}
         onDrop={(e) => { e.preventDefault(); setDrag(false); handleFiles(e.dataTransfer.files) }}

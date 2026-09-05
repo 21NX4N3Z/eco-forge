@@ -45,8 +45,8 @@ export default function ReportBody({ spec, data, cur, alts, best, bestPb, cbam20
       <div style={{
         margin: '10px 0', padding: '8px 12px', borderRadius: 6,
         backgroundColor: cbam2028 === 0 ? '#e7f5ea' : '#fdeaea',
-        border: `1px solid ${cbam2028 === 0 ? '#1aae39' : '#d43a3a'}`,
-        color: cbam2028 === 0 ? '#157a2c' : '#b02a2a', fontSize: 13, fontWeight: 700,
+        border: `1px solid ${cbam2028 === 0 ? '#1aae39' : '#c44a6b'}`,
+        color: cbam2028 === 0 ? '#16a085' : '#b02a2a', fontSize: 13, fontWeight: 700,
       }}>
         {cbam2028 === 0
           ? '✓ CBAM Compliance: PASS — below EU benchmark (ผ่านเกณฑ์)'
@@ -93,7 +93,7 @@ export default function ReportBody({ spec, data, cur, alts, best, bestPb, cbam20
             </tbody>
           </table>
           {cbam2028 > 0 && (
-            <div style={{ marginTop: 10, padding: '8px 12px', borderRadius: 6, backgroundColor: '#fdeaea', border: '1px solid #d43a3a', color: '#b02a2a', fontSize: 12, fontWeight: 700 }}>
+            <div style={{ marginTop: 10, padding: '8px 12px', borderRadius: 6, backgroundColor: '#fdeaea', border: '1px solid #c44a6b', color: '#b02a2a', fontSize: 12, fontWeight: 700 }}>
               ⚠ Lost Profit Warning: ไม่ปรับปรุง = เสียภาษี CBAM €{cbam2028}/yr (เพิ่มขึ้นทุกปีตาม CBAM factor schedule)
             </div>
           )}

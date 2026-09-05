@@ -6,7 +6,7 @@ import WhyButton from './WhyButton'
 import SdgBadges from './SdgBadges'
 import { IconCheck, IconAlert } from './icons'
 
-const COLORS = ['#0075de', '#dd5b00', '#1aae39', '#a39e98']
+const COLORS = ['#2e8aa8', '#dd5b00', '#1aae39', '#a39e98']
 
 export default function Dashboard({
   spec, data, view,
@@ -168,7 +168,7 @@ export default function Dashboard({
             <RadarChart data={radarData}>
               <PolarGrid />
               <PolarAngleAxis dataKey="metric" tick={{ fontSize: 11 }} />
-              <Radar name="Current" dataKey="cur" stroke="#0075de" fill="#0075de" fillOpacity={0.35} />
+              <Radar name="Current" dataKey="cur" stroke="#2e8aa8" fill="#2e8aa8" fillOpacity={0.35} />
               <Radar name="Recycled Alt" dataKey="alt" stroke="#1aae39" fill="#1aae39" fillOpacity={0.25} />
               <Legend />
             </RadarChart>
@@ -183,7 +183,7 @@ export default function Dashboard({
               <YAxis tick={{ fontSize: 12 }} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="uts" name="Ultimate (MPa)" fill="#0075de" radius={[4,4,0,0]} />
+              <Bar dataKey="uts" name="Ultimate (MPa)" fill="#2e8aa8" radius={[4,4,0,0]} />
               <Bar dataKey="ys" name="Yield (MPa)" fill="#dd5b00" radius={[4,4,0,0]} />
               <Bar dataKey="hb" name="Hardness (HB)" fill="#1aae39" radius={[4,4,0,0]} />
             </BarChart>
@@ -200,7 +200,7 @@ export default function Dashboard({
               <XAxis dataKey="year" tick={{ fontSize: 13 }} />
               <YAxis tick={{ fontSize: 13 }} />
               <Tooltip />
-              <Bar dataKey="tax" fill="#0075de" radius={[4,4,0,0]} />
+              <Bar dataKey="tax" fill="#2e8aa8" radius={[4,4,0,0]} />
               <Legend />
             </BarChart>
           </ResponsiveContainer>

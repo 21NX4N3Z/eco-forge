@@ -43,7 +43,7 @@ function VarsModal({ spec, data, cur, focus, onClose }: { spec: PartSpec; data: 
   )
 }
 
-const COLORS = ['#0075de', '#dd5b00', '#1aae39', '#a39e98']
+const COLORS = ['#2e8aa8', '#dd5b00', '#1aae39', '#a39e98']
 
 type ChartKey = 'breakdown' | 'trend' | 'mrv' | 'radar' | 'strength'
 type Viz = 'pie' | 'donut' | 'bar' | 'line' | 'area' | 'radial' | 'hbar' | 'vbar' | 'radar'
@@ -179,7 +179,7 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         { name: 'Transport', Before: beforeData[2].value, After: afterData[2].value },
       ]}>
         <XAxis dataKey="name" tick={{ fontSize: 12 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend />
-        <Bar dataKey="Before" fill="#0075de" radius={[4,4,0,0]} /><Bar dataKey="After" fill="#1aae39" radius={[4,4,0,0]} />
+        <Bar dataKey="Before" fill="#2e8aa8" radius={[4,4,0,0]} /><Bar dataKey="After" fill="#1aae39" radius={[4,4,0,0]} />
       </BarChart>
     )
     if (t === 'line') return (
@@ -189,7 +189,7 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         { name: 'Transport', Before: beforeData[2].value, After: afterData[2].value },
       ]}>
         <XAxis dataKey="name" tick={{ fontSize: 12 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend />
-        <Line dataKey="Before" stroke="#0075de" strokeWidth={2} dot={{ r: 3 }} /><Line dataKey="After" stroke="#1aae39" strokeWidth={2} dot={{ r: 3 }} />
+        <Line dataKey="Before" stroke="#2e8aa8" strokeWidth={2} dot={{ r: 3 }} /><Line dataKey="After" stroke="#1aae39" strokeWidth={2} dot={{ r: 3 }} />
       </LineChart>
     )
     return (
@@ -199,7 +199,7 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         { name: 'Transport', Before: beforeData[2].value, After: afterData[2].value },
       ]}>
         <XAxis dataKey="name" tick={{ fontSize: 12 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend />
-        <Area dataKey="Before" stroke="#0075de" fill="#0075de" fillOpacity={0.25} strokeWidth={2} />
+        <Area dataKey="Before" stroke="#2e8aa8" fill="#2e8aa8" fillOpacity={0.25} strokeWidth={2} />
         <Area dataKey="After" stroke="#1aae39" fill="#1aae39" fillOpacity={0.25} strokeWidth={2} />
       </AreaChart>
     )
@@ -207,9 +207,9 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
 
   const renderTrend = () => {
     const t = types.trend
-    if (t === 'line') return <LineChart data={trend}><XAxis dataKey="year" tick={{ fontSize: 13 }} /><YAxis tick={{ fontSize: 13 }} /><Tooltip /><Legend /><Line dataKey="tax" name="CBAM €" stroke="#0075de" strokeWidth={2} dot={{ r: 3 }} /></LineChart>
-    if (t === 'area') return <AreaChart data={trend}><XAxis dataKey="year" tick={{ fontSize: 13 }} /><YAxis tick={{ fontSize: 13 }} /><Tooltip /><Legend /><Area dataKey="tax" name="CBAM €" stroke="#0075de" fill="#0075de" fillOpacity={0.25} strokeWidth={2} /></AreaChart>
-    return <BarChart data={trend}><XAxis dataKey="year" tick={{ fontSize: 13 }} /><YAxis tick={{ fontSize: 13 }} /><Tooltip /><Legend /><Bar dataKey="tax" name="CBAM €" fill="#0075de" radius={[4,4,0,0]} /></BarChart>
+    if (t === 'line') return <LineChart data={trend}><XAxis dataKey="year" tick={{ fontSize: 13 }} /><YAxis tick={{ fontSize: 13 }} /><Tooltip /><Legend /><Line dataKey="tax" name="CBAM €" stroke="#2e8aa8" strokeWidth={2} dot={{ r: 3 }} /></LineChart>
+    if (t === 'area') return <AreaChart data={trend}><XAxis dataKey="year" tick={{ fontSize: 13 }} /><YAxis tick={{ fontSize: 13 }} /><Tooltip /><Legend /><Area dataKey="tax" name="CBAM €" stroke="#2e8aa8" fill="#2e8aa8" fillOpacity={0.25} strokeWidth={2} /></AreaChart>
+    return <BarChart data={trend}><XAxis dataKey="year" tick={{ fontSize: 13 }} /><YAxis tick={{ fontSize: 13 }} /><Tooltip /><Legend /><Bar dataKey="tax" name="CBAM €" fill="#2e8aa8" radius={[4,4,0,0]} /></BarChart>
   }
 
   const renderMrv = () => {
@@ -220,15 +220,15 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
   }
 
   const renderRadar = () => {
-    if (types.radar === 'bar') return <BarChart data={radarData}><XAxis dataKey="metric" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Bar dataKey="cur" name="Current" fill="#0075de" radius={[4,4,0,0]} /><Bar dataKey="alt" name="Recycled" fill="#1aae39" radius={[4,4,0,0]} /></BarChart>
-    return <RadarChart data={radarData}><PolarGrid /><PolarAngleAxis dataKey="metric" tick={{ fontSize: 11 }} /><Radar name="Current" dataKey="cur" stroke="#0075de" fill="#0075de" fillOpacity={0.35} /><Radar name="Recycled Alt" dataKey="alt" stroke="#1aae39" fill="#1aae39" fillOpacity={0.25} /><Legend /></RadarChart>
+    if (types.radar === 'bar') return <BarChart data={radarData}><XAxis dataKey="metric" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Bar dataKey="cur" name="Current" fill="#2e8aa8" radius={[4,4,0,0]} /><Bar dataKey="alt" name="Recycled" fill="#1aae39" radius={[4,4,0,0]} /></BarChart>
+    return <RadarChart data={radarData}><PolarGrid /><PolarAngleAxis dataKey="metric" tick={{ fontSize: 11 }} /><Radar name="Current" dataKey="cur" stroke="#2e8aa8" fill="#2e8aa8" fillOpacity={0.35} /><Radar name="Recycled Alt" dataKey="alt" stroke="#1aae39" fill="#1aae39" fillOpacity={0.25} /><Legend /></RadarChart>
   }
 
   const renderStrength = () => {
     const t = types.strength
-    if (t === 'line') return <LineChart data={strengthData}><XAxis dataKey="name" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Line dataKey="Ultimate" stroke="#0075de" strokeWidth={2} dot={{ r: 3 }} /><Line dataKey="Yield" stroke="#dd5b00" strokeWidth={2} dot={{ r: 3 }} /><Line dataKey="Hardness" stroke="#1aae39" strokeWidth={2} dot={{ r: 3 }} /></LineChart>
-    if (t === 'area') return <AreaChart data={strengthData}><XAxis dataKey="name" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Area dataKey="Ultimate" stroke="#0075de" fill="#0075de" fillOpacity={0.2} strokeWidth={2} /><Area dataKey="Yield" stroke="#dd5b00" fill="#dd5b00" fillOpacity={0.2} strokeWidth={2} /><Area dataKey="Hardness" stroke="#1aae39" fill="#1aae39" fillOpacity={0.2} strokeWidth={2} /></AreaChart>
-    return <BarChart data={strengthData}><XAxis dataKey="name" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Bar dataKey="Ultimate" name="UTS MPa" fill="#0075de" radius={[4,4,0,0]} /><Bar dataKey="Yield" name="YS MPa" fill="#dd5b00" radius={[4,4,0,0]} /><Bar dataKey="Hardness" name="HB" fill="#1aae39" radius={[4,4,0,0]} /></BarChart>
+    if (t === 'line') return <LineChart data={strengthData}><XAxis dataKey="name" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Line dataKey="Ultimate" stroke="#2e8aa8" strokeWidth={2} dot={{ r: 3 }} /><Line dataKey="Yield" stroke="#dd5b00" strokeWidth={2} dot={{ r: 3 }} /><Line dataKey="Hardness" stroke="#1aae39" strokeWidth={2} dot={{ r: 3 }} /></LineChart>
+    if (t === 'area') return <AreaChart data={strengthData}><XAxis dataKey="name" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Area dataKey="Ultimate" stroke="#2e8aa8" fill="#2e8aa8" fillOpacity={0.2} strokeWidth={2} /><Area dataKey="Yield" stroke="#dd5b00" fill="#dd5b00" fillOpacity={0.2} strokeWidth={2} /><Area dataKey="Hardness" stroke="#1aae39" fill="#1aae39" fillOpacity={0.2} strokeWidth={2} /></AreaChart>
+    return <BarChart data={strengthData}><XAxis dataKey="name" tick={{ fontSize: 10 }} /><YAxis tick={{ fontSize: 12 }} /><Tooltip /><Legend /><Bar dataKey="Ultimate" name="UTS MPa" fill="#2e8aa8" radius={[4,4,0,0]} /><Bar dataKey="Yield" name="YS MPa" fill="#dd5b00" radius={[4,4,0,0]} /><Bar dataKey="Hardness" name="HB" fill="#1aae39" radius={[4,4,0,0]} /></BarChart>
   }
 
   return (

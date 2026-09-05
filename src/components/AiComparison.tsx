@@ -53,7 +53,7 @@ export default function AiComparison({
   )
   const radarRows = [
     { key: 'Current', r: cur, color: '#a39e98' },
-    ...alts.map((a, i) => ({ key: `Option ${a.label}`, r: a.result, color: ['#0075de', '#dd5b00', '#1aae39'][i % 3] })),
+    ...alts.map((a, i) => ({ key: `Option ${a.label}`, r: a.result, color: ['#2e8aa8', '#dd5b00', '#1aae39'][i % 3] })),
   ]
   const radarFull = ['CO₂', 'Cost', 'CBAM'].map((m) => {
     const point: Record<string, number | string> = { metric: m }
