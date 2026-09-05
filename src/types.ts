@@ -102,13 +102,15 @@ export interface CalcResult {
   perPartCo2: number
   annualCo2: number // kgCO2 / yr
   annualCost: number // THB / yr
-  score: number // 0..100
+  score: number // 0-100
   cbam: CbamYear[]
   mrv: Mrv
   benchmark: number // EU benchmark used (tCO2e/t) — real value by CN code
   dvTh: number | null // Thailand default value fallback (tCO2e/t)
   directOnly: boolean // Annex II (Al products): only direct emissions count
   deMinimis: boolean // importer below 50 t/yr threshold → exempt
+  /** Set when mandatory input is missing — calculation NOT performed. */
+  missing?: string[]
 }
 
 export interface Alternative {

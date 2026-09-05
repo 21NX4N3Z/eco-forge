@@ -26,8 +26,28 @@ export function calcCbam(annualCo2Kg: number, rates: CbamRate[], cnCode?: string
   return { years, benchmark, dvTh, directOnly }
 }
 
+/** Validate spec for mandatory fields needed to compute a meaningful CBAM number. */
+export function validateSpec(spec: PartSpec, data: SeedData): { ok: boolean; missing: string[] } {
+  const missing: string[] = []
+  // Transport carbon (ระยะขนส่ง)
+  if (!spec.transportDist || spec.transportDist <= 0) {
+    missing.push('คาร์บอนระหว่างขนส่ง (Transport Distance)')
+  }
+  // Machine / process carbon — need either energy OR direct emission on the chosen process
+  const proc = data.processes.find((p) => p.id === spec.processId)
+  const hasEnergy = (proc?.energyIntensity ?? 0) > 0
+  const hasDirect = (proc?.procEmission ?? 0) > 0
+  if (!proc) {
+    missing.push('ข้อมูลคาร์บอนจากเครื่องจักร (Process ไม่ถูกต้อง)')
+  } else if (!hasEnergy && !hasDirect) {
+    missing.push('ข้อมูลคาร์บอนจากเครื่องจักร (Energy Intensity & Direct Emission = 0)')
+  }
+  return { ok: missing.length === 0, missing }
+}
+
 /** Assemble the full deterministic result for a spec. */
 export function evaluate(spec: PartSpec, data: SeedData): CalcResult {
+  const v = validateSpec(spec, data)
   const c = calcCarbon(spec, data)
   const { years, benchmark, dvTh, directOnly } = calcCbam(c.annualCo2, data.cbamRates, spec.cnCode)
 
@@ -54,5 +74,6 @@ export function evaluate(spec: PartSpec, data: SeedData): CalcResult {
     dvTh,
     directOnly,
     deMinimis: annualCo2Taxable / 1000 < DE_MINIMIS_TONNES,
+    ...(v.ok ? {} : { missing: v.missing }),
   }
 }

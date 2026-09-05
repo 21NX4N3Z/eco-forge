@@ -8,77 +8,103 @@
 
 html, body, #root { height: 100%; }
 body {
-  background: #ffffff;
+  background: #f5fbfd;
   @apply font-sans text-ink antialiased;
   margin: 0;
-  /* Linear's signature: Inter with geometric alternates */
   font-feature-settings: 'cv01', 'ss03', 'lnum';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 *::-webkit-scrollbar { width: 8px; height: 8px; }
-*::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 9999px; }
+*::-webkit-scrollbar-thumb { background: rgba(46, 138, 168, 0.32); border-radius: 9999px; }
 *::-webkit-scrollbar-track { background: transparent; }
 
 @layer components {
-  /* Notion-style card: white, whisper border, soft layered shadow */
+  /* MATEGAYCBAM — soft mint-sky card */
   .card {
     @apply p-5 border border-line bg-surface-card shadow-card;
-    border-radius: 12px;
+    border-radius: 14px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .card:hover {
+    @apply border-line-strong;
   }
   .card-inset {
     @apply p-3 border border-line bg-surface-warm;
     border-radius: 10px;
   }
-  /* Pill badge (Notion/Linear) */
+  /* Pill badges — mint-sky family */
   .pill {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 text-[12px] font-semibold;
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 text-[12px] font-semibold;
     border-radius: 9999px;
     letter-spacing: 0.125px;
   }
-  .pill-accent { background: #f2f9ff; color: #097fe8; }
-  .pill-warn { background: #fff6e8; color: #a35a00; }
-  .pill-bad { background: #fff0f0; color: #c01b1b; }
-  .pill-ok { background: #eafaf0; color: #0c8a3e; }
+  .pill-accent { background: #d4eef4; color: #1f6d87; }
+  .pill-warn { background: #fdf2dc; color: #8a5a00; }
+  .pill-bad { background: #fce2e8; color: #a02b50; }
+  .pill-ok { background: #d6f1e7; color: #0c6b50; }
+  .pill-mint { background: #def5ec; color: #16a085; }
 
-  /* Linear button: 6px radius, near-flat, accent only on primary */
+  /* Linear-style button: 6px radius, near-flat, mint-sky primary */
   .btn {
     @apply px-3.5 py-2 text-[15px] font-medium transition-all duration-150
            border border-line bg-surface-warm text-ink
-           hover:bg-white hover:shadow-card active:scale-[0.98]
+           hover:bg-white hover:shadow-card hover:border-accent active:scale-[0.98]
            disabled:opacity-40 disabled:cursor-not-allowed;
-    border-radius: 6px;
+    border-radius: 8px;
   }
   .btn-primary {
     @apply text-white border-transparent;
-    background: #0075de;
-    box-shadow: rgba(0,117,222,0.30) 0px 4px 14px -4px;
+    background: #2e8aa8;
+    box-shadow: rgba(46, 138, 168, 0.35) 0px 4px 14px -4px;
   }
-  .btn-primary:hover { background: #005bab; }
+  .btn-primary:hover { background: #1f6d87; }
   .btn-active {
     @apply text-white border-transparent;
-    background: #0075de;
+    background: #2e8aa8;
+    box-shadow: rgba(46, 138, 168, 0.30) 0px 2px 10px;
   }
   .label { @apply text-[11px] uppercase tracking-wider text-ink-mute font-semibold; }
   .stat { @apply text-3xl font-bold text-ink tracking-tight; }
-  /* Display heading — Linear compressed tracking */
   .display { @apply font-bold text-ink tracking-display leading-none; }
+
+  /* Mint-sky hero gradient — used in header / modal */
+  .hero-mint {
+    background: linear-gradient(135deg, #e8f7fa 0%, #d4eef4 60%, #c6e4ec 100%);
+  }
+  .panel {
+    @apply card p-4;
+  }
+  /* Soft ring for focusable elements */
+  .ring-mint:focus-visible {
+    @apply outline-none;
+    box-shadow: 0 0 0 3px rgba(46, 138, 168, 0.35);
+  }
+  /* Section number badge — circular with mint gradient */
+  .num-badge {
+    @apply w-6 h-6 rounded-full text-white grid place-items-center text-xs font-bold shrink-0;
+    background: linear-gradient(135deg, #2e8aa8 0%, #3da9c9 100%);
+  }
+  .num-badge-mute {
+    @apply w-6 h-6 rounded-full text-ink grid place-items-center text-xs font-bold shrink-0;
+    background: #d4eef4;
+  }
 }
 
 /* ---- PDF / print container: rgb-only, never oklch (html2canvas safe) ---- */
 .print-report {
   background: #ffffff;
-  color: #0f172a;
+  color: #0f2a38;
   width: 794px;
   padding: 32px;
   font-family: 'Inter', system-ui, sans-serif;
 }
-.print-report h1, .print-report h2, .print-report h3 { color: #0f172a; }
-.print-report .p-card { background: #f6f5f4; border: 1px solid #dddddd; border-radius: 8px; padding: 12px; }
-.print-report .p-good { color: #047857; }
-.print-report .p-bad { color: #b91c1c; }
-.print-report .p-cyan { color: #0e7490; }
+.print-report h1, .print-report h2, .print-report h3 { color: #0f2a38; }
+.print-report .p-card { background: #f0f8fa; border: 1px solid #b8dde5; border-radius: 8px; padding: 12px; }
+.print-report .p-good { color: #0c6b50; }
+.print-report .p-bad { color: #a02b50; }
+.print-report .p-cyan { color: #1f6d87; }
 .print-report table { width: 100%; border-collapse: collapse; }
-.print-report th, .print-report td { border: 1px solid #dddddd; padding: 6px 8px; text-align: left; font-size: 12px; }
-.print-report th { background: #f6f5f4; }
+.print-report th, .print-report td { border: 1px solid #b8dde5; padding: 6px 8px; text-align: left; font-size: 12px; }
+.print-report th { background: #f0f8fa; }

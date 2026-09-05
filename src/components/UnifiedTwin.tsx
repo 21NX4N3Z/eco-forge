@@ -310,6 +310,34 @@ export default function UnifiedTwin({ spec, setSpec, data, addMaterial, view = '
         </div>
       </div>
 
+      {/* ── GUARD: Cannot calculate banner (mandatory input missing) ── */}
+      {cur.missing && cur.missing.length > 0 && (
+        <div
+          className="card border-2 flex gap-3 items-start"
+          style={{ background: 'linear-gradient(135deg, #fdf2dc 0%, #fbe5c2 100%)', borderColor: '#d99000' }}
+          role="alert"
+        >
+          <span className="text-2xl shrink-0 leading-none">⚠</span>
+          <div className="flex-1">
+            <div className="text-[15px] font-bold text-warn">คำนวณไม่ได้ — ข้อมูลไม่ครบ</div>
+            <div className="text-[12.5px] text-ink mt-1 leading-relaxed">
+              เพื่อความแม่นยำ ระบบหยุดคำนวณจนกว่าจะกรอกข้อมูลในส่วน <b>พารามิเตอร์การผลิต</b> ให้ครบ:
+            </div>
+            <ul className="mt-2 space-y-1">
+              {cur.missing.map((m, i) => (
+                <li key={i} className="text-[13px] text-ink flex gap-2">
+                  <span className="text-warn font-bold">•</span>
+                  <span><b>ขาด{m}</b></span>
+                </li>
+              ))}
+            </ul>
+            <div className="text-[11.5px] text-ink-soft mt-2 italic">
+              ดูรายละเอียดข้อมูลที่ต้องเตรียมได้ที่ปุ่ม <b>"คู่มือ & ข้อมูลที่ต้องเตรียม"</b> มุมขวาบน
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── SECTION 2: AI SUMMARY — KPI + best-option recommendation ── */}
       <div className="flex items-center gap-2 px-1 flex-wrap">
         <span className="w-6 h-6 rounded-full bg-accent text-white grid place-items-center text-xs font-bold">2</span>
