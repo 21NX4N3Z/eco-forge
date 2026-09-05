@@ -1,5 +1,5 @@
-# EcoForge Pro v2 — สรุปการประชุมทีม
-## Sriracha Hackathon 2026 | ทีม TME มจธ. | 20 ส.ค. 2569
+# MATEGAYCBAM Pro v2 — สรุปการประชุมทีม
+## Sriracha Hackathon 2026 | ทีม MATEGAYCBAM | 20 ส.ค. 2569
 
 ---
 
@@ -345,4 +345,4 @@ AI เสนอพร้อมตัวเลขเปรียบเทีย�
 
 ---
 
-**ทีม TME มจธ. | Sriracha Hackathon 2026 | Smart Environment & Circular Economy**
+**ทีม MATEGAYCBAM | Sriracha Hackathon 2026 | Smart Environment & Circular Economy**

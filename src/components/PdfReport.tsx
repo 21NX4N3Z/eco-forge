@@ -61,7 +61,7 @@ export default function PdfReport({ spec, data }: { spec: PartSpec; data: SeedDa
         if (p > 0) pdf.addPage()
         pdf.addImage(slice.toDataURL('image/png'), 'PNG', 0, 0, pageW, (sliceH / pxPerMm))
       }
-      pdf.save(`EcoForge_${TPL_TITLE[tpl].replace(/ /g, '_')}.pdf`)
+      pdf.save(`MATEGAYCBAM_${TPL_TITLE[tpl].replace(/ /g, '_')}.pdf`)
     } finally {
       setBusy(false)
     }

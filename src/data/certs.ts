@@ -1,5 +1,5 @@
 /**
- * Compliance & certification roadmap — where EcoForge stands and what it
+ * Compliance & certification roadmap — where MATEGAYCBAM stands and what it
  * targets next (Thai digital-industry ecosystem).
  */
 
@@ -43,7 +43,7 @@ export const CERTS: Cert[] = [
     org: 'depa Thailand (สนส.)',
     status: 'planned',
     scope: 'Security (OWASP IoT/Mobile Top 10) · Safety (มอก. 1561-2556) · Functionality — 3-pillar testing at depa-accredited labs; registered in Thailand Digital Catalog',
-    why: 'State-backed trust mark so Thai SMEs can rely on EcoForge with their factory data (PDPA-aligned); enables government procurement channels',
+    why: 'State-backed trust mark so Thai SMEs can rely on MATEGAYCBAM with their factory data (PDPA-aligned); enables government procurement channels',
   },
   {
     id: 'pdpa',
@@ -59,7 +59,7 @@ export const CERTS: Cert[] = [
     org: 'ISO/IEC',
     status: 'target',
     scope: 'Information security management for the hosted platform',
-    why: 'Enterprise-grade security posture as EcoForge scales to multi-tenant SaaS',
+    why: 'Enterprise-grade security posture as MATEGAYCBAM scales to multi-tenant SaaS',
   },
 ]
 

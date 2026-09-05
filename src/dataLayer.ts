@@ -216,7 +216,7 @@ export function useSeed(offline: boolean) {
         setData(mergeSeed(seedJson as SeedData, remote))
         setSource(remote ? 'nocodb' : 'local')
         if (!remote) {
-          console.warn('[EcoForge] NocoDB unreachable/unconfigured — local seed fallback (demo-safe)')
+          console.warn('[MATEGAYCBAM] NocoDB unreachable/unconfigured — local seed fallback (demo-safe)')
         }
       })
       .catch(() => {

@@ -1,6 +1,6 @@
 # Overlay Edit Guide — วาง asset ลงคลิป Demo 3 นาที
 
-> ใช้คู่กับ `docs/DEMO_SCRIPT_3MIN.md` · asset จาก https://eco-forge.vercel.app/overlays.html
+> ใช้คู่กับ `docs/DEMO_SCRIPT_3MIN.md` · asset จาก https://mategaycbam.vercel.app/overlays.html
 > ทุก clip ถ่ายแบบ green screen #00b140 → key แล้ววางทับหน้าจอเว็บ
 
 ## ⚠️ เช็คก่อนคัตสุดท้าย: ตัวเลขในสคริปต์เก่า
@@ -61,4 +61,4 @@
 ## Export Settings
 - 1080p (หรือตามที่ hackathon กำหนด), 30fps, H.264 high bitrate ~16-20 Mbps
 - เสียง: พากย์ −6dB headroom, เพลงพื้นหลัง −20dB ใต้เสียงพูด
-- ตั้งชื่อไฟล์: `EcoForge_Demo_3min_TME_KMUTT.mp4`
+- ตั้งชื่อไฟล์: `MATEGAYCBAM_Demo_3min_TME_KMUTT.mp4`

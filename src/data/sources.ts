@@ -1,5 +1,5 @@
 /**
- * Central source registry — every number in EcoForge traces back to an
+ * Central source registry — every number in MATEGAYCBAM traces back to an
  * official document. Cited inline via <Cite k="..." /> and listed in
  * the Sources panel / PDF Verification section.
  */

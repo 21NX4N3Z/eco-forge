@@ -1,6 +1,6 @@
-# EcoForge — System Architecture (v2, post-meeting 20 Aug 2026)
+# MATEGAYCBAM — System Architecture (v2, post-meeting 20 Aug 2026)
 
-> Source: team meeting summary `EcoForge_Pro_v2_PostMeeting.md`.
+> Source: team meeting summary `MATEGAYCBAM_Pro_v2_PostMeeting.md`.
 > Companion: `README.md` (summary), `docs/REVIEW.md` (review + decisions).
 
 ## 1. System diagram

@@ -1,9 +1,9 @@
 {
-  "name": "eco-forge",
+  "name": "mategaycbam",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "EcoForge — AI-Powered Carbon Engineering Software for Thai SME auto/aero parts manufacturers facing EU CBAM (Sriracha Hackathon 2026)",
+  "description": "MATEGAYCBAM — AI-Powered Carbon Engineering Software for Thai SME auto/aero parts manufacturers facing EU CBAM (Sriracha Hackathon 2026)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

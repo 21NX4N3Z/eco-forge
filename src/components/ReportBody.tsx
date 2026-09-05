@@ -31,7 +31,7 @@ export default function ReportBody({ spec, data, cur, alts, best, bestPb, cbam20
   return (
     <div style={{ fontFamily: 'Inter, sans-serif', color: '#1e293b' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ fontSize: 22, margin: 0 }}>EcoForge — {TPL_TITLE[tpl]}</h1>
+        <h1 style={{ fontSize: 22, margin: 0 }}>MATEGAYCBAM — {TPL_TITLE[tpl]}</h1>
         <div style={{ textAlign: 'right', fontSize: 11 }}>
           <SdgInline />
         </div>
