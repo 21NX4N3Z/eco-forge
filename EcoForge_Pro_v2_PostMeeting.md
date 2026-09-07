@@ -1,5 +1,5 @@
-# MATEGAYCBAM Pro v2 — สรุปการประชุมทีม
-## Sriracha Hackathon 2026 | ทีม MATEGAYCBAM | 20 ส.ค. 2569
+# MATEKAYCBAM Pro v2 — สรุปการประชุมทีม
+## Sriracha Hackathon 2026 | ทีม MATEKAYCBAM | 20 ส.ค. 2569
 
 ---
 
@@ -345,4 +345,4 @@ AI เสนอพร้อมตัวเลขเปรียบเทีย�
 
 ---
 
-**ทีม MATEGAYCBAM | Sriracha Hackathon 2026 | Smart Environment & Circular Economy**
+**ทีม MATEKAYCBAM | Sriracha Hackathon 2026 | Smart Environment & Circular Economy**

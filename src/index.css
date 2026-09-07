@@ -21,7 +21,7 @@ body {
 *::-webkit-scrollbar-track { background: transparent; }
 
 @layer components {
-  /* MATEGAYCBAM — soft mint-sky card */
+  /* MATEKAYCBAM — soft mint-sky card */
   .card {
     @apply p-5 border border-line bg-surface-card shadow-card;
     border-radius: 14px;

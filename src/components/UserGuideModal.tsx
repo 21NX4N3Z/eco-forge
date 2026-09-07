@@ -77,7 +77,7 @@ export default function UserGuideModal({ open, onClose }: Props) {
             <h2 id="user-guide-title" className="text-lg font-bold tracking-tight" style={{ color: '#1f6d87' }}>
               คู่มือการใช้ + ข้อมูลที่บริษัทต้องเตรียม
             </h2>
-            <div className="text-[12px] text-ink-soft mt-0.5">MATEGAYCBAM — เริ่มคำนวณ CBAM ได้ใน 6 ขั้นตอน</div>
+            <div className="text-[12px] text-ink-soft mt-0.5">MATEKAYCBAM — เริ่มคำนวณ CBAM ได้ใน 6 ขั้นตอน</div>
           </div>
           <button
             onClick={onClose}
@@ -116,7 +116,7 @@ export default function UserGuideModal({ open, onClose }: Props) {
               <h3 className="text-[15px] font-bold text-ink">ข้อมูลที่บริษัทต้องเตรียม</h3>
             </div>
             <p className="text-[12.5px] text-ink-soft mb-3 leading-relaxed">
-              ก่อนเริ่มใช้ MATEGAYCBAM รวบรวมข้อมูลเหล่านี้จากฝ่ายผลิต / จัดซื้อ / วิศวกรรม
+              ก่อนเริ่มใช้ MATEKAYCBAM รวบรวมข้อมูลเหล่านี้จากฝ่ายผลิต / จัดซื้อ / วิศวกรรม
               (บางข้อไม่มีก็ได้ — ระบบจะใช้ค่า default จาก ICE / EcoInvent)
             </p>
             <div className="space-y-2.5">

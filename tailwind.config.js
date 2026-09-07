@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // MATEGAYCBAM — Mint Sky (ฟ้ามิ้น) palette
+        // MATEKAYCBAM — Mint Sky (ฟ้ามิ้น) palette
         ink: {
           DEFAULT: 'rgba(15, 42, 56, 0.95)', // deep teal-navy (อ่านง่าย, contrast 16:1)
           soft: '#3d6b7a', // mid teal (secondary text)
