@@ -1,8 +1,8 @@
-# MATEKAYCBAM — สคริปต์คลิป Demo 3 นาที (Sriracha Hackathon 2026)
+# MATEKEYCBAM — สคริปต์คลิป Demo 3 นาที (Sriracha Hackathon 2026)
 
 > Flow: Input 4 ทาง → Part type → CBAM Tax + Trend → AI Compare A/B/C + Payback → Template Picker + Export PDF
 > ตัวเลข verified ที่ต้องโชว์: **4.23 tCO₂/ปี · €31/ปี (2028) · payback ~7.8 เดือน**
-> URL demo: https://matekaycbam.vercel.app · ถ่ายที่ viewport ≥1280px, zoom 100%
+> URL demo: https://matekeycbam.vercel.app · ถ่ายที่ viewport ≥1280px, zoom 100%
 
 ---
 
@@ -12,7 +12,7 @@
 
 พูด:
 "โรงงาน SME ไทยที่ส่งของไป EU กำลังจะเจอ CBAM — ภาษีคาร์บอนที่เริ่มเก็บจริงปี 2027
-MATEKAYCBAM คือเครื่องมือที่บอกโรงงานภายในไม่กี่วินาทีว่า จะโดนภาษีเท่าไหร่ และลดมันลงยังไง"
+MATEKEYCBAM คือเครื่องมือที่บอกโรงงานภายในไม่กี่วินาทีว่า จะโดนภาษีเท่าไหร่ และลดมันลงยังไง"
 
 **คลิก:** ชี้ KPI strip บนซ้าย → ให้กล้องเห็น 4 การ์ด: Carbon Score / CO₂ / ต้นทุน / CBAM 2028
 **จุดโชว์:** การ์ด CBAM 2028 = **€31/yr สีแดง** ("ต้องจ่ายภาษี")
@@ -68,8 +68,8 @@ Bracket นี้ปี 2028 โดน **€31/ปี**"
 
 ## [2:50–3:00] ปิด
 
-พูด: "MATEKAYCBAM — จากข้อมูลโรงงาน สู่การตัดสินใจลดคาร์บอน และเอกสาร CBAM พร้อมส่ง EU ในคลิกเดียว
-ทีม MATEKAYCBAM Sriracha Hackathon 2026"
+พูด: "MATEKEYCBAM — จากข้อมูลโรงงาน สู่การตัดสินใจลดคาร์บอน และเอกสาร CBAM พร้อมส่ง EU ในคลิกเดียว
+ทีม MATEKEYCBAM Sriracha Hackathon 2026"
 
 ---
 

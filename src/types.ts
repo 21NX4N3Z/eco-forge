@@ -1,4 +1,4 @@
-// MATEKAYCBAM domain types — aligned with NocoDB schema (v2 post-meeting).
+// MATEKEYCBAM domain types — aligned with NocoDB schema (v2 post-meeting).
 
 export interface Material {
   id: number

@@ -1,5 +1,5 @@
 /**
- * Compliance & certification roadmap — where MATEKAYCBAM stands and what it
+ * Compliance & certification roadmap — where MATEKEYCBAM stands and what it
  * targets next (Thai digital-industry ecosystem).
  */
 
@@ -43,7 +43,7 @@ export const CERTS: Cert[] = [
     org: 'depa Thailand (สนส.)',
     status: 'planned',
     scope: 'Security (OWASP IoT/Mobile Top 10) · Safety (มอก. 1561-2556) · Functionality — 3-pillar testing at depa-accredited labs; registered in Thailand Digital Catalog',
-    why: 'State-backed trust mark so Thai SMEs can rely on MATEKAYCBAM with their factory data (PDPA-aligned); enables government procurement channels',
+    why: 'State-backed trust mark so Thai SMEs can rely on MATEKEYCBAM with their factory data (PDPA-aligned); enables government procurement channels',
   },
   {
     id: 'pdpa',
@@ -59,7 +59,7 @@ export const CERTS: Cert[] = [
     org: 'ISO/IEC',
     status: 'target',
     scope: 'Information security management for the hosted platform',
-    why: 'Enterprise-grade security posture as MATEKAYCBAM scales to multi-tenant SaaS',
+    why: 'Enterprise-grade security posture as MATEKEYCBAM scales to multi-tenant SaaS',
   },
 ]
 

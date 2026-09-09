@@ -46,7 +46,7 @@ export default function App() {
         <div className="flex items-center gap-3 pl-1">
           <div className="w-11 h-11 rounded-xl grid place-items-center text-white font-bold text-lg shadow-glow" style={{ background: 'linear-gradient(135deg, #2e8aa8 0%, #3da9c9 100%)' }}>M</div>
           <div>
-            <h1 className="text-2xl lg:text-3xl font-bold tracking-display leading-none" style={{ color: '#1f6d87' }}>MATEKAYCBAM</h1>
+            <h1 className="text-2xl lg:text-3xl font-bold tracking-display leading-none" style={{ color: '#1f6d87' }}>MATEKEYCBAM</h1>
             <div className="text-[11px] text-ink-soft mt-1 font-medium">Carbon Engineering for Thai SMEs · EU CBAM · Sriracha Hackathon 2026</div>
           </div>
         </div>
@@ -117,7 +117,7 @@ export default function App() {
       )}
 
       <footer className="text-center text-[11px] text-ink-mute pt-3 pb-4 border-t border-line">
-        MATEKAYCBAM · Carbon Engineering for Thai SMEs · EU CBAM methodology · {badgeLine()}
+        MATEKEYCBAM · Carbon Engineering for Thai SMEs · EU CBAM methodology · {badgeLine()}
       </footer>
 
       <UserGuideModal open={guideOpen} onClose={() => setGuideOpen(false)} />

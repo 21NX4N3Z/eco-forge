@@ -1,6 +1,6 @@
-# MATEKAYCBAM — Review & Decisions (Sriracha Hackathon 2026)
+# MATEKEYCBAM — Review & Decisions (Sriracha Hackathon 2026)
 
-> Full version: `.hermes/plans/2026-08-20_210000-matekaycbam-review.md`
+> Full version: `.hermes/plans/2026-08-20_210000-matekeycbam-review.md`
 
 ## Verdict
 Strong concept (clear problem + real citations + clear "not-a-chatbot" differentiation).
@@ -86,4 +86,4 @@ constraint, replace all emoji with **SVG icons** in the real build. See `ARCHITE
 - Local JSON = demo source of truth; NocoDB = scalable story.
 - Emission factors in seed are starters — A (Domain) must replace with real values pre-demo.
 - Nous calls via Vercel serverless proxy (needs Vercel account + NOUS_API_KEY).
-- Repo created at `D:\hermes-workspace\matekaycbam`, pushed to `Muxlsxd/matekaycbam` (private).
+- Repo created at `D:\hermes-workspace\matekeycbam`, pushed to `Muxlsxd/matekeycbam` (private).
