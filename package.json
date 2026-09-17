@@ -1,9 +1,9 @@
 {
-  "name": "matekeycbam",
+  "name": "formtrace",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "MATEKEYCBAM — AI-Powered Carbon Engineering Software for Thai SME auto/aero parts manufacturers facing EU CBAM (Sriracha Hackathon 2026)",
+  "description": "FORMTRACE — Carbon & Cost Engineering by X4N3Z. Personal continuation of the MATEKEYCBAM team prototype.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
