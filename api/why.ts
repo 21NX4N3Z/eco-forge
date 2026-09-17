@@ -56,7 +56,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       signal: controller.signal,
       headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
       body: JSON.stringify({
-        model: 'minimax/minimax-m3:free',
+        model: 'nvidia/nemotron-3-super-120b-a12b:free',
         max_tokens: isExtract ? 4800 : 4000,
         reasoning_effort: 'minimal',
         messages: [
