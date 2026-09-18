@@ -68,54 +68,54 @@ export default function AiComparison({
   })
 
   return (
-    <div className="card">
-      <div className="label mb-3">AI Recommendation — เปรียบเทียบทางเลือก A / B / C</div>
-            <div className="overflow-x-auto -mx-5 px-5 pb-2" style={{minWidth: '720px'}}>
-              <table className="w-full text-[15px]">
-                <thead className="text-ink-mute">
-                  <tr>
-                    <th className="text-left min-w-[140px]">ทางเลือก</th>
-                    <th className="min-w-[120px]">กระบวนการ</th>
-                    <th className="min-w-[80px]">CO₂/ปี</th>
-                    <th className="min-w-[70px]">ลดได้</th>
-                    <th className="min-w-[90px]">Cost/ปี</th>
-                    <th className="min-w-[100px]">CBAM 2028</th>
-                    <th className="min-w-[100px]">Payback</th>
-                  </tr>
-                </thead>
-          <tbody>
-                      {rows.map((row) => (
-                        <tr
-                          key={row.label}
-                          onClick={() => setSel(sel === row.label ? null : row.label)}
-                          className={`cursor-pointer transition-colors ${'best' in row && row.best ? 'bg-surface-warm ring-1 ring-ok' : ''} ${sel === row.label ? 'bg-surface-warm' : 'hover:bg-surface-warm/60'} ${row.base ? 'text-ink-mute' : 'text-ink'}`}
-                          title={'best' in row && row.best ? 'CO₂ ต่ำสุด — ทางเลือกที่ดีที่สุด' : 'คลิกเพื่อเน้นเส้นในกราฟเรดาร์'}
-                        >
-                          <td className="py-1.5 whitespace-nowrap">
-                            <span className={`font-semibold ${'best' in row && row.best ? 'text-ok' : ''}`}>
-                              {row.label}{'best' in row && row.best ? ' ★' : ''}
-                            </span>
-                            <span className="block text-[11px] text-ink-mute font-normal">{row.note}</span>
-                          </td>
-                          <td className="text-center text-[13px] whitespace-nowrap">{row.proc}</td>
-                          <td className="text-center tabular-nums whitespace-nowrap">{(row.r.annualCo2 / 1000).toFixed(2)} t</td>
-                          <td className="text-center tabular-nums whitespace-nowrap text-ok">{co2Cut(row.r)}</td>
-                          <td className="text-center tabular-nums whitespace-nowrap">฿{(row.r.annualCost / 1000).toFixed(0)}K</td>
-                          <td className={`text-center tabular-nums whitespace-nowrap ${(row.r.cbam.find((c) => c.year === 2028)?.taxEur ?? 0) > 0 ? 'text-bad' : 'text-ok'}`}>
-                            €{row.r.cbam.find((c) => c.year === 2028)?.taxEur ?? 0}
-                          </td>
-                          <td className="text-center tabular-nums whitespace-nowrap">
-                            {row.base ? '—' : paybackLabel(paybackMonths(cur.annualCost, row.r.annualCost, cur.annualCo2 - row.r.annualCo2, row.toolingDeltaThb))}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+      <div className="card">
+        <div className="label mb-3">AI Recommendation — เปรียบเทียบทางเลือก A / B / C</div>
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-x-auto -mx-5 px-5 pb-2" style={{minWidth: '720px'}}>
+          <table className="w-full text-[15px]">
+            <thead className="text-ink-mute">
+              <tr>
+                <th className="text-left min-w-[140px]">ทางเลือก</th>
+                <th className="min-w-[120px]">กระบวนการ</th>
+                <th className="min-w-[80px]">CO₂/ปี</th>
+                <th className="min-w-[70px]">ลดได้</th>
+                <th className="min-w-[90px]">Cost/ปี</th>
+                <th className="min-w-[100px]">CBAM 2028</th>
+                <th className="min-w-[100px]">Payback</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr
+                  key={row.label}
+                  onClick={() => setSel(sel === row.label ? null : row.label)}
+                  className={`cursor-pointer transition-colors ${'best' in row && row.best ? 'bg-surface-warm ring-1 ring-ok' : ''} ${sel === row.label ? 'bg-surface-warm' : 'hover:bg-surface-warm/60'} ${row.base ? 'text-ink-mute' : 'text-ink'}`}
+                  title={'best' in row && row.best ? 'CO₂ ต่ำสุด — ทางเลือกที่ดีที่สุด' : 'คลิกเพื่อเน้นเส้นในกราฟเรดาร์'}
+                >
+                  <td className="py-1.5 whitespace-nowrap">
+                    <span className={`font-semibold ${'best' in row && row.best ? 'text-ok' : ''}`}>
+                      {row.label}{'best' in row && row.best ? ' ★' : ''}
+                    </span>
+                    <span className="block text-[11px] text-ink-mute font-normal">{row.note}</span>
+                  </td>
+                  <td className="text-center text-[13px] whitespace-nowrap">{row.proc}</td>
+                  <td className="text-center tabular-nums whitespace-nowrap">{(row.r.annualCo2 / 1000).toFixed(2)} t</td>
+                  <td className="text-center tabular-nums whitespace-nowrap text-ok">{co2Cut(row.r)}</td>
+                  <td className="text-center tabular-nums whitespace-nowrap">฿{(row.r.annualCost / 1000).toFixed(0)}K</td>
+                  <td className={`text-center tabular-nums whitespace-nowrap ${(row.r.cbam.find((c) => c.year === 2028)?.taxEur ?? 0) > 0 ? 'text-bad' : 'text-ok'}`}>
+                    €{row.r.cbam.find((c) => c.year === 2028)?.taxEur ?? 0}
+                  </td>
+                  <td className="text-center tabular-nums whitespace-nowrap">
+                    {row.base ? '—' : paybackLabel(paybackMonths(cur.annualCost, row.r.annualCost, cur.annualCo2 - row.r.annualCo2, row.toolingDeltaThb))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-                {/* Mobile card stack (hidden on desktop) */}
-                <div className="hidden md:block" />
-                <div className="md:hidden space-y-2">
+        {/* Mobile card stack */}
+        <div className="md:hidden space-y-2">
                   {rows.map((row) => (
                     <div
                       key={row.label}
