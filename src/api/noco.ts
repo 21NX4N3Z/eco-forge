@@ -1,4 +1,4 @@
-// NocoDB serverless proxy for EcoForge.
+// NocoDB serverless proxy for FORMTRACE.
 // Keeps credentials server-side — only table name in query string.
 // Returns { list: [...] } compatible with dataLayer fetchTable().
 

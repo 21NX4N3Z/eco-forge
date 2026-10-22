@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { Material, PartSpec, SeedData } from '../types'
 
-const HKEY = 'ecoforge_history'
+// Storage key. Renamed with the rebrand; the legacy key is still read once
+// so a returning visitor does not silently lose their saved analysis.
+const HKEY = 'formtrace_history'
+const LEGACY_HKEY = 'ecoforge_history'
 
 function Num({ label, v, on, step = 1, min = 0 }: { label: string; v: number; on: (n: number) => void; step?: number; min?: number }) {
   return (
@@ -76,7 +79,23 @@ export function ManualMaterialForm({ nextId, onAdd }: { nextId: number; onAdd: (
 /** ③ Factory History — save/restore scenarios (localStorage-backed). */
 export function HistoryPanel({ spec, onRestore }: { spec: PartSpec; onRestore: (s: PartSpec) => void }) {
   const [items, setItems] = useState<{ date: string; spec: PartSpec }[]>(() => {
-    try { return JSON.parse(typeof localStorage !== 'undefined' ? localStorage.getItem(HKEY) || '[]' : '[]') } catch { return [] }
+    try {
+      const ls = typeof localStorage !== 'undefined' ? localStorage : undefined
+      if (!ls) return []
+      // New key first; fall back to the pre-rebrand key once so returning
+      // visitors keep their saved scenarios. The legacy value is then copied
+      // forward under the new key and the old one left untouched.
+      const current = ls.getItem(HKEY)
+      if (current !== null) return JSON.parse(current) as { date: string; spec: PartSpec }[]
+      const legacy = ls.getItem(LEGACY_HKEY)
+      if (legacy !== null) {
+        ls.setItem(HKEY, legacy)
+        return JSON.parse(legacy) as { date: string; spec: PartSpec }[]
+      }
+      return []
+    } catch {
+      return []
+    }
   })
   const save = () => {
     const e = [...items, { date: new Date().toISOString(), spec }]

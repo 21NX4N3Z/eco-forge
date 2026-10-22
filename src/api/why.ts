@@ -4,6 +4,10 @@
 //   2. /api/why proxy           → Vercel serverless (key stays server-side, prod)
 //   3. offline rule-based        → only when no network/key; reported honestly
 // Model is `minimax/minimax-m3:free` on OpenRouter (free tier, JSON-clean, ~15s w/ reasoning).
+// The id itself is imported from `src/config/model.ts` so this client path and the
+// `api/why.ts` serverless proxy can never drift apart again.
+
+import { AI_MODEL } from '../config/model'
 
 export interface WhyRequest {
   hotspot: string
@@ -59,7 +63,7 @@ async function callOpenRouter(req: WhyRequest, key: string): Promise<WhyResponse
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
     body: JSON.stringify({
-      model: 'minimax/minimax-m3:free',
+      model: AI_MODEL,
             max_tokens: 2400,
             reasoning_effort: 'minimal',
       messages: [

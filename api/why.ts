@@ -5,8 +5,15 @@
 // export receives an IncomingMessage-like req and a ServerResponse-like res.
 // Returning a Response object is silently ignored there, so we write through
 // res explicitly and never rely on Web Request/Response in this file.
+//
+// MODEL: single source of truth for the AI model id lives in
+// `src/config/model.ts` (`AI_MODEL`). This file imports it; the client
+// bundle (`src/api/why.ts`) imports it too. Never hardcode a model id in
+// either file — a split id between the two silently routes prod to one
+// model and dev to another.
 
 import type { VercelRequest, VercelResponse } from '@vercel/node'
+import { AI_MODEL } from '../src/config/model'
 
 export const config = { runtime: 'nodejs', maxDuration: 30 }
 
@@ -56,7 +63,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       signal: controller.signal,
       headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
       body: JSON.stringify({
-        model: 'nvidia/nemotron-3-super-120b-a12b:free',
+        model: AI_MODEL,
         max_tokens: isExtract ? 4800 : 4000,
         reasoning_effort: 'minimal',
         messages: [

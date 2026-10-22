@@ -40,3 +40,9 @@ tmp/
 
 .vercel
 .env*
+
+# tsc build info + stale compiled output (never ship .js next to .ts)
+*.tsbuildinfo
+/api/*.js
+/api/*.d.ts
+/api/*.js.map

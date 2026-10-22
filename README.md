@@ -29,10 +29,21 @@ npm run build      # สร้าง dist/
 - ผลลัพธ์เป็น**การประมาณเพื่อช่วยตัดสินใจ ไม่ใช่ใบรับรอง** — ตรวจขอบเขตสินค้า/กฎปัจจุบัน/ข้อมูลโรงงานจริงก่อนยื่นรายงาน
 - Local `seed.json` คือข้อมูลอ้างอิงตั้งต้น (offline-safe) — แทนที่ด้วยข้อมูลโรงงานจริงก่อนใช้ตัดสินใจ, NocoDB เป็นทางเลือกเมื่อมี credentials
 
-## Status (2026-09-18)
-- ✅ `tsc --noEmit`, `vite build`, static bundle checks ผ่าน (แบรนด์/ฟีเจอร์ครบ, ไม่มีชื่อเก่าหลงใน UI surface)
-- ⚠️ ยังไม่ได้ทดสอบ interaction ใน real browser รอบนี้ · โมเดล AI ใน `api/why.ts` มีการสลับค้างใน working tree ยังไม่ได้ probe/deploy
-- โดเมนเดิม (team era) จะยังเสิร์ฟแบรนด์เก่าจนกว่าจะ deploy รอบถัดไป
+## Status (2026-10-22)
+- ✅ `tsc --noEmit` and `tsc -b` clean, `vite build` green
+- ✅ Single source of truth for the AI model: `src/config/model.ts` → `AI_MODEL`,
+  imported by both the Vercel proxy (`api/why.ts`, production) and the client
+  direct-key path (`src/api/why.ts`, dev/demo). They no longer drift apart.
+- ✅ Brand consolidated: the UI surface, `package.json` name and the deployed
+  bundle all read FORMTRACE. Team credit for MATEKEYCBAM is kept in Credits only.
+- ⚠️ `/api/why` on `eco-forge.vercel.app` is currently returning a provider 404
+  (`Function '...': Not found for account '...'`) — the deployed serverless
+  function is gone while the site still serves. The UI falls back to the
+  offline rule-based answer, which is labelled `source: 'local'` so it is never
+  presented as AI output. Fix = redeploy `api/why.ts` to the Vercel project.
+- ℹ️ The `eco-forge` repo name and the `eco-forge.vercel.app` alias are kept
+  deliberately: the domain and repo slug are the stable external identifiers,
+  only the product brand changed.
 
 ## Credits
 - **ทีม MATEKEYCBAM** (Sriracha Hackathon 2026) — คอนเซปต์, สถาปัตยกรรมเอนจิน, เอกสารและข้อมูลอ้างอิง
